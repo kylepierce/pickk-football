@@ -1,0 +1,31 @@
+{
+  "apps": [
+    {
+      "name": "ImportGames",
+      "script": "./bin/worker",
+      "args": [
+        "--settings", "settings/prod.json",
+        "--max-loops=50",
+        "--delay=5000",
+        "lib/strategy/stats/UpdateGamesStrategy.coffee"
+      ],
+      "exec_interpreter": "coffee",
+      "exec_mode": "fork",
+      "instances": 1,
+      "max_memory_restart": "512M"
+    },
+    {
+      "name": "ImportFutureGames",
+      "script": "./bin/worker",
+      "args": [
+        "--settings", "settings/prod.json",
+        "--delay=3600000",
+        "lib/strategy/stats/ImportFutureGamesStrategy.coffee"
+      ],
+      "exec_interpreter": "coffee",
+      "exec_mode": "fork",
+      "instances": 1,
+      "max_memory_restart": "1024M"
+    }
+  ]
+}

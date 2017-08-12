@@ -1,0 +1,18 @@
+{
+  "isDebug": true,
+  "logger": {
+    "transports": {
+      "Console": {
+        "silent": false,
+        "level": "verbose"
+      }
+    }
+  },
+  "mongodb": {
+    "url": "mongodb://localhost/%database%"
+  },
+  "stats": {
+    "apiKey": "kw3k3f8n9zcy92ufe7g8gwy4"
+  }
+
+}

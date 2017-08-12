@@ -1,0 +1,33 @@
+{
+  "isDebug": true,
+  "logger": {
+    "transports": {
+      "Console": {
+        "silent": false,
+        "level": "verbose",
+        "timestamp": false,
+        "handleExceptions": false,
+        "prettyPrint": true,
+        "colorize": true,
+        "showLevel": false
+      },
+      "File": {
+        "silent": false,
+        "level": "verbose",
+        "timestamp": false,
+        "handleExceptions": false,
+        "prettyPrint": true,
+        "colorize": true,
+        "showLevel": true,
+        "filename": "/tmp/pickk/logs"
+      }
+    }
+  },
+  "mongodb": {
+    "url": "mongodb://localhost:3001/meteor"
+  },
+  "stats": {
+    "apiKey": "9j5gedassyresqsrg3dhvv6d",
+    "secret": "H83B8eDBxw"
+  }
+}

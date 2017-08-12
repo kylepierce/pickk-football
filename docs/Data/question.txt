@@ -1,0 +1,84 @@
+{
+    "playId": 26.0,
+    "period": 1,
+    "time": "6:29",
+    "down": "3",
+    "distance": "12",
+    "awayScoreBefore": 0,
+    "awayScoreAfter": 0,
+    "homeScoreBefore": 3,
+    "homeScoreAfter": 3,
+    "yardLine": "Oak21",
+    "endYardLine": "Oak4",
+    "driveId": 4,
+    "startPossession": {
+        "teamId": 341 ****** IF start and end are different it will be a turnover ******
+    },
+    "endPossession": {
+        "teamId": 325
+    },
+    "isContinuation": true,
+    "isReview": false,
+    "penaltyType": {
+        "penaltyTypeId": 52,
+        "name": "Unnecessary Roughness"
+    },
+    "playText": "Connor Cook pass intended for Latavius Murray INTERCEPTED by Jadeveon Clowney and returned for 3 yards. Tackled by Latavius Murray. Penalty: Unnecessary Roughness on Raiders (Menelik Watson) 5 yards.",
+    "playType": {
+        "playTypeId": 11,
+        "name": "Penalty"
+    },
+    "playersInvolved": [{
+        "playerInvolvedTypeId": 1,
+        "playerInvolvedType": "player",
+        "typeSequence": 1,
+        "player": {
+            "playerId": 606102,
+            "firstName": "Connor",
+            "lastName": "Cook",
+            "uniform": "8"
+        }
+    }, {
+        "playerInvolvedTypeId": 1,
+        "playerInvolvedType": "player",
+        "typeSequence": 2,
+        "player": {
+            "playerId": 604912,
+            "firstName": "Jadeveon",
+            "lastName": "Clowney",
+            "uniform": "90"
+        }
+    }, {
+        "playerInvolvedTypeId": 1,
+        "playerInvolvedType": "player",
+        "typeSequence": 3,
+        "player": {
+            "playerId": 691533,
+            "firstName": "Menelik",
+            "lastName": "Watson",
+            "uniform": "71"
+        }
+    }, {
+        "playerInvolvedTypeId": 2,
+        "playerInvolvedType": "tackler",
+        "typeSequence": 1,
+        "player": {
+            "playerId": 467405,
+            "firstName": "Latavius",
+            "lastName": "Murray",
+            "uniform": "28"
+        }
+    }, {
+        "playerInvolvedTypeId": 5,
+        "playerInvolvedType": "target",
+        "typeSequence": 1,
+        "player": {
+            "playerId": 467405,
+            "firstName": "Latavius",
+            "lastName": "Murray",
+            "uniform": "28"
+        }
+    }],
+    "direction": "L",
+    "yards": 8
+},

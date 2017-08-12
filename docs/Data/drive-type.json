@@ -1,0 +1,144 @@
+{
+    "status": "OK",
+    "recordCount": 67,
+    "startTimestamp": "2017-08-01T20:11:36.710231Z",
+    "endTimestamp": "2017-08-01T20:11:36.7522248Z",
+    "timeTaken": 0.0419938,
+    "apiResults": {
+        "driveChartPlayNames": [{
+            "driveChartPlayName": "Blocked Extra Point"
+        }, {
+            "driveChartPlayName": "Blocked Field Goal Returned"
+        }, {
+            "driveChartPlayName": "Blocked Field Goal"
+        }, {
+            "driveChartPlayName": "Blocked Punt"
+        }, {
+            "driveChartPlayName": "Clock Time"
+        }, {
+            "driveChartPlayName": "Defense Extra Point Fumble Return"
+        }, {
+            "driveChartPlayName": "Defense Extra Point Interception Return"
+        }, {
+            "driveChartPlayName": "Defensive Fumble Recovery"
+        }, {
+            "driveChartPlayName": "Defense Recovers Muff"
+        }, {
+            "driveChartPlayName": "Defense Time Out"
+        }, {
+            "driveChartPlayName": "Defensive Penalty"
+        }, {
+            "driveChartPlayName": "Delay"
+        }, {
+            "driveChartPlayName": "Downs"
+        }, {
+            "driveChartPlayName": "Earlier Play"
+        }, {
+            "driveChartPlayName": "Earlier Plays"
+        }, {
+            "driveChartPlayName": "End of Game"
+        }, {
+            "driveChartPlayName": "End of Half"
+        }, {
+            "driveChartPlayName": "End of Quarter"
+        }, {
+            "driveChartPlayName": "End of Regulation"
+        }, {
+            "driveChartPlayName": "Entry"
+        }, {
+            "driveChartPlayName": "Extra Point"
+        }, {
+            "driveChartPlayName": "Field Goal Attempt"
+        }, {
+            "driveChartPlayName": "Fumble"
+        }, {
+            "driveChartPlayName": "Game State Change"
+        }, {
+            "driveChartPlayName": "Incomplete Pass"
+        }, {
+            "driveChartPlayName": "Intercepted Pass"
+        }, {
+            "driveChartPlayName": "Interception Run Back"
+        }, {
+            "driveChartPlayName": "Kicking Team Recovers Onside"
+        }, {
+            "driveChartPlayName": "Kickoff Return"
+        }, {
+            "driveChartPlayName": "Kickoff"
+        }, {
+            "driveChartPlayName": "Lateral"
+        }, {
+            "driveChartPlayName": "Made Field Goal"
+        }, {
+            "driveChartPlayName": "Missed Field Goal Returned"
+        }, {
+            "driveChartPlayName": "Missed Field Goal"
+        }, {
+            "driveChartPlayName": "Muffed Kick Return"
+        }, {
+            "driveChartPlayName": "No Return"
+        }, {
+            "driveChartPlayName": "Offensive Fumble Recovery"
+        }, {
+            "driveChartPlayName": "Offense Recovers Muff"
+        }, {
+            "driveChartPlayName": "Offense Time Out"
+        }, {
+            "driveChartPlayName": "Offensive Penalty"
+        }, {
+            "driveChartPlayName": "Onside Kickoff"
+        }, {
+            "driveChartPlayName": "OT Possession"
+        }, {
+            "driveChartPlayName": "Pass Completion"
+        }, {
+            "driveChartPlayName": "Print Play-By-Play"
+        }, {
+            "driveChartPlayName": "Punt Block Return"
+        }, {
+            "driveChartPlayName": "Punt - Team Recover Own Punt"
+        }, {
+            "driveChartPlayName": "Punt Return"
+        }, {
+            "driveChartPlayName": "Punt"
+        }, {
+            "driveChartPlayName": "Re-Enter Plays"
+        }, {
+            "driveChartPlayName": "Receiving Team Recovers Onside"
+        }, {
+            "driveChartPlayName": "Return Blocked Extra Point"
+        }, {
+            "driveChartPlayName": "Run"
+        }, {
+            "driveChartPlayName": "Sack"
+        }, {
+            "driveChartPlayName": "Safety"
+        }, {
+            "driveChartPlayName": "Show Score"
+        }, {
+            "driveChartPlayName": "Start of Quarter"
+        }, {
+            "driveChartPlayName": "Three Minute Warning"
+        }, {
+            "driveChartPlayName": "Time Out"
+        }, {
+            "driveChartPlayName": "Touchback"
+        }, {
+            "driveChartPlayName": "Touchdown"
+        }, {
+            "driveChartPlayName": "Two Minute Warning"
+        }, {
+            "driveChartPlayName": "Two Point Conversion"
+        }, {
+            "driveChartPlayName": "Two Point Incomplete Pass"
+        }, {
+            "driveChartPlayName": "Two Point Interception"
+        }, {
+            "driveChartPlayName": "Two Point Pass Completion"
+        }, {
+            "driveChartPlayName": "Two Point Run"
+        }, {
+            "driveChartPlayName": "Two Point Sack"
+        }]
+    }
+}

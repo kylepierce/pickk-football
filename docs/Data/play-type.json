@@ -1,0 +1,154 @@
+{
+    "status": "OK",
+    "recordCount": 48,
+    "startTimestamp": "2017-08-01T20:02:00.6634472Z",
+    "endTimestamp": "2017-08-01T20:02:00.6888362Z",
+    "timeTaken": 0.025389,
+    "apiResults": {
+        "playTypes": [{
+            "playTypeId": 1,
+            "name": "Pass"
+        }, {
+            "playTypeId": 2,
+            "name": "Incomplete Pass"
+        }, {
+            "playTypeId": 3,
+            "name": "Sack"
+        }, {
+            "playTypeId": 4,
+            "name": "Rush"
+        }, {
+            "playTypeId": 5,
+            "name": "Kickoff"
+        }, {
+            "playTypeId": 6,
+            "name": "Kickoff Return"
+        }, {
+            "playTypeId": 7,
+            "name": "Punt"
+        }, {
+            "playTypeId": 8,
+            "name": "Punt Return"
+        }, {
+            "playTypeId": 9,
+            "name": "Interception"
+        }, {
+            "playTypeId": 10,
+            "name": "Penalty"
+        }, {
+            "playTypeId": 11,
+            "name": "Penalty"
+        }, {
+            "playTypeId": 13,
+            "name": "Two Minute Warning"
+        }, {
+            "playTypeId": 14,
+            "name": "Fumble"
+        }, {
+            "playTypeId": 15,
+            "name": "Offensive Fumble Recovery"
+        }, {
+            "playTypeId": 16,
+            "name": "Defensive Fumble Recovery"
+        }, {
+            "playTypeId": 17,
+            "name": "Made Field Goal"
+        }, {
+            "playTypeId": 17,
+            "name": "Missed Field Goal"
+        }, {
+            "playTypeId": 18,
+            "name": "Blocked Punt"
+        }, {
+            "playTypeId": 19,
+            "name": "Interception Run Back"
+        }, {
+            "playTypeId": 20,
+            "name": "Safety"
+        }, {
+            "playTypeId": 21,
+            "name": "Touchback"
+        }, {
+            "playTypeId": 22,
+            "name": "Made Extra Point"
+        }, {
+            "playTypeId": 22,
+            "name": "Missed Extra Point"
+        }, {
+            "playTypeId": 23,
+            "name": "Lateral"
+        }, {
+            "playTypeId": 24,
+            "name": "Punt Block Return"
+        }, {
+            "playTypeId": 25,
+            "name": "Kicking Team Recovers Onside"
+        }, {
+            "playTypeId": 28,
+            "name": "No Return"
+        }, {
+            "playTypeId": 29,
+            "name": "Timeout"
+        }, {
+            "playTypeId": 35,
+            "name": "Blocked Field Goal"
+        }, {
+            "playTypeId": 36,
+            "name": "Missed Field Goal"
+        }, {
+            "playTypeId": 41,
+            "name": "Onside Kickoff"
+        }, {
+            "playTypeId": 42,
+            "name": "Made Field Goal"
+        }, {
+            "playTypeId": 43,
+            "name": "Muffed Kick Return"
+        }, {
+            "playTypeId": 44,
+            "name": "Offense Recovers Muff"
+        }, {
+            "playTypeId": 45,
+            "name": "Defense Recovers Muff"
+        }, {
+            "playTypeId": 46,
+            "name": "Receiving Team Recovers Onside"
+        }, {
+            "playTypeId": 47,
+            "name": "Blocked Extra Point"
+        }, {
+            "playTypeId": 49,
+            "name": "Two Point Conversion"
+        }, {
+            "playTypeId": 50,
+            "name": "Missed Field Goal Returned"
+        }, {
+            "playTypeId": 52,
+            "name": "Two Point Conversion"
+        }, {
+            "playTypeId": 53,
+            "name": "Missed Two Point Conversion"
+        }, {
+            "playTypeId": 54,
+            "name": "Missed Two Point Conversion"
+        }, {
+            "playTypeId": 55,
+            "name": "Missed Two Point Conversion"
+        }, {
+            "playTypeId": 55,
+            "name": "Two Point Conversion"
+        }, {
+            "playTypeId": 56,
+            "name": "Missed Two Point Conversion"
+        }, {
+            "playTypeId": 57,
+            "name": "Offensive Time Out"
+        }, {
+            "playTypeId": 58,
+            "name": "Defensive Time Out"
+        }, {
+            "playTypeId": 71,
+            "name": "Team Recovered Own Punt"
+        }]
+    }
+}

@@ -1,0 +1,17 @@
+{
+  "apps": [
+    {
+      "name": "UpdateNFL",
+      "script": "./bin/worker",
+      "args": [
+        "--settings", "settings/dev.json",
+        "--delay=5000",
+        "lib/strategy/stats/UpdateNFL.coffee"
+      ],
+      "exec_interpreter": "coffee",
+      "exec_mode": "fork",
+      "instances": 1,
+      "max_memory_restart": "1024M"
+    }
+  ]
+}

@@ -1,0 +1,103 @@
+{
+    "status": "OK",
+    "recordCount": 31,
+    "startTimestamp": "2017-08-01T20:05:16.335267Z",
+    "endTimestamp": "2017-08-01T20:05:16.350891Z",
+    "timeTaken": 0.015623999999999999,
+    "apiResults": {
+        "rushTypes": [{
+            "rushTypeId": 1,
+            "name": "NO-No Data"
+        }, {
+            "rushTypeId": 2,
+            "name": "DR-Draw"
+        }, {
+            "rushTypeId": 3,
+            "name": "SN-Sneak"
+        }, {
+            "rushTypeId": 4,
+            "name": "OLE-Off Left End"
+        }, {
+            "rushTypeId": 5,
+            "name": "OLT-Off Left Tackle"
+        }, {
+            "rushTypeId": 6,
+            "name": "OLG-Off Left Guard"
+        }, {
+            "rushTypeId": 7,
+            "name": "MI-Middle"
+        }, {
+            "rushTypeId": 8,
+            "name": "ORG-Off Right Guard"
+        }, {
+            "rushTypeId": 9,
+            "name": "ORT-Off Right Tackle"
+        }, {
+            "rushTypeId": 10,
+            "name": "ORE-Off Right End"
+        }, {
+            "rushTypeId": 11,
+            "name": "HBO-Halfback Option"
+        }, {
+            "rushTypeId": 12,
+            "name": "BP-Busted Play"
+        }, {
+            "rushTypeId": 13,
+            "name": "LE-Left"
+        }, {
+            "rushTypeId": 14,
+            "name": "RI-Right"
+        }, {
+            "rushTypeId": 15,
+            "name": "SC-Scramble"
+        }, {
+            "rushTypeId": 16,
+            "name": "SL-Scramble Left"
+        }, {
+            "rushTypeId": 17,
+            "name": "SR-Scramble Right"
+        }, {
+            "rushTypeId": 18,
+            "name": "RV-Reverse"
+        }, {
+            "rushTypeId": 19,
+            "name": "AD-Aborted/Dropped Snap"
+        }, {
+            "rushTypeId": 20,
+            "name": "FH-Fumbled Handoff"
+        }, {
+            "rushTypeId": 21,
+            "name": "KN-Kneel to Runout Clock"
+        }, {
+            "rushTypeId": 22,
+            "name": "EA-End Around"
+        }, {
+            "rushTypeId": 23,
+            "name": "EL-End Around Left"
+        }, {
+            "rushTypeId": 24,
+            "name": "ER-End Around Right"
+        }, {
+            "rushTypeId": 25,
+            "name": "AF-Aborted Field Goal"
+        }, {
+            "rushTypeId": 26,
+            "name": "FF-Fake Field Goal"
+        }, {
+            "rushTypeId": 27,
+            "name": "AP-Aborted Punt"
+        }, {
+            "rushTypeId": 28,
+            "name": "FP-Fake Punt Run"
+        }, {
+            "rushTypeId": 29,
+            "name": "DS-Direct Snap"
+        }, {
+            "rushTypeId": 30,
+            "name": "LS-Left Sideline"
+        }, {
+            "rushTypeId": 31,
+            "name": "RS-Right Sideline"
+        }]
+    }
+}

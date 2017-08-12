@@ -1,0 +1,254 @@
+{
+    "status": "OK",
+    "recordCount": 59,
+    "startTimestamp": "2017-08-01T20:03:27.2656962Z",
+    "endTimestamp": "2017-08-01T20:03:27.3076857Z",
+    "timeTaken": 0.0419895,
+    "apiResults": [{
+        "sportId": 4,
+        "name": "Football",
+        "league": {
+            "leagueId": 8,
+            "name": "National Football League",
+            "abbreviation": "NFL",
+            "displayName": "National Football League",
+            "positions": [{
+                "positionId": 1,
+                "name": "Wide Receiver",
+                "abbreviation": "WR"
+            }, {
+                "positionId": 2,
+                "name": "Left Offensive Tackle",
+                "abbreviation": "LOT"
+            }, {
+                "positionId": 3,
+                "name": "Left Offensive Guard",
+                "abbreviation": "LOG"
+            }, {
+                "positionId": 4,
+                "name": "Center",
+                "abbreviation": "C"
+            }, {
+                "positionId": 5,
+                "name": "Right Offensive Guard",
+                "abbreviation": "ROG"
+            }, {
+                "positionId": 6,
+                "name": "Right Offensive Tackle",
+                "abbreviation": "ROT"
+            }, {
+                "positionId": 7,
+                "name": "Tight End",
+                "abbreviation": "TE"
+            }, {
+                "positionId": 8,
+                "name": "Quarterback",
+                "abbreviation": "QB"
+            }, {
+                "positionId": 9,
+                "name": "Running Back",
+                "abbreviation": "RB"
+            }, {
+                "positionId": 10,
+                "name": "Fullback",
+                "abbreviation": "FB"
+            }, {
+                "positionId": 11,
+                "name": "Left Defensive End",
+                "abbreviation": "LDE"
+            }, {
+                "positionId": 12,
+                "name": "Nose Tackle",
+                "abbreviation": "NT"
+            }, {
+                "positionId": 13,
+                "name": "Right Defensive End",
+                "abbreviation": "RDE"
+            }, {
+                "positionId": 14,
+                "name": "Left Outside Linebacker",
+                "abbreviation": "LOLB"
+            }, {
+                "positionId": 15,
+                "name": "Left Inside Linebacker",
+                "abbreviation": "LILB"
+            }, {
+                "positionId": 16,
+                "name": "Right Inside Linebacker",
+                "abbreviation": "RILB"
+            }, {
+                "positionId": 17,
+                "name": "Right Outside Linebacker",
+                "abbreviation": "ROLB"
+            }, {
+                "positionId": 18,
+                "name": "Left Cornerback",
+                "abbreviation": "LCB"
+            }, {
+                "positionId": 19,
+                "name": "Right Cornerback",
+                "abbreviation": "RCB"
+            }, {
+                "positionId": 20,
+                "name": "Strong Safety",
+                "abbreviation": "SS"
+            }, {
+                "positionId": 21,
+                "name": "Free Safety",
+                "abbreviation": "FS"
+            }, {
+                "positionId": 22,
+                "name": "Kicker",
+                "abbreviation": "K"
+            }, {
+                "positionId": 23,
+                "name": "Punter",
+                "abbreviation": "P"
+            }, {
+                "positionId": 24,
+                "name": "Left Defensive Tackle",
+                "abbreviation": "LDT"
+            }, {
+                "positionId": 25,
+                "name": "Right Defensive Tackle",
+                "abbreviation": "RDT"
+            }, {
+                "positionId": 26,
+                "name": "Left Linebacker",
+                "abbreviation": "LLB"
+            }, {
+                "positionId": 27,
+                "name": "Middle Linebacker",
+                "abbreviation": "MLB"
+            }, {
+                "positionId": 28,
+                "name": "Right Linebacker",
+                "abbreviation": "RLB"
+            }, {
+                "positionId": 29,
+                "name": "Cornerback",
+                "abbreviation": "CB"
+            }, {
+                "positionId": 30,
+                "name": "Linebacker",
+                "abbreviation": "LB"
+            }, {
+                "positionId": 31,
+                "name": "Defensive End",
+                "abbreviation": "DE"
+            }, {
+                "positionId": 32,
+                "name": "Defensive Tackle",
+                "abbreviation": "DT"
+            }, {
+                "positionId": 33,
+                "name": "Under Tackle",
+                "abbreviation": "UT"
+            }, {
+                "positionId": 34,
+                "name": "Nickel Back",
+                "abbreviation": "NB"
+            }, {
+                "positionId": 35,
+                "name": "Defensive Back",
+                "abbreviation": "DB"
+            }, {
+                "positionId": 36,
+                "name": "Safety",
+                "abbreviation": "S"
+            }, {
+                "positionId": 37,
+                "name": "Weakside Linebacker",
+                "abbreviation": "WLB"
+            }, {
+                "positionId": 38,
+                "name": "Strongside Linebacker",
+                "abbreviation": "SLB"
+            }, {
+                "positionId": 39,
+                "name": "Long Snapper",
+                "abbreviation": "LS"
+            }, {
+                "positionId": 40,
+                "name": "UNDEFINED POS",
+                "abbreviation": "N/A"
+            }, {
+                "positionId": 41,
+                "name": "UNDEFINED POS",
+                "abbreviation": "N/A"
+            }, {
+                "positionId": 42,
+                "name": "UNDEFINED POS",
+                "abbreviation": "N/A"
+            }, {
+                "positionId": 43,
+                "name": "UNDEFINED POS",
+                "abbreviation": "N/A"
+            }, {
+                "positionId": 44,
+                "name": "Offensive Lineman",
+                "abbreviation": "OL"
+            }, {
+                "positionId": 45,
+                "name": "Defensive Lineman",
+                "abbreviation": "DL"
+            }, {
+                "positionId": 46,
+                "name": "OFFENSIVE TACKLE (SUB)",
+                "abbreviation": "OT"
+            }, {
+                "positionId": 47,
+                "name": "OFFENSIVE GUARD (SUB)",
+                "abbreviation": "OG"
+            }, {
+                "positionId": 48,
+                "name": "Halfback",
+                "abbreviation": "HB"
+            }, {
+                "positionId": 49,
+                "name": "Slot Back",
+                "abbreviation": "SB"
+            }, {
+                "positionId": 50,
+                "name": "Inside Linebacker",
+                "abbreviation": "ILB"
+            }, {
+                "positionId": 51,
+                "name": "Outside Linebacker",
+                "abbreviation": "OLB"
+            }, {
+                "positionId": 90,
+                "name": "Special Teams",
+                "abbreviation": "SPTM"
+            }, {
+                "positionId": 91,
+                "name": "Guard",
+                "abbreviation": "G"
+            }, {
+                "positionId": 92,
+                "name": "Kick Returner",
+                "abbreviation": "KR"
+            }, {
+                "positionId": 94,
+                "name": "Punt Returner",
+                "abbreviation": "PR"
+            }, {
+                "positionId": 95,
+                "name": "Tackle",
+                "abbreviation": "T"
+            }, {
+                "positionId": 97,
+                "name": "Holder",
+                "abbreviation": "HLD"
+            }, {
+                "positionId": 98,
+                "name": "Kicker (FG)",
+                "abbreviation": "KFG"
+            }, {
+                "positionId": 99,
+                "name": "Kicker (KO)",
+                "abbreviation": "KKO"
+            }]
+        }
+    }]
+}

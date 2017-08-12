@@ -1,0 +1,97 @@
+{
+    "status": "OK",
+    "recordCount": 29,
+    "startTimestamp": "2017-08-01T20:10:25.6674809Z",
+    "endTimestamp": "2017-08-01T20:10:25.6801767Z",
+    "timeTaken": 0.0126958,
+    "apiResults": {
+        "scoreTypes": [{
+            "scoreTypeId": 1,
+            "name": "Rushing TD"
+        }, {
+            "scoreTypeId": 2,
+            "name": "Passing TD"
+        }, {
+            "scoreTypeId": 3,
+            "name": "Field Goal Attempt"
+        }, {
+            "scoreTypeId": 4,
+            "name": "Kick Return TD"
+        }, {
+            "scoreTypeId": 5,
+            "name": "Punt Return TD"
+        }, {
+            "scoreTypeId": 6,
+            "name": "Interception TD"
+        }, {
+            "scoreTypeId": 7,
+            "name": "Fumble Return TD"
+        }, {
+            "scoreTypeId": 8,
+            "name": "Safety"
+        }, {
+            "scoreTypeId": 9,
+            "name": "Blocked Kick TD"
+        }, {
+            "scoreTypeId": 10,
+            "name": "Blocked FG Return TD"
+        }, {
+            "scoreTypeId": 11,
+            "name": "Blocked Punt Return TD"
+        }, {
+            "scoreTypeId": 12,
+            "name": "Own Fumble Return TD"
+        }, {
+            "scoreTypeId": 13,
+            "name": "Opp Fumble Return TD"
+        }, {
+            "scoreTypeId": 14,
+            "name": "Extra Point Attempt"
+        }, {
+            "scoreTypeId": 15,
+            "name": "2 pt Rush Attempt"
+        }, {
+            "scoreTypeId": 16,
+            "name": "2 pt Pass Attempt"
+        }, {
+            "scoreTypeId": 17,
+            "name": "2 pt Sack"
+        }, {
+            "scoreTypeId": 18,
+            "name": "1 pt Rush Attempt"
+        }, {
+            "scoreTypeId": 19,
+            "name": "1 pt Pass Attempt"
+        }, {
+            "scoreTypeId": 20,
+            "name": "Blocked FG"
+        }, {
+            "scoreTypeId": 21,
+            "name": "Blocked XP"
+        }, {
+            "scoreTypeId": 22,
+            "name": "2 pt Pass Interception"
+        }, {
+            "scoreTypeId": 23,
+            "name": "Missed FG Return TD"
+        }, {
+            "scoreTypeId": 24,
+            "name": "Own Recovered KO TD"
+        }, {
+            "scoreTypeId": 25,
+            "name": "Returned XP Attempt"
+        }, {
+            "scoreTypeId": 26,
+            "name": "1 pt Team PAT"
+        }, {
+            "scoreTypeId": 34,
+            "name": "XP Safety"
+        }, {
+            "scoreTypeId": 35,
+            "name": "Lateral TD"
+        }, {
+            "scoreTypeId": 36,
+            "name": "Own Recovered Punt TD"
+        }]
+    }
+}

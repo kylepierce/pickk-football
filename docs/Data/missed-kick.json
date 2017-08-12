@@ -1,0 +1,31 @@
+{
+    "status": "OK",
+    "recordCount": 7,
+    "startTimestamp": "2017-08-01T19:59:50.2151739Z",
+    "endTimestamp": "2017-08-01T19:59:50.2337293Z",
+    "timeTaken": 0.0185554,
+    "apiResults": {
+        "missTypes": [{
+            "missTypeId": 1,
+            "name": "Wide Left"
+        }, {
+            "missTypeId": 2,
+            "name": "Wide Right"
+        }, {
+            "missTypeId": 3,
+            "name": "Hit Left Upright"
+        }, {
+            "missTypeId": 4,
+            "name": "Hit Right Upright"
+        }, {
+            "missTypeId": 5,
+            "name": "Short"
+        }, {
+            "missTypeId": 6,
+            "name": "Missed Field Goal"
+        }, {
+            "missTypeId": 7,
+            "name": "Blocked Field Goal"
+        }]
+    }
+}

@@ -1,0 +1,1305 @@
+{
+    "status": "OK",
+    "recordCount": 429,
+    "startTimestamp": "2017-08-01T20:14:25.0914843Z",
+    "endTimestamp": "2017-08-01T20:14:25.1735103Z",
+    "timeTaken": 0.082026,
+    "apiResults": [{
+        "sportId": 4,
+        "name": "Football",
+        "league": {
+            "leagueId": 8,
+            "name": "National Football League",
+            "abbreviation": "NFL",
+            "displayName": "National Football League",
+            "splits": [{
+                "splitId": -5,
+                "name": "In-Season YTD Data"
+            }, {
+                "splitId": -3,
+                "name": "Official YTD Stats"
+            }, {
+                "splitId": -1,
+                "name": "Official Stats"
+            }, {
+                "splitId": 0,
+                "name": "Total"
+            }, {
+                "splitId": 1,
+                "name": "QB kneels to run out clock"
+            }, {
+                "splitId": 2,
+                "name": "Score Diff=(7+ pts,2 min; 20+ pts, Q4; 40+ pts anytime)"
+            }, {
+                "splitId": 3,
+                "name": "Score Diff greater than 7 points"
+            }, {
+                "splitId": 4,
+                "name": "Final Score Diff 7 points or less"
+            }, {
+                "splitId": 5,
+                "name": "4th Qtr, +/-7 Pts"
+            }, {
+                "splitId": 6,
+                "name": "All plays that were called back"
+            }, {
+                "splitId": 7,
+                "name": "As Starter"
+            }, {
+                "splitId": 8,
+                "name": "As Sub"
+            }, {
+                "splitId": 9,
+                "name": "On Grass"
+            }, {
+                "splitId": 10,
+                "name": "On Turf"
+            }, {
+                "splitId": 11,
+                "name": "Outdoors"
+            }, {
+                "splitId": 12,
+                "name": "Indoors"
+            }, {
+                "splitId": 13,
+                "name": "Home"
+            }, {
+                "splitId": 14,
+                "name": "Away"
+            }, {
+                "splitId": 15,
+                "name": "vs. AFC"
+            }, {
+                "splitId": 16,
+                "name": "vs. NFC"
+            }, {
+                "splitId": 17,
+                "name": "vs. Own Division"
+            }, {
+                "splitId": 18,
+                "name": "In Wins/Ties"
+            }, {
+                "splitId": 19,
+                "name": "In Losses"
+            }, {
+                "splitId": 20,
+                "name": "Quarter = 1"
+            }, {
+                "splitId": 21,
+                "name": "Quarter = 2"
+            }, {
+                "splitId": 22,
+                "name": "Quarter = 3"
+            }, {
+                "splitId": 23,
+                "name": "Quarter = 4"
+            }, {
+                "splitId": 24,
+                "name": "Overtime"
+            }, {
+                "splitId": 25,
+                "name": "Own 1-19"
+            }, {
+                "splitId": 26,
+                "name": "Own 20-39"
+            }, {
+                "splitId": 27,
+                "name": "Bewteen 40s"
+            }, {
+                "splitId": 28,
+                "name": "Opp 39-20"
+            }, {
+                "splitId": 29,
+                "name": "Opp 19-Goal"
+            }, {
+                "splitId": 30,
+                "name": "Opp 10-Goal"
+            }, {
+                "splitId": 31,
+                "name": "3rd (or 4th) down and 9+ yards to go"
+            }, {
+                "splitId": 32,
+                "name": "3rd (or 4th) down and 3-8 yards to go"
+            }, {
+                "splitId": 33,
+                "name": "3rd (or 4th) down and 1-2 yards to go"
+            }, {
+                "splitId": 34,
+                "name": "First down plays with 10 yards to go"
+            }, {
+                "splitId": 35,
+                "name": "Plays gaining 20 or more yards"
+            }, {
+                "splitId": 36,
+                "name": "Games starting before 6 PM (local time)"
+            }, {
+                "splitId": 37,
+                "name": "Games starting after 6 PM (local time)"
+            }, {
+                "splitId": 38,
+                "name": "Outdoor Temp <40 F"
+            }, {
+                "splitId": 39,
+                "name": "Outdoor Temp 81+ F"
+            }, {
+                "splitId": 40,
+                "name": "Rain or Clouds 7+ at game start"
+            }, {
+                "splitId": 41,
+                "name": "Wind speed greater than 10 mph at game start"
+            }, {
+                "splitId": 42,
+                "name": "Season Games (1-8)"
+            }, {
+                "splitId": 43,
+                "name": "Season Games (9-16)"
+            }, {
+                "splitId": 44,
+                "name": "September"
+            }, {
+                "splitId": 45,
+                "name": "October"
+            }, {
+                "splitId": 46,
+                "name": "November"
+            }, {
+                "splitId": 47,
+                "name": "December"
+            }, {
+                "splitId": 48,
+                "name": "Sunday"
+            }, {
+                "splitId": 49,
+                "name": "Monday"
+            }, {
+                "splitId": 50,
+                "name": "Other"
+            }, {
+                "splitId": 51,
+                "name": "Down = 1 Overall"
+            }, {
+                "splitId": 52,
+                "name": "Down = 2 Overall"
+            }, {
+                "splitId": 53,
+                "name": "Down = 3 Overall"
+            }, {
+                "splitId": 54,
+                "name": "Down = 4 Overall"
+            }, {
+                "splitId": 55,
+                "name": "Last 2 Min. Half"
+            }, {
+                "splitId": 56,
+                "name": "4th Qtr, +/-3 pts"
+            }, {
+                "splitId": 57,
+                "name": "Outdoor Temp <21 F"
+            }, {
+                "splitId": 58,
+                "name": "Outdoor Temp 21-40 F"
+            }, {
+                "splitId": 59,
+                "name": "Outdoor Temp 41-60 F"
+            }, {
+                "splitId": 60,
+                "name": "Outdoor Temp 61-80 F"
+            }, {
+                "splitId": 61,
+                "name": "VS. ATL"
+            }, {
+                "splitId": 62,
+                "name": "VS. BUF"
+            }, {
+                "splitId": 63,
+                "name": "VS. CHI"
+            }, {
+                "splitId": 64,
+                "name": "VS. CIN"
+            }, {
+                "splitId": 65,
+                "name": "VS. CLE"
+            }, {
+                "splitId": 66,
+                "name": "VS. DAL"
+            }, {
+                "splitId": 67,
+                "name": "VS. DEN"
+            }, {
+                "splitId": 68,
+                "name": "VS. DET"
+            }, {
+                "splitId": 69,
+                "name": "VS. GB"
+            }, {
+                "splitId": 70,
+                "name": "VS. TEN"
+            }, {
+                "splitId": 71,
+                "name": "VS. IND"
+            }, {
+                "splitId": 72,
+                "name": "VS. KC"
+            }, {
+                "splitId": 73,
+                "name": "VS. OAK"
+            }, {
+                "splitId": 74,
+                "name": "VS. LAR"
+            }, {
+                "splitId": 75,
+                "name": "VS. MIA"
+            }, {
+                "splitId": 76,
+                "name": "VS. MIN"
+            }, {
+                "splitId": 77,
+                "name": "VS. NE"
+            }, {
+                "splitId": 78,
+                "name": "VS. NO"
+            }, {
+                "splitId": 79,
+                "name": "VS. NYG"
+            }, {
+                "splitId": 80,
+                "name": "VS. NYJ"
+            }, {
+                "splitId": 81,
+                "name": "VS. PHI"
+            }, {
+                "splitId": 82,
+                "name": "VS. ARI"
+            }, {
+                "splitId": 83,
+                "name": "VS. PIT"
+            }, {
+                "splitId": 84,
+                "name": "VS. LAC"
+            }, {
+                "splitId": 85,
+                "name": "VS. SF"
+            }, {
+                "splitId": 86,
+                "name": "VS. SEA"
+            }, {
+                "splitId": 87,
+                "name": "VS. TB"
+            }, {
+                "splitId": 88,
+                "name": "VS. WAS"
+            }, {
+                "splitId": 89,
+                "name": "VS. CAR"
+            }, {
+                "splitId": 90,
+                "name": "VS. JAC"
+            }, {
+                "splitId": 91,
+                "name": "VS. BAL"
+            }, {
+                "splitId": 92,
+                "name": "New Era Field"
+            }, {
+                "splitId": 93,
+                "name": "Soldier Field"
+            }, {
+                "splitId": 94,
+                "name": "Cinergy Field"
+            }, {
+                "splitId": 95,
+                "name": "Cleveland Stadium"
+            }, {
+                "splitId": 96,
+                "name": "Texas Stadium"
+            }, {
+                "splitId": 97,
+                "name": "Mile High Stadium"
+            }, {
+                "splitId": 98,
+                "name": "Pontiac Silverdome"
+            }, {
+                "splitId": 99,
+                "name": "Lambeau Field"
+            }, {
+                "splitId": 100,
+                "name": "Astrodome"
+            }, {
+                "splitId": 101,
+                "name": "RCA Dome"
+            }, {
+                "splitId": 102,
+                "name": "Arrowhead Stadium"
+            }, {
+                "splitId": 103,
+                "name": "Los Angeles Memorial Coliseum"
+            }, {
+                "splitId": 104,
+                "name": "Anaheim Stadium"
+            }, {
+                "splitId": 105,
+                "name": "Hard Rock Stadium"
+            }, {
+                "splitId": 106,
+                "name": "Mall of America Field at Hubert H. Humphrey Metrodome"
+            }, {
+                "splitId": 107,
+                "name": "Foxboro Stadium"
+            }, {
+                "splitId": 108,
+                "name": "Mercedes-Benz Superdome"
+            }, {
+                "splitId": 109,
+                "name": "Giants Stadium"
+            }, {
+                "splitId": 110,
+                "name": "Veterans Stadium"
+            }, {
+                "splitId": 111,
+                "name": "Sun Devil Stadium"
+            }, {
+                "splitId": 112,
+                "name": "Three Rivers Stadium"
+            }, {
+                "splitId": 113,
+                "name": "Qualcomm Stadium"
+            }, {
+                "splitId": 114,
+                "name": "Candlestick Park"
+            }, {
+                "splitId": 115,
+                "name": "Kingdome"
+            }, {
+                "splitId": 116,
+                "name": "Houlihan's Stadium"
+            }, {
+                "splitId": 117,
+                "name": "RFK Memorial"
+            }, {
+                "splitId": 118,
+                "name": "Milwaukee County Stadium"
+            }, {
+                "splitId": 119,
+                "name": "Georgia Dome"
+            }, {
+                "splitId": 120,
+                "name": "Husky Stadium"
+            }, {
+                "splitId": 121,
+                "name": "Clemson Stadium"
+            }, {
+                "splitId": 122,
+                "name": "Memorial Stadium"
+            }, {
+                "splitId": 123,
+                "name": "Bank of America Stadium"
+            }, {
+                "splitId": 124,
+                "name": "Oakland Coliseum"
+            }, {
+                "splitId": 125,
+                "name": "EverBank Field"
+            }, {
+                "splitId": 126,
+                "name": "Busch Stadium"
+            }, {
+                "splitId": 127,
+                "name": "Edward Jones Dome"
+            }, {
+                "splitId": 128,
+                "name": "FedEx Field"
+            }, {
+                "splitId": 129,
+                "name": "Liberty Bowl Memorial Stadium"
+            }, {
+                "splitId": 130,
+                "name": "Lateral"
+            }, {
+                "splitId": 131,
+                "name": "vs AFC North Teams"
+            }, {
+                "splitId": 132,
+                "name": "vs AFC South Teams"
+            }, {
+                "splitId": 133,
+                "name": "vs NFC North Teams"
+            }, {
+                "splitId": 134,
+                "name": "vs NFC South Teams"
+            }, {
+                "splitId": 140,
+                "name": "Line of scrimmage 2 or less yards from touchdown"
+            }, {
+                "splitId": 141,
+                "name": "First down & Goal to go"
+            }, {
+                "splitId": 142,
+                "name": "Second Down & Goal to Go"
+            }, {
+                "splitId": 143,
+                "name": "Third Down & Goal to Go"
+            }, {
+                "splitId": 144,
+                "name": "Fourth Down and Goal to Go"
+            }, {
+                "splitId": 145,
+                "name": "Non-kicking PAT Attempt"
+            }, {
+                "splitId": 147,
+                "name": "Down = 1 To Go 0-2"
+            }, {
+                "splitId": 148,
+                "name": "Down = 1 To Go 3-7"
+            }, {
+                "splitId": 149,
+                "name": "Down = 1 To Go 8-10"
+            }, {
+                "splitId": 150,
+                "name": "Down = 1 To Go 11+"
+            }, {
+                "splitId": 151,
+                "name": "Down = 1 To Go < 6"
+            }, {
+                "splitId": 152,
+                "name": "Down = 1 To Go 6+"
+            }, {
+                "splitId": 153,
+                "name": "Down = 2 To Go 0-2"
+            }, {
+                "splitId": 154,
+                "name": "Down = 2 To Go 3-7"
+            }, {
+                "splitId": 155,
+                "name": "Down = 2 To Go 8-10"
+            }, {
+                "splitId": 156,
+                "name": "Down = 2 To Go 11+"
+            }, {
+                "splitId": 157,
+                "name": "Down = 2 To Go < 6"
+            }, {
+                "splitId": 158,
+                "name": "Down = 2 To Go 6+"
+            }, {
+                "splitId": 159,
+                "name": "Down = 3 To Go 0-2"
+            }, {
+                "splitId": 160,
+                "name": "Down = 3 To Go 3-7"
+            }, {
+                "splitId": 161,
+                "name": "Down = 3 To Go 8-10"
+            }, {
+                "splitId": 162,
+                "name": "Down = 3 To Go 11+"
+            }, {
+                "splitId": 163,
+                "name": "Down = 3 To Go < 6"
+            }, {
+                "splitId": 164,
+                "name": "Down = 3 To Go 6+"
+            }, {
+                "splitId": 165,
+                "name": "Down = 4 To Go 0-2"
+            }, {
+                "splitId": 166,
+                "name": "Down = 4 To Go 3-7"
+            }, {
+                "splitId": 167,
+                "name": "Down = 4 To Go 8-10"
+            }, {
+                "splitId": 168,
+                "name": "Down = 4 To Go 11+"
+            }, {
+                "splitId": 169,
+                "name": "Down = 4 To Go < 6"
+            }, {
+                "splitId": 170,
+                "name": "Down = 4 To Go 6+"
+            }, {
+                "splitId": 171,
+                "name": "vs AFC East teams"
+            }, {
+                "splitId": 172,
+                "name": "vs AFC Central teams"
+            }, {
+                "splitId": 173,
+                "name": "vs AFC West teams"
+            }, {
+                "splitId": 174,
+                "name": "vs NFC East teams"
+            }, {
+                "splitId": 175,
+                "name": "vs NFC Central teams"
+            }, {
+                "splitId": 176,
+                "name": "vs NFC West teams"
+            }, {
+                "splitId": 177,
+                "name": "Final Margin 0-7"
+            }, {
+                "splitId": 178,
+                "name": "Final Margin 8-14"
+            }, {
+                "splitId": 179,
+                "name": "Final Margin 15+"
+            }, {
+                "splitId": 180,
+                "name": "Winning 22+"
+            }, {
+                "splitId": 181,
+                "name": "Winning 15-21"
+            }, {
+                "splitId": 182,
+                "name": "Winning 8-14"
+            }, {
+                "splitId": 183,
+                "name": "Winning 1-7"
+            }, {
+                "splitId": 184,
+                "name": "When Tied"
+            }, {
+                "splitId": 185,
+                "name": "Losing 1-7"
+            }, {
+                "splitId": 186,
+                "name": "Losing 8-14"
+            }, {
+                "splitId": 187,
+                "name": "Losing 15-21"
+            }, {
+                "splitId": 188,
+                "name": "Losing 22+"
+            }, {
+                "splitId": 189,
+                "name": "When Winning"
+            }, {
+                "splitId": 190,
+                "name": "When Losing"
+            }, {
+                "splitId": 191,
+                "name": "1st Half"
+            }, {
+                "splitId": 192,
+                "name": "2nd Half/OT"
+            }, {
+                "splitId": 193,
+                "name": "Carries 1-5"
+            }, {
+                "splitId": 194,
+                "name": "Carries 6-10"
+            }, {
+                "splitId": 195,
+                "name": "Carries 11-15"
+            }, {
+                "splitId": 196,
+                "name": "Carries 16-20"
+            }, {
+                "splitId": 197,
+                "name": "Carries 21-25"
+            }, {
+                "splitId": 198,
+                "name": "Carries 26-30"
+            }, {
+                "splitId": 199,
+                "name": "Carries 31+"
+            }, {
+                "splitId": 200,
+                "name": "Runs of 10+ yards"
+            }, {
+                "splitId": 201,
+                "name": "Attempts 1-10 of game"
+            }, {
+                "splitId": 202,
+                "name": "Attempts 11-20 of game"
+            }, {
+                "splitId": 203,
+                "name": "Attempts 21-30 of game"
+            }, {
+                "splitId": 204,
+                "name": "Attempts 31-40 of game"
+            }, {
+                "splitId": 205,
+                "name": "Attempts 41+ of game"
+            }, {
+                "splitId": 206,
+                "name": "Attempt 51+ of game"
+            }, {
+                "splitId": 207,
+                "name": "In Winning Games Started"
+            }, {
+                "splitId": 208,
+                "name": "In Losing Games Started"
+            }, {
+                "splitId": 210,
+                "name": "0 Tight Ends"
+            }, {
+                "splitId": 211,
+                "name": "1 Tight End"
+            }, {
+                "splitId": 212,
+                "name": "2 Tight Ends"
+            }, {
+                "splitId": 213,
+                "name": "3+ Tight Ends"
+            }, {
+                "splitId": 214,
+                "name": "No Offensive Motion"
+            }, {
+                "splitId": 215,
+                "name": "Offensive Motion"
+            }, {
+                "splitId": 216,
+                "name": "July"
+            }, {
+                "splitId": 217,
+                "name": "August"
+            }, {
+                "splitId": 218,
+                "name": "January"
+            }, {
+                "splitId": 219,
+                "name": "February"
+            }, {
+                "splitId": 220,
+                "name": "No Rain, No Snow, No Fog (Clouds lt 6)"
+            }, {
+                "splitId": 221,
+                "name": "Games starting after 4:30 PM (local time)"
+            }, {
+                "splitId": 222,
+                "name": "Thursday"
+            }, {
+                "splitId": 223,
+                "name": "Friday"
+            }, {
+                "splitId": 224,
+                "name": "Saturday"
+            }, {
+                "splitId": 234,
+                "name": "Paul Brown Stadium"
+            }, {
+                "splitId": 235,
+                "name": "FirstEnergy Stadium"
+            }, {
+                "splitId": 236,
+                "name": "Nissan Stadium"
+            }, {
+                "splitId": 237,
+                "name": "Sports Authority Field at Mile High"
+            }, {
+                "splitId": 238,
+                "name": "Heinz Field"
+            }, {
+                "splitId": 239,
+                "name": "NRG Stadium"
+            }, {
+                "splitId": 240,
+                "name": "Vanderbilt University Stadium"
+            }, {
+                "splitId": 241,
+                "name": "Gillette Stadium"
+            }, {
+                "splitId": 242,
+                "name": "Memorial Stadium"
+            }, {
+                "splitId": 243,
+                "name": "Ford Field"
+            }, {
+                "splitId": 244,
+                "name": "CenturyLink Field"
+            }, {
+                "splitId": 245,
+                "name": "Fulton County Stadium"
+            }, {
+                "splitId": 246,
+                "name": "Alamodome"
+            }, {
+                "splitId": 247,
+                "name": "Tiger Stadium"
+            }, {
+                "splitId": 248,
+                "name": "County Stadium"
+            }, {
+                "splitId": 249,
+                "name": "Yankee Stadium"
+            }, {
+                "splitId": 250,
+                "name": "Wrigley Field"
+            }, {
+                "splitId": 251,
+                "name": "Lincoln Financial Field"
+            }, {
+                "splitId": 252,
+                "name": "Shea Stadium"
+            }, {
+                "splitId": 253,
+                "name": "Candlestick Park"
+            }, {
+                "splitId": 254,
+                "name": "Metropolitan Stadium"
+            }, {
+                "splitId": 255,
+                "name": "Atlanta-Fulton"
+            }, {
+                "splitId": 256,
+                "name": "Alumni Stadium"
+            }, {
+                "splitId": 257,
+                "name": "Raymond James Stadium"
+            }, {
+                "splitId": 258,
+                "name": "Discover Orange Bowl"
+            }, {
+                "splitId": 259,
+                "name": "Ryan Field"
+            }, {
+                "splitId": 260,
+                "name": "Memorial Stadium"
+            }, {
+                "splitId": 261,
+                "name": "Stanford Stadium"
+            }, {
+                "splitId": 262,
+                "name": "Cotton Bowl"
+            }, {
+                "splitId": 263,
+                "name": "M&T Bank Stadium"
+            }, {
+                "splitId": 264,
+                "name": "Nippert Stadium"
+            }, {
+                "splitId": 265,
+                "name": "Harvard Stadium"
+            }, {
+                "splitId": 266,
+                "name": "Franklin Field"
+            }, {
+                "splitId": 267,
+                "name": "Yale Bowl"
+            }, {
+                "splitId": 268,
+                "name": "Municipal Stadium (KC)"
+            }, {
+                "splitId": 269,
+                "name": "Estadio Azteca"
+            }, {
+                "splitId": 270,
+                "name": "Los Angeles Memorial Coliseum"
+            }, {
+                "splitId": 271,
+                "name": "Kezar Stadium"
+            }, {
+                "splitId": 272,
+                "name": "War Memorial Stadium"
+            }, {
+                "splitId": 273,
+                "name": "Tulane Stadium"
+            }, {
+                "splitId": 280,
+                "name": "VS. HOU"
+            }, {
+                "splitId": 300,
+                "name": "QB Under Pressure"
+            }, {
+                "splitId": 301,
+                "name": "QB Knocked Down"
+            }, {
+                "splitId": 302,
+                "name": "< 3 on Def. Line"
+            }, {
+                "splitId": 303,
+                "name": "< 4 on Def. Line"
+            }, {
+                "splitId": 304,
+                "name": "4 on Def. Line"
+            }, {
+                "splitId": 305,
+                "name": "5 on Def. Line"
+            }, {
+                "splitId": 306,
+                "name": "6 on Def. Line"
+            }, {
+                "splitId": 307,
+                "name": "> 6 on Def. Line"
+            }, {
+                "splitId": 309,
+                "name": "1 Brocken Tackle"
+            }, {
+                "splitId": 310,
+                "name": "2 Broken Tackles"
+            }, {
+                "splitId": 311,
+                "name": "3+ Broken Tackles"
+            }, {
+                "splitId": 312,
+                "name": "Shotgun"
+            }, {
+                "splitId": 313,
+                "name": "2 Backs Split"
+            }, {
+                "splitId": 314,
+                "name": "I-Formation"
+            }, {
+                "splitId": 315,
+                "name": "Lone Setback"
+            }, {
+                "splitId": 316,
+                "name": "2 Wide Receivers"
+            }, {
+                "splitId": 317,
+                "name": "3 Wide Receivers"
+            }, {
+                "splitId": 318,
+                "name": "4+ Wide Receivers"
+            }, {
+                "splitId": 319,
+                "name": "0-1 Wide Receivers"
+            }, {
+                "splitId": 320,
+                "name": "Pass Dropped"
+            }, {
+                "splitId": 321,
+                "name": "QB Release Slipped"
+            }, {
+                "splitId": 322,
+                "name": "QB Hit by  Defender"
+            }, {
+                "splitId": 323,
+                "name": "Receiver Hit by Defender"
+            }, {
+                "splitId": 324,
+                "name": "Lineman Deflected Pass"
+            }, {
+                "splitId": 325,
+                "name": "Batted Down at Scrimmage"
+            }, {
+                "splitId": 326,
+                "name": "QB-Rcvr Miscommunicate"
+            }, {
+                "splitId": 327,
+                "name": "Pass Overthrown"
+            }, {
+                "splitId": 328,
+                "name": "Ball Spike to Stop Clock"
+            }, {
+                "splitId": 329,
+                "name": "Thrown Away Intentionall"
+            }, {
+                "splitId": 330,
+                "name": "Pass Underthrown"
+            }, {
+                "splitId": 331,
+                "name": "Pass Thrown Wide"
+            }, {
+                "splitId": 332,
+                "name": "Pass Defensed"
+            }, {
+                "splitId": 333,
+                "name": "Pass Caught-OOB"
+            }, {
+                "splitId": 334,
+                "name": "Right Side"
+            }, {
+                "splitId": 335,
+                "name": "Left Side"
+            }, {
+                "splitId": 336,
+                "name": "Middle"
+            }, {
+                "splitId": 337,
+                "name": "Right Sideline"
+            }, {
+                "splitId": 338,
+                "name": "Left Sideline"
+            }, {
+                "splitId": 339,
+                "name": "Blitz"
+            }, {
+                "splitId": 340,
+                "name": "Pass Thrown Behind Line of Scrimmage"
+            }, {
+                "splitId": 341,
+                "name": "Pass Thrown 1-10 yds"
+            }, {
+                "splitId": 342,
+                "name": "Pass Thrown 11-20 yds"
+            }, {
+                "splitId": 343,
+                "name": "Pass Thrown 21-30 yds"
+            }, {
+                "splitId": 344,
+                "name": "Pass Thrown 31-40 yds"
+            }, {
+                "splitId": 345,
+                "name": "Pass Thrown 41+ yds"
+            }, {
+                "splitId": 346,
+                "name": "Uncategorized-Why No Catch"
+            }, {
+                "splitId": 348,
+                "name": "Uncategorized-Pydline"
+            }, {
+                "splitId": 349,
+                "name": "Uncategorized-Location Field"
+            }, {
+                "splitId": 351,
+                "name": "Uncategorized-Formations"
+            }, {
+                "splitId": 353,
+                "name": "Receiver Fell Down"
+            }, {
+                "splitId": 354,
+                "name": "Ball Hit Unsuspepcting Offensive Player or Referee"
+            }, {
+                "splitId": 355,
+                "name": "Hail Mary Pass"
+            }, {
+                "splitId": 356,
+                "name": "Interception Dropped"
+            }, {
+                "splitId": 357,
+                "name": "3 Running Back Formation"
+            }, {
+                "splitId": 358,
+                "name": "QB Beyond Line of Scrimmage"
+            }, {
+                "splitId": 359,
+                "name": "Illegal Receiver"
+            }, {
+                "splitId": 361,
+                "name": "1-19 Yard"
+            }, {
+                "splitId": 362,
+                "name": "20-29 Yard"
+            }, {
+                "splitId": 363,
+                "name": "30-39 Yard"
+            }, {
+                "splitId": 364,
+                "name": "40-49 Yard"
+            }, {
+                "splitId": 365,
+                "name": "50+ Yard F"
+            }, {
+                "splitId": 366,
+                "name": "Touchback"
+            }, {
+                "splitId": 367,
+                "name": "Net Inside 20 yd line"
+            }, {
+                "splitId": 368,
+                "name": "Kickoffs into End Zone"
+            }, {
+                "splitId": 370,
+                "name": "Neutral Site"
+            }, {
+                "splitId": 389,
+                "name": "University of Phoenix Stadium"
+            }, {
+                "splitId": 390,
+                "name": "June"
+            }, {
+                "splitId": 391,
+                "name": "Wembley Stadium"
+            }, {
+                "splitId": 392,
+                "name": "Tiger Stadium"
+            }, {
+                "splitId": 393,
+                "name": "GM Place"
+            }, {
+                "splitId": 394,
+                "name": "Fenway Park"
+            }, {
+                "splitId": 395,
+                "name": "Comiskey Park"
+            }, {
+                "splitId": 396,
+                "name": "Pitt Stadium"
+            }, {
+                "splitId": 397,
+                "name": "Mountaineer Field"
+            }, {
+                "splitId": 398,
+                "name": "Ross-Ade Stadium"
+            }, {
+                "splitId": 399,
+                "name": "Camp Randall Stadium"
+            }, {
+                "splitId": 400,
+                "name": "Rose Bowl"
+            }, {
+                "splitId": 401,
+                "name": "Jeppesen Stadium"
+            }, {
+                "splitId": 402,
+                "name": "Rice Stadium"
+            }, {
+                "splitId": 403,
+                "name": "Polo Grounds"
+            }, {
+                "splitId": 404,
+                "name": "Griffith Stadium"
+            }, {
+                "splitId": 405,
+                "name": "Forbes Field"
+            }, {
+                "splitId": 406,
+                "name": "Sportsmans Park"
+            }, {
+                "splitId": 407,
+                "name": "Aloha Stadium"
+            }, {
+                "splitId": 408,
+                "name": "Balboa Stadium"
+            }, {
+                "splitId": 409,
+                "name": "Tom Benson Hall of Fame Stadium"
+            }, {
+                "splitId": 410,
+                "name": "City Stadium"
+            }, {
+                "splitId": 411,
+                "name": "Tokyo Dome"
+            }, {
+                "splitId": 412,
+                "name": "Frank Youell Field"
+            }, {
+                "splitId": 413,
+                "name": "Nickerson Field"
+            }, {
+                "splitId": 414,
+                "name": "Legion Field"
+            }, {
+                "splitId": 415,
+                "name": "Florida Citrus Bowl"
+            }, {
+                "splitId": 416,
+                "name": "Independence Stadium"
+            }, {
+                "splitId": 417,
+                "name": "Mississippi Veterans Memorial Stadium"
+            }, {
+                "splitId": 418,
+                "name": "Stadium Australia"
+            }, {
+                "splitId": 419,
+                "name": "Osaka Dome"
+            }, {
+                "splitId": 420,
+                "name": "Croke Park"
+            }, {
+                "splitId": 421,
+                "name": "Marquette Stadium"
+            }, {
+                "splitId": 422,
+                "name": "Wisconsin State Fair Park"
+            }, {
+                "splitId": 423,
+                "name": "Gaylord Family Oklahoma Memorial Stadium"
+            }, {
+                "splitId": 424,
+                "name": "Bobby Dodd Stadium/Grant Field"
+            }, {
+                "splitId": 425,
+                "name": "Lucas Oil Stadium"
+            }, {
+                "splitId": 426,
+                "name": "Connie Mack Stadium"
+            }, {
+                "splitId": 427,
+                "name": "AT&T Stadium"
+            }, {
+                "splitId": 428,
+                "name": "MetLife Stadium"
+            }, {
+                "splitId": 429,
+                "name": "TCF Bank Stadium"
+            }, {
+                "splitId": 430,
+                "name": "Estadi Olimpic"
+            }, {
+                "splitId": 431,
+                "name": "Estadio Universitario"
+            }, {
+                "splitId": 432,
+                "name": "Neyland Stadium"
+            }, {
+                "splitId": 433,
+                "name": "Olympiastadion"
+            }, {
+                "splitId": 434,
+                "name": "Levi's Stadium"
+            }, {
+                "splitId": 501,
+                "name": "VS. NYY"
+            }, {
+                "splitId": 502,
+                "name": "VS. AKR"
+            }, {
+                "splitId": 503,
+                "name": "VS. DAY"
+            }, {
+                "splitId": 504,
+                "name": "VS. BRK"
+            }, {
+                "splitId": 505,
+                "name": "VS. BFA"
+            }, {
+                "splitId": 506,
+                "name": "VS. CAN"
+            }, {
+                "splitId": 507,
+                "name": "VS. CHT"
+            }, {
+                "splitId": 508,
+                "name": "VS. CIR"
+            }, {
+                "splitId": 509,
+                "name": "VS. CLB"
+            }, {
+                "splitId": 510,
+                "name": "VS. CLI"
+            }, {
+                "splitId": 511,
+                "name": "VS. COL"
+            }, {
+                "splitId": 512,
+                "name": "VS. NWK"
+            }, {
+                "splitId": 513,
+                "name": "VS. DEP"
+            }, {
+                "splitId": 514,
+                "name": "VS. DEW"
+            }, {
+                "splitId": 515,
+                "name": "VS. DUL"
+            }, {
+                "splitId": 516,
+                "name": "VS. FRK"
+            }, {
+                "splitId": 517,
+                "name": "VS. HAM"
+            }, {
+                "splitId": 518,
+                "name": "VS. LOU"
+            }, {
+                "splitId": 519,
+                "name": "VS. MIL"
+            }, {
+                "splitId": 520,
+                "name": "VS. MNR"
+            }, {
+                "splitId": 521,
+                "name": "VS. BKL"
+            }, {
+                "splitId": 522,
+                "name": "VS. NYK"
+            }, {
+                "splitId": 523,
+                "name": "VS. BOS"
+            }, {
+                "splitId": 524,
+                "name": "VS. PRO"
+            }, {
+                "splitId": 525,
+                "name": "VS. RAC"
+            }, {
+                "splitId": 526,
+                "name": "VS. ROC"
+            }, {
+                "splitId": 527,
+                "name": "VS. ROI"
+            }, {
+                "splitId": 528,
+                "name": "VS. STI"
+            }, {
+                "splitId": 529,
+                "name": "VS. CHP"
+            }, {
+                "splitId": 530,
+                "name": "VS. TOL"
+            }, {
+                "splitId": 531,
+                "name": "VS. PHP"
+            }, {
+                "splitId": 532,
+                "name": "VS. CIC"
+            }, {
+                "splitId": 533,
+                "name": "VS. CLT"
+            }, {
+                "splitId": 534,
+                "name": "VS. DEH"
+            }, {
+                "splitId": 535,
+                "name": "VS. EVN"
+            }, {
+                "splitId": 536,
+                "name": "VS. HAR"
+            }, {
+                "splitId": 537,
+                "name": "VS. KCC"
+            }, {
+                "splitId": 538,
+                "name": "VS. KEN"
+            }, {
+                "splitId": 539,
+                "name": "VS. LAB"
+            }, {
+                "splitId": 540,
+                "name": "VS. MUN"
+            }, {
+                "splitId": 541,
+                "name": "VS. NYB"
+            }, {
+                "splitId": 542,
+                "name": "VS. SAS"
+            }, {
+                "splitId": 543,
+                "name": "VS. TON"
+            }, {
+                "splitId": 544,
+                "name": "VS. WSH"
+            }, {
+                "splitId": 545,
+                "name": "VS. BLT"
+            }, {
+                "splitId": 546,
+                "name": "VS. BST"
+            }, {
+                "splitId": 547,
+                "name": "VS. DLS"
+            }, {
+                "splitId": 548,
+                "name": "VS. OOR"
+            }, {
+                "splitId": 549,
+                "name": "VS. STG"
+            }, {
+                "splitId": 602,
+                "name": "University of Denver Stadium"
+            }, {
+                "splitId": 603,
+                "name": "U.S. Bank Stadium"
+            }, {
+                "splitId": 604,
+                "name": "Twickenham Stadium"
+            }, {
+                "splitId": 605,
+                "name": "Camping World Stadium"
+            }, {
+                "splitId": 606,
+                "name": "\nGuaranteed Rate Field"
+            }, {
+                "splitId": 607,
+                "name": "StubHub Center"
+            }, {
+                "splitId": 608,
+                "name": "Mercedes-Benz Stadium"
+            }]
+        }
+    }]
+}

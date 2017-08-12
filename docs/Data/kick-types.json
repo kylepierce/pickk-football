@@ -1,0 +1,91 @@
+{
+    "status": "OK",
+    "recordCount": 27,
+    "startTimestamp": "2017-08-01T19:51:46.773059Z",
+    "endTimestamp": "2017-08-01T19:51:46.7935676Z",
+    "timeTaken": 0.0205086,
+    "apiResults": {
+        "kickTypes": [{
+            "kickTypeId": 1,
+            "name": "Short"
+        }, {
+            "kickTypeId": 2,
+            "name": "WR-Wide Right"
+        }, {
+            "kickTypeId": 3,
+            "name": "WL-Wide Left"
+        }, {
+            "kickTypeId": 4,
+            "name": "Wide"
+        }, {
+            "kickTypeId": 5,
+            "name": "Shanked"
+        }, {
+            "kickTypeId": 6,
+            "name": "OOB-Out of Bounds"
+        }, {
+            "kickTypeId": 7,
+            "name": "Snap Bad"
+        }, {
+            "kickTypeId": 8,
+            "name": "Hold Bad"
+        }, {
+            "kickTypeId": 9,
+            "name": "Touchback"
+        }, {
+            "kickTypeId": 10,
+            "name": "FC-Fair Catch"
+        }, {
+            "kickTypeId": 11,
+            "name": "Downed"
+        }, {
+            "kickTypeId": 12,
+            "name": "Return Fumbled"
+        }, {
+            "kickTypeId": 13,
+            "name": "Blocked"
+        }, {
+            "kickTypeId": 14,
+            "name": "NO-No Data"
+        }, {
+            "kickTypeId": 15,
+            "name": "Muffed"
+        }, {
+            "kickTypeId": 16,
+            "name": "Onside"
+        }, {
+            "kickTypeId": 17,
+            "name": "Penalty nullified"
+        }, {
+            "kickTypeId": 18,
+            "name": "XX"
+        }, {
+            "kickTypeId": 19,
+            "name": "XX"
+        }, {
+            "kickTypeId": 20,
+            "name": "XX"
+        }, {
+            "kickTypeId": 21,
+            "name": "XX"
+        }, {
+            "kickTypeId": 22,
+            "name": "Hit Crossbar"
+        }, {
+            "kickTypeId": 23,
+            "name": "No Attempt"
+        }, {
+            "kickTypeId": 24,
+            "name": "Rolled Dead"
+        }, {
+            "kickTypeId": 25,
+            "name": "Hit Left Upright"
+        }, {
+            "kickTypeId": 26,
+            "name": "Hit Right Upright"
+        }, {
+            "kickTypeId": 27,
+            "name": "Didn't try to advance"
+        }]
+    }
+}
