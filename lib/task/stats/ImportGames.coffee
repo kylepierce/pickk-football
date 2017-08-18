@@ -3,7 +3,6 @@ Match = require "mtr-match"
 Promise = require "bluebird"
 Task = require "../Task"
 Game = require "../../model/Game"
-UpdateTeam = require "../../task/stats/UpdateTeam"
 dateFormat = require 'dateformat' #🚨
 
 module.exports = class extends Task
@@ -17,7 +16,6 @@ module.exports = class extends Task
     @api = @dependencies.stats
     @logger = @dependencies.logger
     @Games = @dependencies.mongodb.collection("games")
-    @updateTeam = new UpdateTeam dependencies
 
     @registerEvents ['upserted']
 

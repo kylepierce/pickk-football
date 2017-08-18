@@ -6,6 +6,7 @@ module.exports = class
     Match.check data, Object
 
     @que = data.que
+    @option = data.options
     @updatedAt = new Date()
 
   getSelector: ->

@@ -29,12 +29,8 @@ module.exports = class
   _request: (path, options = {}) ->
     Match.check path, String
 
-    # get the current time
     @timeFromEpoch = moment.utc().unix();
-
-    # generate signature
     @sig = crypto.createHash('sha256').update(@key + @secret + @timeFromEpoch).digest('hex');
-
     uri = @host + path + "/?api_key=" + @key + "&sig=" + @sig
 
     _.defaults options,
@@ -76,16 +72,16 @@ module.exports = class
     path = "events/#{gameId}?pbp=true&accept=#{format}"
     @_nflRequest path
 
-  getTeamProfile: (teamId, format = "json") ->
-    Match.check teamId, Number
-    Match.check format, formatPattern
-
-    path = "teams/#{teamId}"
-    @_nflRequest path
-
-  getTeamPlayers: (teamId, format = "json") ->
-    Match.check teamId, Number
-    Match.check format, formatPattern
-
-    path = "participants/teams/#{teamId}"
-    @_nflRequest path
+  # getTeamProfile: (teamId, format = "json") ->
+  #   Match.check teamId, Number
+  #   Match.check format, formatPattern
+  #
+  #   path = "teams/#{teamId}"
+  #   @_nflRequest path
+  #
+  # getTeamPlayers: (teamId, format = "json") ->
+  #   Match.check teamId, Number
+  #   Match.check format, formatPattern
+  #
+  #   path = "participants/teams/#{teamId}"
+  #   @_nflRequest path

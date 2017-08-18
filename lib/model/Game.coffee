@@ -22,7 +22,7 @@ module.exports = class
         abbr: away.abbreviation
         runs: away.score
 
-    @id =  @['eventId']
+    @id = @['eventId']
     @commercial = false
     @home = home
     @home_team = home.teamId

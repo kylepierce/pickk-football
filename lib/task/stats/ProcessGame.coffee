@@ -20,6 +20,7 @@ module.exports = class extends Task
 
     @logger = @dependencies.logger
     @Games = dependencies.mongodb.collection("games")
+    @Multipliers = dependencies.mongodb.collection("multipliers")
     @Questions = dependencies.mongodb.collection("questions")
     @Answers = dependencies.mongodb.collection("answers")
     @GamePlayed = dependencies.mongodb.collection("gamePlayed")
@@ -29,55 +30,225 @@ module.exports = class extends Task
     @endOfGame = new EndOfGame dependencies
 
   execute: (old, update) ->
-    result = @gameParser.getPlay update
+    if old.pbp
+      oldPlays =  old.pbp.length
+      newPlays = update.pbp.length
+    if @isNewPlay newPlays, oldPlays
+      previousPlay = (_.last update.pbp)
+      previousPlayDetails = @playDetails previousPlay
+      console.log "Previous:", previousPlayDetails
 
-    # if result
-    #   Promise.bind @
-    #     .then -> @checkGameStatus old, result
-    #     .then -> @updateOld old, result
-    #     .then -> @detectChange old, result
-    #     .then (parms) -> @generateQuestions parms
-    #     .return true
-    #     .catch (error) =>
-    #       @logger.error error.message, _.extend({stack: error.stack}, error.details)
+      Promise.bind @
+        .then -> @nextPlayDetails previousPlayDetails
+        .then (result) -> @createLiveQuestion update.eventId, result
 
-  updateOld: (old, update) ->
-    @Games.update {_id: old["_id"]}, {$set: update}
+  playDetails: (play) ->
+    details =
+      isFirstDown: @reachedFirstDown play.yards, play.distance
+      type: @lastPlayType play.playType.playTypeId
+      teamChange: @hasBallChangedTeams play.startPossession.teamId, play.endPossession.teamId
+      scoreType: @hasScoreChange play.awayScoreBefore, play.awayScoreAfter, play.homeScoreBefore, play.homeScoreAfter
+      location: @quantifyLocation play.endYardLine
+      down: play.down
+      distance: play.distance
+      yards: play.yards
+    return details
 
-  checkGameStatus: (old, update) ->
-    if !old['old']
-      console.log "[Global] No old????????"
-      @Games.update {_id: update.eventId}, {$set: update}
+  reachedFirstDown: (yards, distance) ->
+    if yards > distance
+      return true
+    else
+      return false
 
-    else if !update
-      console.log "[Global] No update????????"
-      return
-
-    else if update['eventStatus']['eventStatusId'] isnt 2
-      console.log "Something is wrong. Shutting this whole thing down..."
-      return
-
-  detectChange: (old, result) ->
-    ignoreList =  [35, 42, 89, 96, 97, 98]
-
-
-    diff = []
-    list = ["strikes", "balls", "outs", "currentBatter", "eventStatusId", "innings", "inningDivision", "runnersOnBase"]
-
-    _.map list, (key) ->
-      compare = _.isEqual parms.oldStuff[key], parms.newStuff[key]
-      if not compare
-        diff.push key
-
-    parms.eventCount = result['old']["eventCount"]
-    parms.eventId = result['old']['eventId']
-    parms.diff = diff
-    # parms.nextPlayer = if parms.inningDivision is "Top" then result['away']['liveState']['nextUpBatters'][0] else result['home']['liveState']['nextUpBatters'][0]
-    # Strange it throws an error if there isnt a player. Seems when the switch its blank for 5 seconds.
-    # if parms['newPlayer'] then parms.atBatId = parms.gameId + "-" + parms.inning + "-" + parms.eventCount + "-" + parms['newPlayer']['playerId']
-    # parms.pitchDiff = parms.newPitch - parms.oldPitch
-
-    return parms
-
-  generateQuestions: (parms) ->
+  nextPlayDetails: (previous) ->
     Promise.bind @
+      .then -> @nextPlayType previous
+      .then (result) -> @getDownAndDistance result, previous
+      .then (result) -> return result # down, area, yards, style
+
+  isNewPlay: (newLength, oldLength) ->
+    if newLength > oldLength
+      return true
+
+  nextPlayType: (previous) ->
+    switchTeams = ["kickoff", "punt", "turnover", "turnover on downs"]
+    kickoffType = ["pat", "field goal"]
+    switchT = switchTeams.indexOf(previous.type)
+    kickoffT = kickoffType.indexOf(previous.type)
+    console.log switchT, kickoffT
+    if switchT > 0
+      nextPlayType = "First Down"
+    else if previous.isFirstDown
+      nextPlayType = "First Down"
+    else if kickoffT > 0
+      nextPlayType = "Kickoff"
+    else
+      nextPlayType = "Normal"
+    return nextPlayType
+
+  hasBallChangedTeams: (startTeam, endTeam) ->
+    if startTeam isnt endTeam
+      return true
+    else
+      return false
+
+  getDownAndDistance: (nextPlayType, previous) ->
+    if nextPlayType is "Kickoff"
+      down = 6
+      area = 2
+      yards = 1
+      style = 2
+      distance = null
+    else if nextPlayType is "First Down"
+      down = 1
+      distance = 10
+      yards = 3
+      area = 3
+      style = 2
+    else
+      down = parseInt(previous.down) + 1
+      distance = previous.distance - previous.yards
+      yards = 3
+      area = 3
+      style =2
+
+    multiplierArguments =
+      nextPlayType: nextPlayType
+      down: down
+      distance: distance
+      yards: yards
+      area: area
+      style: style
+
+    return multiplierArguments
+
+  hasScoreChange: (awayScoreBefore, awayScoreAfter, homeScoreBefore, homeScoreAfter) ->
+    awayScoreChange = @teamScore awayScoreAfter, awayScoreBefore
+    homeScoreChange = @teamScore homeScoreAfter, homeScoreBefore
+    if awayScoreChange
+      score = awayScoreChange
+    else if homeScoreChange
+      score = homeScoreChange
+    else
+      score = false
+    return score
+
+  quantifyLocation: (location) ->
+    return location
+
+  downGrammer: (down) ->
+    switch down
+      when 1
+        return "1st"
+      when 2
+        return "2nd"
+      when 3
+        return "3rd"
+      when 4
+        return "4th"
+
+  lastPlayType: (playTypeId) ->
+    playType = [
+      title: "Pass",
+      outcomes: [1, 2, 9, 19, 23]
+    ,
+      title: "Run",
+      outcomes: [3, 4]
+    ,
+      title: "Fumble",
+      outcomes: [14, 15, 16]
+    ,
+      title: "Turnover",
+      outcomes: [9, 19, 16]
+    ,
+      title: "Timeout",
+      outcomes: [13, 29, 57, 58]
+    ,
+      title: "Punt",
+      outcomes: [7, 8]
+    ,
+      title: "Kickoff",
+      outcomes: [5, 6]
+    ,
+      title: "Penalty",
+      outcomes: [10, 11] # 10 is against offense -- 11 is against defense
+    ,
+      title: "Field Goal",
+      outcomes: [17, 42]
+    ,
+      title: "Turnover on Downs",
+      outcomes: [18, 35, 36]
+    ]
+
+    for item in playType
+      if (item['outcomes'].indexOf playTypeId) > -1
+        type = item['title']
+        return type
+
+  teamScore: (after, before) ->
+    if after > before
+      if after - before is 1
+        return "PAT"
+      if after - before is 2
+        return "Safety"
+      if after - before is 3
+        return "Field Goal"
+      if after - before is 6
+        return "Touchdown"
+    else
+      return false
+
+  createLiveQuestion: (eventId, details) ->
+    if details.nextPlayType isnt "Normal" && details.nextPlayType isnt "First Down"
+      que = details.nextPlayType
+    else
+      downGrammer = @downGrammer details.down
+      que =  downGrammer + " & " + details.distance
+
+    @logger.verbose details, "Que:", que
+
+    Promise.bind @
+      .then ->
+        @Multipliers.find {
+          "down": details.down,
+          "area": details.area,
+          "yards": details.yards,
+          "style": 2
+        }
+      .then (result) -> @parseOptions result[0].options
+      .then (result) -> @insertLiveQuestion eventId, que, result
+
+  parseOptions: (options) ->
+    _.mapObject options, (option, key) ->
+      if _.isEmpty option
+        delete options[key]
+        return false
+
+      max = option.high
+      min = option.low
+      multi = (Math.random() * (max-min) + min).toFixed(1)
+      option.multiplier = parseFloat(multi)
+
+    return options
+
+  insertLiveQuestion: (eventId, que, options) ->
+    Promise.bind @
+      .then ->@Games.find {eventId: eventId}
+      .then (result) ->
+        @Questions.insert
+          _id: @Questions.db.ObjectId().toString()
+          dateCreated: new Date()
+          gameId: result[0]._id
+          period: result[0].period
+          type: "play"
+          active: true
+          commercial: false
+          que: que
+          options: options
+          usersAnswered: []
+
+  # Promise.bind @
+  #   .then (parms) ->
+  #   .return true
+  #   .catch (error) =>
+  #     @logger.error error.message, _.extend({stack: error.stack}, error.details)
