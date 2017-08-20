@@ -129,6 +129,19 @@ module.exports = class extends Task
       score = false
     return score
 
+  teamScore: (after, before) ->
+    if after > before
+      if after - before is 1
+        return "PAT"
+      if after - before is 2
+        return "Safety"
+      if after - before is 3
+        return "Field Goal"
+      if after - before is 6
+        return "Touchdown"
+    else
+      return false
+
   distanceToGoal: (teamIdWithBall, location) ->
     # Use teamIdWithBall shortcode
     # See if they are on their side or the other teams
@@ -204,7 +217,7 @@ module.exports = class extends Task
       nextPlay =
         playType: "First Down"
         down: 1
-    return playType
+    return nextPlay
 
   getMultiplierArguments: (previous, nextPlay) ->
     # "down" : #, "area" : #, "yards" : #, "style" : #
@@ -215,76 +228,6 @@ module.exports = class extends Task
       style: 2 #Range 1-3 when complete
       playType: nextPlay.playType # String
     return multiplierArguments
-
-  downGrammer: (down) ->
-    switch down
-      when 1
-        return "1st"
-      when 2
-        return "2nd"
-      when 3
-        return "3rd"
-      when 4
-        return "4th"
-
-  teamScore: (after, before) ->
-    if after > before
-      if after - before is 1
-        return "PAT"
-      if after - before is 2
-        return "Safety"
-      if after - before is 3
-        return "Field Goal"
-      if after - before is 6
-        return "Touchdown"
-    else
-      return false
-
-  createPlayQuestion: (eventId, details, multiplierArguments) ->
-    Promise.bind @
-      .then -> @Multipliers.find {multiplierArguments}
-      .then (result) -> @parseOptions result[0].options
-      .then (options) -> @insertPlayQuestion eventId, details, multiplierArguments, options
-
-  generateQuestionTitle: (details) ->
-    if details.
-    if details.playType isnt "Normal" && details.playType isnt "First Down"
-      que = details.playType
-    else
-      downGrammer = @downGrammer details.down
-      que =  downGrammer + " & " + details.distance
-
-  parseOptions: (options) ->
-    _.mapObject options, (option, key) ->
-      if _.isEmpty option
-        delete options[key]
-        return false
-
-      max = option.high
-      min = option.low
-      multi = (Math.random() * (max-min) + min).toFixed(1)
-      option.multiplier = parseFloat(multi)
-
-    return options
-
-  insertPlayQuestion: (eventId, details, multiplierArguments, options) ->
-    Promise.bind @
-      .then ->@Games.find {eventId: eventId}
-      .then (result) ->
-        @Questions.insert
-          _id: @Questions.db.ObjectId().toString()
-          dateCreated: new Date()
-          gameId: result[0]._id
-          period: result[0].period
-          playId:  details.playId
-          details:  multiplierArguments
-          extendedDetails: details
-          type: "play"
-          active: true
-          commercial: false
-          que: @generateQuestionTitle details
-          options: options
-          usersAnswered: []
 
   closeInactiveQuestions: (eventId) ->
     Promise.bind @
@@ -305,16 +248,29 @@ module.exports = class extends Task
       .then (game) -> @getPlays game[0]
       .then (list) -> @getPlayResult list, question.playId
 
+  getPlays: (game) ->
+    Promise.bind @
+      .then -> _.flatten game.pbp, 'playId'
+      .then (list) -> _.filter list, @ignoreList play
+
+  ignoreList: (single) ->
+    list = [10, 11, 13, 29, 57, 58]
+    if (list.indexOf(single) is -1)
+      return true
+
+  getPlayResult: (list, playId) ->
+    # The playId comes from the play that happened before the question was created.
+    # Unfortunately there is not other way to associate that I am aware of.
+    Promise.bind @
+      # Find the index of previous play in pbp array
+      .then -> _.indexOf(list, playId)
+      # Then find the next item in the pbp array. Which should be this question's result.
+      .then (index) -> list[index + 1]
+
   getCorrectOptionNumber: (question, result) ->
     Promise.bind @
       .then (result) -> @getPlayOptionTitle question, result
       .then (optionTitle) -> @getPlayOptionNumber question, optionTitle
-
-  updateQuestionAndAnswers: (questionId, outcome) ->
-    Promise.bind @
-      .then -> @Questions.update {_id: questionId}, $set: {active: false, outcome: outcome, lastUpdated: new Date()} # Close and add outcome string
-      .then -> @Answers.update {questionId: questionId, answered: {$ne: outcome}}, {$set: {outcome: "lose"}}, {multi: true} # Losers
-      .then -> @Answers.find {questionId: questionId, answered: outcome} # Find the winners
 
   getPlayOptionTitle: (question, result) ->
     # details =
@@ -425,28 +381,11 @@ module.exports = class extends Task
       # .then (options) -> options[outcome]
       # .then (result) -> console.log result
 
-  getPlayResult: (list, playId) ->
-    # The playId comes from the play that happened before the question was created.
-    # Unfortunately there is not other way to associate that I am aware of.
+  updateQuestionAndAnswers: (questionId, outcome) ->
     Promise.bind @
-      # Find the index of previous play in pbp array
-      .then -> _.indexOf(list, playId)
-      # Then find the next item in the pbp array. Which should be this question's result.
-      .then (index) -> list[index + 1]
-
-  getGame: (gameId) ->
-    Promise.bind @
-      .then -> @Games.find {_id: gameId}
-
-  getPlays: (game) ->
-    Promise.bind @
-      .then -> _.flatten game.pbp, 'playId'
-      .then (list) -> _.filter list, @ignoreList play
-
-  ignoreList: (single) ->
-    list = [10, 11, 13, 29, 57, 58]
-    if (list.indexOf(single) is -1)
-      return true
+      .then -> @Questions.update {_id: questionId}, $set: {active: false, outcome: outcome, lastUpdated: new Date()} # Close and add outcome string
+      .then -> @Answers.update {questionId: questionId, answered: {$ne: outcome}}, {$set: {outcome: "lose"}}, {multi: true} # Losers
+      .then -> @Answers.find {questionId: questionId, answered: outcome} # Find the winners
 
   awardUsers: (answer, outcomeOption) ->
     reward = Math.floor answer['wager'] * answer['multiplier']
@@ -467,3 +406,64 @@ module.exports = class extends Task
           message: "Nice Pickk! You got #{reward} Coins!"
           sharable: false
           shareMessage: ""
+
+  createPlayQuestion: (eventId, details, multiplierArguments) ->
+    Promise.bind @
+      .then -> @Multipliers.find {multiplierArguments}
+      .then (result) -> @parseOptions result[0].options
+      .then (options) -> @insertPlayQuestion eventId, details, multiplierArguments, options
+
+  parseOptions: (options) ->
+    _.mapObject options, (option, key) ->
+      if _.isEmpty option
+        delete options[key]
+        return false
+
+      max = option.high
+      min = option.low
+      multi = (Math.random() * (max-min) + min).toFixed(1)
+      option.multiplier = parseFloat(multi)
+
+    return options
+
+  insertPlayQuestion: (eventId, details, multiplierArguments, options) ->
+    Promise.bind @
+      .then ->@Games.find {eventId: eventId}
+      .then (result) ->
+        @Questions.insert
+          _id: @Questions.db.ObjectId().toString()
+          dateCreated: new Date()
+          gameId: result[0]._id
+          period: result[0].period
+          playId:  details.playId
+          details:  multiplierArguments
+          extendedDetails: details
+          type: "play"
+          active: true
+          commercial: false
+          que: @generateQuestionTitle details
+          options: options
+          usersAnswered: []
+
+  generateQuestionTitle: (details) ->
+    if details.
+    if details.playType isnt "Normal" && details.playType isnt "First Down"
+      que = details.playType
+    else
+      downGrammer = @downGrammer details.down
+      que =  downGrammer + " & " + details.distance
+
+  downGrammer: (down) ->
+    switch down
+      when 1
+        return "1st"
+      when 2
+        return "2nd"
+      when 3
+        return "3rd"
+      when 4
+        return "4th"
+
+  getGame: (gameId) ->
+    Promise.bind @
+      .then -> @Games.find {_id: gameId}
