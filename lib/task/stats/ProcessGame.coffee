@@ -49,8 +49,9 @@ module.exports = class extends Task
       type: @findPlayType play.playType.playTypeId
       teamChange: @hasBallChangedTeams play.startPossession.teamId, play.endPossession.teamId
       scoreType: @hasScoreChange play.awayScoreBefore, play.awayScoreAfter, play.homeScoreBefore, play.homeScoreAfter
-      distanceToGoal:
+      distanceToGoal: @distanceToGoal play.startPossession.teamId, play.endYardLine
       location: @quantifyLocation play.startPossession.teamId, play.endYardLine
+      isInRedZone: @isRedZone play.startPossession.teamId, play.endYardLine, play.distance
       down: play.down
       distance: play.distance
       yards: play.yards
@@ -397,8 +398,10 @@ module.exports = class extends Task
       if scoreType
         # "Touchdown"
 
-  isRedZone: () ->
-    # distance equals current location
+  isRedZone: (teamIdWithBall, location, yards) ->
+    distance = @distanceToGoal teamIdWithBall, location
+    if distance > 20
+      return true
 
   getCorrectOption: (question, outcome) ->
     Promise.bind @
