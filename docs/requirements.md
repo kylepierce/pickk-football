@@ -1,7 +1,7 @@
 #Requirements
 
 ### Last Updated:
-10 August 2017
+20 August 2017
 
 ## Functional Requirements
 
@@ -31,31 +31,17 @@ Extension: No live game
 ### Process Live Game
 Primary Actor: STATS
 Secondary Actor: MongoDb
-Status: Working - Double Check
+Status: Done
 
 Scenario:
 1. Format STATS data it to make it easier to process
 2. If there is new data find what changed
 
-### Create Pre Game questions
-Primary Actor: STATS
-Secondary Actor: MongoDb, Notifications
-Status: Not Started
-
-Scenario:
-1. 2 Hours before scheduled time
-2. Create 1st quarter initial questions
-3. Notify registered users
-4. Update game that questions were made dont need to create them
-
-Extension: Game questions were not created 2 hours ahead.
-1. If the game is not active
-2. Run the function again
-
 ### Create Drive Question
 Primary Actor: STATS
 Secondary Actor: MongoDb
 Status: Not Started
+Priority: Next
 
 Scenario:
 1. Get relevant data
@@ -67,7 +53,7 @@ Scenario:
 ### Create a Play Question
 Primary Actor: STATS
 Secondary Actor: MongoDb
-Status: Basic Working
+Status: Pending
 
 Scenario:
 1. Get relevant data
@@ -86,6 +72,7 @@ Extension: Close to the end of the game
 Primary Actor: STATS
 Secondary Actor: MongoDb
 Status: Not Started
+Priority: Next
 
 Scenario:
 1. An precursor event happened (punt, touchdown scored, field goal scored)
@@ -101,6 +88,7 @@ Extension: Game play continues
 Primary Actor: STATS
 Secondary Actor: MongoDb
 Status: Not Started
+Priority: Next
 
 Scenario:
 1. Game is in a commercial break
@@ -113,7 +101,7 @@ Extension: End of quarter/half
 ### Answer Question
 Primary Actor: STATS
 Secondary Actor: MongoDb, Player
-Status: Basic Working
+Status: Pending
 
 Scenario:
 1. Get the play result
@@ -128,7 +116,7 @@ Extension: No matching option
 ### Award Correct Users
 Primary Actor: STATS
 Secondary Actor: MongoDb, Player
-Status: Basic Working
+Status: Pending
 
 Scenario:
 1. Get single answer for player
@@ -162,6 +150,21 @@ Status: Not Started
 Scenario:
 1. Create questions
 2. Toggle commercial
+
+### Create Pre Game questions
+Primary Actor: STATS
+Secondary Actor: MongoDb, Notifications
+Status: Not Started
+
+Scenario:
+1. 2 Hours before scheduled time
+2. Create 1st quarter initial questions
+3. Notify registered users
+4. Update game that questions were made dont need to create them
+
+Extension: Game questions were not created 2 hours ahead.
+1. If the game is not active
+2. Run the function again
 
 ====
 
