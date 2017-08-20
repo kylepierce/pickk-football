@@ -8,6 +8,7 @@
 ### Insert Game
 Primary Actor: Application
 Secondary Actor: MongoDb, STATS
+Status: Done
 
 Scenario:
 1. System requests today's games
@@ -17,6 +18,7 @@ Scenario:
 ###  Find active games
 Primary Actor: Application
 Secondary Actor: MongoDb, STATS
+Status: Done
 
 Scenario:
 1. System requests all active games
@@ -29,6 +31,7 @@ Extension: No live game
 ### Process Live Game
 Primary Actor: STATS
 Secondary Actor: MongoDb
+Status: Working - Double Check
 
 Scenario:
 1. Format STATS data it to make it easier to process
@@ -37,6 +40,7 @@ Scenario:
 ### Create Pre Game questions
 Primary Actor: STATS
 Secondary Actor: MongoDb, Notifications
+Status: Not Started
 
 Scenario:
 1. 2 Hours before scheduled time
@@ -51,6 +55,7 @@ Extension: Game questions were not created 2 hours ahead.
 ### Create Drive Question
 Primary Actor: STATS
 Secondary Actor: MongoDb
+Status: Not Started
 
 Scenario:
 1. Get relevant data
@@ -62,12 +67,13 @@ Scenario:
 ### Create a Play Question
 Primary Actor: STATS
 Secondary Actor: MongoDb
+Status: Basic Working
 
 Scenario:
 1. Get relevant data
 2. Get game split
 3. Down and distance as the question title
-4. Use relevant data to generate multipliers 
+4. Use relevant data to generate multipliers
 5. Take data, multipliers, and title to create a question
 
 Extension: End of a drive/quarter/half
@@ -79,6 +85,7 @@ Extension: Close to the end of the game
 ### Commercial break
 Primary Actor: STATS
 Secondary Actor: MongoDb
+Status: Not Started
 
 Scenario:
 1. An precursor event happened (punt, touchdown scored, field goal scored)
@@ -93,6 +100,7 @@ Extension: Game play continues
 ### Create commercial question
 Primary Actor: STATS
 Secondary Actor: MongoDb
+Status: Not Started
 
 Scenario:
 1. Game is in a commercial break
@@ -105,9 +113,10 @@ Extension: End of quarter/half
 ### Answer Question
 Primary Actor: STATS
 Secondary Actor: MongoDb, Player
+Status: Basic Working
 
 Scenario:
-1. Get the correct answer
+1. Get the play result
 2. Close question
 3. Find which option correlates with answer
 4. Update answers who were incorrect
@@ -119,6 +128,7 @@ Extension: No matching option
 ### Award Correct Users
 Primary Actor: STATS
 Secondary Actor: MongoDb, Player
+Status: Basic Working
 
 Scenario:
 1. Get single answer for player
@@ -128,6 +138,7 @@ Scenario:
 ### Close Quarter
 Primary Actor: STATS
 Secondary Actor: MongoDb, Player, Notifications
+Status: Not Started
 
 Scenario:
 1. Game quarter ends
@@ -146,6 +157,7 @@ Extension: If a drive question is still active
 ### Create Quarter Questions
 Primary: STATS
 Secondary Actor: MongoDb
+Status: Not Started
 
 Scenario:
 1. Create questions
