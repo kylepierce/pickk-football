@@ -36,19 +36,21 @@ module.exports = class extends Task
     if @isNewPlay newPlays, oldPlays
       previousPlay = (_.last update.pbp)
       previousPlayDetails = @playDetails previousPlay
-      console.log "Previous:", previousPlayDetails
 
       Promise.bind @
+        .then -> @closeInactiveQuestions update.id, previousPlayDetails
         .then -> @nextPlayDetails previousPlayDetails
         .then (result) -> @createLiveQuestion update.eventId, result
 
   playDetails: (play) ->
     details =
+      playId: play.playId
       isFirstDown: @reachedFirstDown play.yards, play.distance
-      type: @lastPlayType play.playType.playTypeId
+      type: @findPlayType play.playType.playTypeId
       teamChange: @hasBallChangedTeams play.startPossession.teamId, play.endPossession.teamId
       scoreType: @hasScoreChange play.awayScoreBefore, play.awayScoreAfter, play.homeScoreBefore, play.homeScoreAfter
-      location: @quantifyLocation play.endYardLine
+      distanceToGoal:
+      location: @quantifyLocation play.startPossession.teamId, play.endYardLine
       down: play.down
       distance: play.distance
       yards: play.yards
@@ -71,11 +73,10 @@ module.exports = class extends Task
       return true
 
   nextPlayType: (previous) ->
-    switchTeams = ["kickoff", "punt", "turnover", "turnover on downs"]
-    kickoffType = ["pat", "field goal"]
+    switchTeams = ["Kickoff", "Punt", "Turnover", "Turnover on Downs"]
+    kickoffType = ["Pat", "Field goal"]
     switchT = switchTeams.indexOf(previous.type)
     kickoffT = kickoffType.indexOf(previous.type)
-    console.log switchT, kickoffT
     if switchT > 0
       nextPlayType = "First Down"
     else if previous.isFirstDown
@@ -114,6 +115,7 @@ module.exports = class extends Task
 
     multiplierArguments =
       nextPlayType: nextPlayType
+      playId: previous.playId
       down: down
       distance: distance
       yards: yards
@@ -133,8 +135,26 @@ module.exports = class extends Task
       score = false
     return score
 
-  quantifyLocation: (location) ->
+  quantifyLocation: (teamIdWithBall, location) ->
+    distance = @distanceToGoal teamIdWithBall, location
+    # 1 0-10
+    # 2 11-30
+    # 3 30-60
+    # 4 60-80
+    # 5 80-90
+    # 6 90-100
     return location
+
+  distanceToGoal: (teamIdWithBall, location) ->
+    # Use teamIdWithBall shortcode
+    # See if they are on their side or the other teams
+    # Example: TeamA is going to TeamB's 0 yard line. Or TMB0
+    # if on the their side add 50 yards
+    # TMA21 is 71 yards away
+    # value = 71
+    # if on their opponents side its the number
+    # TMB32 is 32 yards from goal
+    # value is 32
 
   downGrammer: (down) ->
     switch down
@@ -147,7 +167,7 @@ module.exports = class extends Task
       when 4
         return "4th"
 
-  lastPlayType: (playTypeId) ->
+  findPlayType: (playTypeId) ->
     playType = [
       title: "Pass",
       outcomes: [1, 2, 9, 19, 23]
@@ -205,8 +225,6 @@ module.exports = class extends Task
       downGrammer = @downGrammer details.down
       que =  downGrammer + " & " + details.distance
 
-    @logger.verbose details, "Que:", que
-
     Promise.bind @
       .then ->
         @Multipliers.find {
@@ -216,7 +234,7 @@ module.exports = class extends Task
           "style": 2
         }
       .then (result) -> @parseOptions result[0].options
-      .then (result) -> @insertLiveQuestion eventId, que, result
+      .then (result) -> @insertLiveQuestion eventId, que, result, details
 
   parseOptions: (options) ->
     _.mapObject options, (option, key) ->
@@ -231,7 +249,7 @@ module.exports = class extends Task
 
     return options
 
-  insertLiveQuestion: (eventId, que, options) ->
+  insertLiveQuestion: (eventId, que, options, details) ->
     Promise.bind @
       .then ->@Games.find {eventId: eventId}
       .then (result) ->
@@ -240,6 +258,7 @@ module.exports = class extends Task
           dateCreated: new Date()
           gameId: result[0]._id
           period: result[0].period
+          playId: details.playId
           type: "play"
           active: true
           commercial: false
@@ -247,8 +266,196 @@ module.exports = class extends Task
           options: options
           usersAnswered: []
 
-  # Promise.bind @
-  #   .then (parms) ->
-  #   .return true
-  #   .catch (error) =>
-  #     @logger.error error.message, _.extend({stack: error.stack}, error.details)
+  closeInactiveQuestions: (eventId) ->
+    Promise.bind @
+      .then -> @Games.find({id: eventId})
+      .then (game) -> @Questions.find({gameId: game[0]._id, type: "play", active: true});
+      .map (questions) -> @closeQuestion questions
+
+  closeQuestion: (question) ->
+    Promise.bind @
+      .then -> @findPlayResult question
+      .then (result) -> processQuestion question, result
+      # .then (optionNumber) -> @updateQuestion question._id, optionNumber
+
+  findPlayResult: (question) ->
+    Promise.bind @
+      .then -> @findGame question.gameId
+      .then (game) -> @findPlay game[0], question.playId
+
+  processQuestion: (question, result) ->
+    Promise.bind @
+      .then (result) -> @findPlayStyle question, result
+      # Return the title
+      .then (playType) -> @getCorrectOption question, outcome
+      # Return the option number
+
+  updateQuestion: (questionId, outcome) ->
+    Promise.bind @
+      .then -> @Questions.update {_id: questionId}, $set: {active: false, outcome: outcome, lastUpdated: new Date()} # Close and add outcome string
+      .then -> @Answers.update {questionId: questionId, answered: {$ne: outcome}}, {$set: {outcome: "lose"}}, {multi: true} # Losers
+      .then -> @Answers.find {questionId: questionId, answered: outcome} # Find the winners
+      .map (answer) -> @awardUsers answer, outcome
+
+  findPlayStyle: (question, result) ->
+    playDetails = @playDetails result
+    # details =
+    #   playId:
+    #   isFirstDown:
+    #   type:
+    #   teamChange:
+    #   scoreType:
+    #   location:
+    #   down:
+    #   distance:
+    #   yards:
+    Promise.bind @
+      .then -> @kickoffQuestion question, result, playDetails
+      .then -> @pointAfterQuestion question, result, playDetails
+      .then -> @puntQuestion question, result, playDetails
+      .then -> @fieldGoalQuestion question, result, playDetails
+      .then -> @thirdDownQuestion question, result, playDetails
+      .then -> @normalQuestion question, result, playDetails
+      # Return the title of the play
+
+  kickoffQuestion: (question, result, playDetails) ->
+    list = [5, 6, 25, 41, 43]
+    if (list.indexOf(result.playType.playTypeId) > 0)
+      # if teamChange is false
+        # "Fumble",
+        # "Successful Onside",
+      # if scoreType
+        # "Touchdown"
+      # if no return
+        # "Touchback/No Return",
+      # if yards
+        # "Neg to 25 Yard Return",
+        # "26-45 Return",
+        # "26+ Return",
+        # "46+",
+        # "Failed Onside",
+
+  pointAfterQuestion: (question, result, playDetails) ->
+    list = [22, 47, 49, 53, 54, 55, 56]
+    if playDetails.scoreType is "PAT"
+    # "Kick Good!",
+    # "Fake Kick No Score",
+    # "Blocked Kick",
+    # "Missed Kick",
+    # "Two Point Good",
+    # "Two Point No Good"
+
+  puntQuestion: (question, result, playDetails) ->
+    list = [7, 8, 18, 24, 71]
+    # Punt - Return yards
+    # When play type is 7
+    # Down is 4
+    # When kickType exists
+    # "Fair Catch/No Return", - KickType: 6, 9, 10, 11, 24,
+    # "Neg to 20 Yard Return", "21-40 Yard Return", - result.distance
+    # "Blocked Punt", - KickType: 13
+    # "Fumble", - playTypeId: 14, KickType: 12
+    # "Touchdown" -
+
+  fieldGoalQuestion: (question, result, playDetails) ->
+    list = [17, 35, 36, 42, 50]
+    # Field goal - Successful?
+    if down is 4
+    # "Kick Good!",
+    # "Run",
+    # "Pass",
+    # "Fumble",
+    # "Missed Kick",
+    # "Blocked Kick"
+
+  thirdDownQuestion: (question, result, playDetails) ->
+    if result.down is 3
+      # if distance from endzone is less then 10
+      # else
+      if playDetails.isFirstDown
+        return "Convert to First Down"
+      if !playDetails.isFirstDown
+        return "Unable to Covert First Down",
+      if teamChange
+        # "Interception",
+        # "Fumble",
+        if scoreType
+          # "Pick Six",
+      if scoreType
+        # "Touchdown"
+
+  normalQuestion: (question, result, playDetails) ->
+    if result.down is 1 || result.down is 2
+      # if playTypeId is "Run",
+      # if playTypeId is "Pass",
+      if teamChange
+        # "Interception",
+        # "Fumble",
+        # "Turnover",
+        if scoreType
+          # "Pick Six",
+      if scoreType
+        # "Touchdown"
+
+  isRedZone: () ->
+    # distance equals current location
+
+  getCorrectOption: (question, outcome) ->
+    Promise.bind @
+      .then -> _.invert _.mapObject question['options'], (option) -> option['title']
+      .then (options) -> console.log "-------- \n", "Play Outcome:", options[outcome], "\n", outcome, "\n", options,
+      # .then (options) -> options[outcome]
+      # .then (result) -> console.log result
+
+  findPlay: (game, playId) ->
+    # The playId comes from the play that happened before the question was created.
+    # Unfortunately there is not other way to associate that I am aware of.
+    Promise.bind @
+      # Find the previous play index in pbp array
+      .then -> @specificEventIndex game, playId
+      # Then find the next item in the pbp array. Which should be this question's result.
+      .then (index) -> @specificEventResult game, index
+
+  specificEventIndex: (game, playId) ->
+    Promise.bind @
+      .then -> @getPlays game # Filter out plays that are not relevant.
+      .then (list) -> _.indexOf(list, playId)
+
+  specificEventResult: (game, index) ->
+    Promise.bind @
+      .then -> @getPlays game # Filter out plays that are not relevant.
+      .then (list) -> list[index + 1]
+
+  findGame: (gameId) ->
+    Promise.bind @
+      .then -> @Games.find {_id: gameId}
+
+  getPlays: (game) ->
+    Promise.bind @
+      .then -> _.flatten game.pbp, 'playId'
+      .then (list) -> _.filter list, @ignoreList
+
+  ignoreList: (single) ->
+    list = [10, 11, 13, 29, 57, 58]
+    if (list.indexOf(single) is -1)
+      return true
+
+  awardUsers: (answer, outcomeOption) ->
+    reward = Math.floor answer['wager'] * answer['multiplier']
+    Promise.bind @
+      .then -> @Answers.update {_id: answer._id}, {$set: {outcome: "win"}} #
+      .then -> @GamePlayed.update {userId: answer['userId'], gameId: answer.gameId}, {$inc: {coins: reward}}
+      .tap -> @logger.verbose "Awarding correct users!"
+      .then ->
+        @Notifications.insert
+          _id: @Notifications.db.ObjectId().toString()
+          dateCreated: new Date()
+          question: answer.questionId
+          userId: answer['userId']
+          gameId: answer.gameId
+          type: "coins"
+          value: reward
+          read: false
+          message: "Nice Pickk! You got #{reward} Coins!"
+          sharable: false
+          shareMessage: ""
