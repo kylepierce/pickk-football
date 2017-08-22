@@ -10,16 +10,16 @@ statsGame = require "../../../../lib/model/Game"
 UpdateNFL = require "../../../../lib/strategy/stats/UpdateNFL"
 
 
-# describe "Import brief information about games for date specified from stats to Mongo", ->
-#   dependencies = createDependencies settings, "PickkImport"
-#   mongodb = dependencies.mongodb
-#
-#   updateNFL = new UpdateNFL dependencies
-#   Games = mongodb.collection("games")
-#
-#   beforeEach ->
-#     Promise.bind @
-#     .then ->
-#       Promise.all [
-#         Games.remove()
-#       ]
+describe "Import brief information about games for date specified from stats to Mongo", ->
+  dependencies = createDependencies settings, "PickkImport"
+  mongodb = dependencies.mongodb
+
+  updateNFL = new UpdateNFL dependencies
+  Games = mongodb.collection("games")
+
+  beforeEach ->
+    Promise.bind @
+    .then ->
+      Promise.all [
+        Games.remove()
+      ]

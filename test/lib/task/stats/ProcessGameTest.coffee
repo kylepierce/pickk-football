@@ -7,84 +7,86 @@ ImportGames = require "../../../../lib/task/stats/ImportGames"
 loadFixtures = require "../../../../helper/loadFixtures"
 ProcessGame = require "../../../../lib/task/stats/ProcessGame"
 statsGame = require "../../../../lib/model/Game"
-TwoActiveGamesFixtures = require "#{process.env.ROOT_DIR}/test/fixtures/task/stats/processGame/collection/TwoActiveGames.json"
-QuestionsFixtures = require "#{process.env.ROOT_DIR}/test/fixtures/task/stats/processGame/collection/Questions.json"
-ActualQuestionsFixtures = require "#{process.env.ROOT_DIR}/test/fixtures/task/stats/processGame/collection/ActualQuestions.json"
-NonActualQuestionsFixtures = require "#{process.env.ROOT_DIR}/test/fixtures/task/stats/processGame/collection/NonActualQuestions.json"
-NonActualPitchQuestionsFixtures = require "#{process.env.ROOT_DIR}/test/fixtures/task/stats/processGame/collection/NonActualPitchQuestions.json"
-ClosedCommercialQuestionFixtures = require "#{process.env.ROOT_DIR}/test/fixtures/task/stats/processGame/collection/ClosedCommercialQuestion.json"
-ActiveCommercialQuestionFixtures = require "#{process.env.ROOT_DIR}/test/fixtures/task/stats/processGame/collection/ActiveCommercialQuestion.json"
+db = require 'mocha-mongodb'
+# TwoActiveGamesFixtures = require "#{process.env.ROOT_DIR}/test/fixtures/task/stats/processGame/collection/TwoActiveGames.json"
+# QuestionsFixtures = require "#{process.env.ROOT_DIR}/test/fixtures/task/stats/processGame/collection/Questions.json"
+# ActualQuestionsFixtures = require "#{process.env.ROOT_DIR}/test/fixtures/task/stats/processGame/collection/ActualQuestions.json"
+# NonActualQuestionsFixtures = require "#{process.env.ROOT_DIR}/test/fixtures/task/stats/processGame/collection/NonActualQuestions.json"
+# NonActualPitchQuestionsFixtures = require "#{process.env.ROOT_DIR}/test/fixtures/task/stats/processGame/collection/NonActualPitchQuestions.json"
+# ClosedCommercialQuestionFixtures = require "#{process.env.ROOT_DIR}/test/fixtures/task/stats/processGame/collection/ClosedCommercialQuestion.json"
+# ActiveCommercialQuestionFixtures = require "#{process.env.ROOT_DIR}/test/fixtures/task/stats/processGame/collection/ActiveCommercialQuestion.json"
 ActiveFullGameFixtures = require "#{process.env.ROOT_DIR}/test/fixtures/task/stats/processGame/collection/ActiveFullGame.json"
-ActiveFullGameWithLineUp = require "#{process.env.ROOT_DIR}/test/fixtures/task/stats/processGame/collection/ActiveFullGameWithLineUp.json"
-ActiveGameLineupInningOnly = require "#{process.env.ROOT_DIR}/test/fixtures/task/stats/processGame/collection/ActiveGameLineupInningOnly.json"
-ActiveGameNoInningsFixtures = require "#{process.env.ROOT_DIR}/test/fixtures/task/stats/processGame/collection/ActiveGameNoInnings.json"
-ActiveGameNoPlaysFixtures = require "#{process.env.ROOT_DIR}/test/fixtures/task/stats/processGame/collection/ActiveGameNoPlays.json"
-ActiveGameEndOfInningFixtures = require "#{process.env.ROOT_DIR}/test/fixtures/task/stats/processGame/collection/ActiveGameEndOfInning.json"
-ActiveGameEndOfHalfFixtures = require "#{process.env.ROOT_DIR}/test/fixtures/task/stats/processGame/collection/ActiveGameEndOfHalf.json"
-ActiveGameEndOfPlayFixtures = require "#{process.env.ROOT_DIR}/test/fixtures/task/stats/processGame/collection/ActiveGameEndOfPlay.json"
-ActiveGameMiddleOfPlayFixtures = require "#{process.env.ROOT_DIR}/test/fixtures/task/stats/processGame/collection/ActiveGameMiddleOfPlay.json"
-UnhandledFinishedGameFixtures = require "#{process.env.ROOT_DIR}/test/fixtures/task/stats/processGame/collection/UnhandledFinishedGame.json"
-GamePlayedFixtures = require "#{process.env.ROOT_DIR}/test/fixtures/task/stats/processGame/collection/GamePlayed.json"
-TeamsFixtures = require "#{process.env.ROOT_DIR}/test/fixtures/task/stats/processGame/collection/Teams.json"
-PlayersFixtures = require "#{process.env.ROOT_DIR}/test/fixtures/task/stats/processGame/collection/Players.json"
-AtBatsFixtures = require "#{process.env.ROOT_DIR}/test/fixtures/task/stats/processGame/collection/AtBats.json"
-ActiveAtBatFixtures = require "#{process.env.ROOT_DIR}/test/fixtures/task/stats/processGame/collection/ActiveAtBat.json"
-UsersFixtures = require "#{process.env.ROOT_DIR}/test/fixtures/task/stats/processGame/collection/Users.json"
-AnswersFixtures = require "#{process.env.ROOT_DIR}/test/fixtures/task/stats/processGame/collection/Answers.json"
-CommercialAnswersFixtures = require "#{process.env.ROOT_DIR}/test/fixtures/task/stats/processGame/collection/CommercialAnswers.json"
-WrongAnswersFixtures = require "#{process.env.ROOT_DIR}/test/fixtures/task/stats/processGame/collection/WrongAnswers.json"
+# ActiveFullGameWithLineUp = require "#{process.env.ROOT_DIR}/test/fixtures/task/stats/processGame/collection/ActiveFullGameWithLineUp.json"
+# ActiveGameLineupInningOnly = require "#{process.env.ROOT_DIR}/test/fixtures/task/stats/processGame/collection/ActiveGameLineupInningOnly.json"
+# ActiveGameNoInningsFixtures = require "#{process.env.ROOT_DIR}/test/fixtures/task/stats/processGame/collection/ActiveGameNoInnings.json"
+# ActiveGameNoPlaysFixtures = require "#{process.env.ROOT_DIR}/test/fixtures/task/stats/processGame/collection/ActiveGameNoPlays.json"
+# ActiveGameEndOfInningFixtures = require "#{process.env.ROOT_DIR}/test/fixtures/task/stats/processGame/collection/ActiveGameEndOfInning.json"
+# ActiveGameEndOfHalfFixtures = require "#{process.env.ROOT_DIR}/test/fixtures/task/stats/processGame/collection/ActiveGameEndOfHalf.json"
+# ActiveGameEndOfPlayFixtures = require "#{process.env.ROOT_DIR}/test/fixtures/task/stats/processGame/collection/ActiveGameEndOfPlay.json"
+# ActiveGameMiddleOfPlayFixtures = require "#{process.env.ROOT_DIR}/test/fixtures/task/stats/processGame/collection/ActiveGameMiddleOfPlay.json"
+# UnhandledFinishedGameFixtures = require "#{process.env.ROOT_DIR}/test/fixtures/task/stats/processGame/collection/UnhandledFinishedGame.json"
+# GamePlayedFixtures = require "#{process.env.ROOT_DIR}/test/fixtures/task/stats/processGame/collection/GamePlayed.json"
+# TeamsFixtures = require "#{process.env.ROOT_DIR}/test/fixtures/task/stats/processGame/collection/Teams.json"
+# PlayersFixtures = require "#{process.env.ROOT_DIR}/test/fixtures/task/stats/processGame/collection/Players.json"
+# AtBatsFixtures = require "#{process.env.ROOT_DIR}/test/fixtures/task/stats/processGame/collection/AtBats.json"
+# ActiveAtBatFixtures = require "#{process.env.ROOT_DIR}/test/fixtures/task/stats/processGame/collection/ActiveAtBat.json"
+# UsersFixtures = require "#{process.env.ROOT_DIR}/test/fixtures/task/stats/processGame/collection/Users.json"
+# AnswersFixtures = require "#{process.env.ROOT_DIR}/test/fixtures/task/stats/processGame/collection/Answers.json"
+# CommercialAnswersFixtures = require "#{process.env.ROOT_DIR}/test/fixtures/task/stats/processGame/collection/CommercialAnswers.json"
+# WrongAnswersFixtures = require "#{process.env.ROOT_DIR}/test/fixtures/task/stats/processGame/collection/WrongAnswers.json"
 
-# describe "Process imported games and question management", ->
-#   dependencies = createDependencies settings, "PickkImport"
-#   mongodb = dependencies.mongodb
-#
-#   processGame = undefined
-#
-#   Games = mongodb.collection("games")
-#   Teams = mongodb.collection("teams")
-#   Players = mongodb.collection("players")
-#   Questions = mongodb.collection("questions")
-#   AtBats = mongodb.collection("atBat")
-#   Users = mongodb.collection("users")
-#   Answers = mongodb.collection("answers")
-#   GamePlayed = mongodb.collection("gamePlayed")
-#   Notifications = mongodb.collection("notifications")
-#
-#   activeGameId = "fec58a7a-eff7-4eec-9535-f64c42cc4870"
-#   inactiveGameId = "2b0ba18a-41f5-46d7-beb3-1e86b9a4acc0"
-#   actualActiveQuestionId = "active_question_for_active_game"
-#   nonActualActiveQuestionId = "active_question_for_inactive_game"
-#
-#   beforeEach ->
-#     processGame = new ProcessGame dependencies
-#
-#     Promise.bind @
-#     .then ->
-#       Promise.all [
-#         Games.remove()
-#         Teams.remove()
-#         Players.remove()
-#         Questions.remove()
-#         AtBats.remove()
-#         Users.remove()
-#         Answers.remove()
-#         GamePlayed.remove()
-#         Notifications.remove()
-#       ]
-#
-#   it 'should create new play question', ->
-#     Promise.bind @
-#     .then -> loadFixtures ActiveFullGameFixtures, mongodb
-#     .then -> Games.findOne({id: activeGameId})
-#     .then (game) -> processGame.execute game
-#     .then -> Questions.findOne({game_id: activeGameId, player_id: "abbda8e1-2274-4bf0-931c-691cf8bf24c6", atBatQuestion: true})
-#     .then (question) ->
-#       should.exist question
-#       question.should.be.an "object"
-#
-#       {active} = question
-#       should.exist active
-#       active.should.be.equal true
+describe "Process imported games and question management", ->
+  @timeout(5000)
+  dependencies = createDependencies settings, "PickkImport"
+  @mongodb = dependencies.mongodb
+
+  processGame = undefined
+
+  Games = @mongodb.collection("games")
+  Teams = @mongodb.collection("teams")
+  Questions = @mongodb.collection("questions")
+  Users = @mongodb.collection("users")
+  Answers = @mongodb.collection("answers")
+  GamePlayed = @mongodb.collection("gamePlayed")
+  Notifications = @mongodb.collection("notifications")
+
+  activeGameId = 1744080
+  inactiveGameId = "2b0ba18a-41f5-46d7-beb3-1e86b9a4acc0"
+  actualActiveQuestionId = "active_question_for_active_game"
+  nonActualActiveQuestionId = "active_question_for_inactive_game"
+
+  beforeEach ->
+    processGame = new ProcessGame dependencies
+
+    Promise.bind @
+      .then ->
+        Promise.all [
+          Games.remove()
+          Teams.remove()
+          Questions.remove()
+          Users.remove()
+          Answers.remove()
+          GamePlayed.remove()
+          Notifications.remove()
+        ]
+      .done()
+
+  it 'should create new play question', ->
+    Promise.bind @
+      .then -> loadFixtures ActiveFullGameFixtures, @mongodb
+      .then (result) ->
+        should.exist result
+      #   question.should.be.an "object"
+      #   {eventStatus} = game
+      #   should.exist eventStatus
+      #   {eventStatusId} = eventStatus
+      #   should.exist eventStatusId
+      #   eventStatusId.should.be 3
+      # .done()
+
+        # {active} = question
+        # should.exist active
+        # active.should.be.equal true
 #
 #   it 'should update actual play question', ->
 #     Promise.bind @

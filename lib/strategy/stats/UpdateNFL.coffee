@@ -8,10 +8,14 @@ ImportGameDetails = require "../../task/stats/ImportGameDetails"
 ProcessGame = require "../../task/stats/ProcessGame"
 promiseRetry = require 'promise-retry'
 Game = require "../../model/Game"
+ActiveFullGameFixtures = require "../../../test/fixtures/task/stats/processGame/collection/ActiveFullGame.json"
+loadFixtures = require "../../../helper/loadFixtures"
 
 module.exports = class extends Strategy
   constructor: (dependencies) ->
     super
+
+    @mongodb = dependencies.mongodb
 
     @importGames = new ImportGames dependencies
     @getActiveGames = new GetActiveGames dependencies

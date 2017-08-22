@@ -9,4 +9,3 @@ module.exports = (fixtures, mongodb) ->
     collection = mongodb.collection collectionName
     Promise.all (collection.insert document for document in documents)
   )
-      

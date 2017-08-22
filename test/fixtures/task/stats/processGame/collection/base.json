@@ -1,0 +1,106 @@
+{
+  "games": [
+    {
+      "eventId": 1744080,
+      "startDate": [{
+          "year": 2017,
+          "month": 8,
+          "date": 19,
+          "hour": 18,
+          "minute": 0,
+          "full": "2017-08-19T18:00:00",
+          "dateType": "Local"
+      }, {
+          "year": 2017,
+          "month": 8,
+          "date": 19,
+          "hour": 23,
+          "minute": 0,
+          "full": "2017-08-19T23:00:00",
+          "dateType": "UTC"
+      }],
+      "isTba": false,
+      "isDataConfirmed": {
+          "pbp": true,
+          "score": true
+      },
+      "eventStatus": {
+          "eventStatusId": 2,
+          "period": 4,
+          "isActive": true,
+          "name": "In-Progress"
+      },
+      "venue": {
+          "venueId": 8087,
+          "name": "AT&T Stadium",
+          "city": "Arlington",
+          "state": {
+              "stateId": 43,
+              "name": "Texas",
+              "abbreviation": "TX"
+          },
+          "country": {
+              "countryId": 1,
+              "name": "United States",
+              "abbreviation": "USA"
+          }
+      },
+      "tvStations": [{
+          "tvStationId": 305,
+          "name": "NFL Network",
+          "callLetters": "NFLN",
+          "networkType": {
+              "networkTypeId": 1,
+              "name": "National"
+          },
+          "country": {
+              "countryId": 1,
+              "name": "United States",
+              "abbreviation": "USA"
+          }
+      }],
+      "teams": [{
+          "teamId": 331,
+          "location": "Dallas",
+          "nickname": "Cowboys",
+          "abbreviation": "Dal",
+          "teamLocationType": {
+              "teamLocationTypeId": 1,
+              "name": "home"
+          },
+          "record": {
+              "wins": 2,
+              "losses": 1,
+              "ties": 0,
+              "percentage": ".667"
+          },
+          "score": 24,
+          "isWinner": true
+      }, {
+          "teamId": 338,
+          "location": "Indianapolis",
+          "nickname": "Colts",
+          "abbreviation": "Ind",
+          "teamLocationType": {
+              "teamLocationTypeId": 2,
+              "name": "away"
+          },
+          "record": {
+              "wins": 0,
+              "losses": 2,
+              "ties": 0,
+              "percentage": ".000"
+          },
+          "score": 19,
+          "isWinner": false
+      }],
+      "week": 3,
+      "coverageLevel": {
+          "coverageLevelId": 8,
+          "details": "STATS Primary Feed",
+          "name": "Level 1"
+      },
+      "pbp": []
+    }
+  ]
+}
