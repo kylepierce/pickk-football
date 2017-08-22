@@ -31,9 +31,8 @@ module.exports = class extends Task
     @endOfGame = new EndOfGame dependencies
 
   execute: (eventId, details) ->
-    multiplierArguments = details.multiplierArguments
     Promise.bind @
-      .then -> @Multipliers.find multiplierArguments
+      .then -> @Multipliers.find details.multiplierArguments
       .then (result) -> @parseOptions result[0].options
       .then (options) -> @insertPlayQuestion eventId, details, options
 
@@ -51,6 +50,7 @@ module.exports = class extends Task
     return options
 
   insertPlayQuestion: (eventId, details, options) ->
+    console.log details
     Promise.bind @
       .then ->@Games.find {eventId: eventId}
       .then (result) ->
@@ -70,15 +70,15 @@ module.exports = class extends Task
           usersAnswered: []
 
   generateQuestionTitle: (play) ->
-    if play.playdetails.isFirstDown
+    if play.nextPlay.playType is "PAT"
+      que = "Point After Attempt"
+    else if play.nextPlay.playType is "Kickoff"
+      que = "Kickoff"
+    else if play.playdetails.isFirstDown
       downGrammer = @downGrammer 1
       que =  downGrammer + " & " + play.distance.yardsToFirstDown + " Yards"
-    else if play.nextPlayType is "PAT"
-      que = "Point After Attempt"
-    else if play.nextPlayType is "Kickoff"
-      que = "Kickoff"
     else
-      downGrammer = @downGrammer play.down
+      downGrammer = @downGrammer play.nextPlay.down
       que =  downGrammer + " & " + play.distance.yardsToFirstDown + " Yards"
     return que
 

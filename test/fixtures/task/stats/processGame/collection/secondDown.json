@@ -1,0 +1,296 @@
+{
+  "games": [
+    {
+      "eventId": 1744080,
+      "startDate": [{
+          "year": 2017,
+          "month": 8,
+          "date": 19,
+          "hour": 18,
+          "minute": 0,
+          "full": "2017-08-19T18:00:00",
+          "dateType": "Local"
+      },
+      {
+          "year": 2017,
+          "month": 8,
+          "date": 19,
+          "hour": 23,
+          "minute": 0,
+          "full": "2017-08-19T23:00:00",
+          "dateType": "UTC"
+      }],
+      "isTba": false,
+      "isDataConfirmed": {
+          "pbp": true,
+          "score": true
+      },
+      "eventStatus": {
+          "eventStatusId": 2,
+          "period": 4,
+          "isActive": true,
+          "name": "In-Progress"
+      },
+      "venue": {
+          "venueId": 8087,
+          "name": "AT&T Stadium",
+          "city": "Arlington",
+          "state": {
+              "stateId": 43,
+              "name": "Texas",
+              "abbreviation": "TX"
+          },
+          "country": {
+              "countryId": 1,
+              "name": "United States",
+              "abbreviation": "USA"
+          }
+      },
+      "tvStations": [{
+          "tvStationId": 305,
+          "name": "NFL Network",
+          "callLetters": "NFLN",
+          "networkType": {
+              "networkTypeId": 1,
+              "name": "National"
+          },
+          "country": {
+              "countryId": 1,
+              "name": "United States",
+              "abbreviation": "USA"
+          }
+      }],
+      "teams": [{
+          "teamId": 331,
+          "location": "Dallas",
+          "nickname": "Cowboys",
+          "abbreviation": "Dal",
+          "teamLocationType": {
+              "teamLocationTypeId": 1,
+              "name": "home"
+          },
+          "record": {
+              "wins": 2,
+              "losses": 1,
+              "ties": 0,
+              "percentage": ".667"
+          },
+          "score": 24,
+          "isWinner": true
+      }, {
+          "teamId": 338,
+          "location": "Indianapolis",
+          "nickname": "Colts",
+          "abbreviation": "Ind",
+          "teamLocationType": {
+              "teamLocationTypeId": 2,
+              "name": "away"
+          },
+          "record": {
+              "wins": 0,
+              "losses": 2,
+              "ties": 0,
+              "percentage": ".000"
+          },
+          "score": 19,
+          "isWinner": false
+      }],
+      "week": 3,
+      "coverageLevel": {
+          "coverageLevelId": 8,
+          "details": "STATS Primary Feed",
+          "name": "Level 1"
+      },
+      "pbp": [{
+            "playId": 2.0,
+            "period": 1,
+            "time": "15:00",
+            "down": null,
+            "distance": null,
+            "awayScoreBefore": 0,
+            "awayScoreAfter": 0,
+            "homeScoreBefore": 0,
+            "homeScoreAfter": 0,
+            "yardLine": "Ind35",
+            "endYardLine": "Dal5",
+            "driveId": 1,
+            "startPossession": {
+                "teamId": 338
+            },
+            "endPossession": {
+                "teamId": 331
+            },
+            "isContinuation": true,
+            "kickType": {
+                "kickTypeId": 1,
+                "name": "Short"
+            },
+            "isReview": false,
+            "penaltyType": {
+                "penaltyTypeId": 14,
+                "name": "Illegal Block"
+            },
+            "playText": "Jeff Locke kicks off to the Dal1. Rod Smith return for 9 yards to Dal10. Penalty: Illegal Block on Cowboys (Robert Blanton) -5 yards.",
+            "playType": {
+                "playTypeId": 10,
+                "name": "Penalty"
+            },
+            "playersInvolved": [{
+                "playerInvolvedTypeId": 1,
+                "playerInvolvedType": "player",
+                "typeSequence": 1,
+                "player": {
+                    "playerId": 461708,
+                    "firstName": "Jeff",
+                    "lastName": "Locke",
+                    "uniform": "9"
+                }
+            }, {
+                "playerInvolvedTypeId": 1,
+                "playerInvolvedType": "player",
+                "typeSequence": 2,
+                "player": {
+                    "playerId": 553688,
+                    "firstName": "Rod",
+                    "lastName": "Smith",
+                    "uniform": "45"
+                }
+            }, {
+                "playerInvolvedTypeId": 1,
+                "playerInvolvedType": "player",
+                "typeSequence": 3,
+                "player": {
+                    "playerId": 469187,
+                    "firstName": "Robert",
+                    "lastName": "Blanton",
+                    "uniform": "36"
+                }
+            }],
+            "direction": null,
+            "yards": 4
+        }, {
+            "playId": 6.0,
+            "period": 1,
+            "time": "14:53",
+            "down": "1",
+            "distance": "10",
+            "awayScoreBefore": 0,
+            "awayScoreAfter": 0,
+            "homeScoreBefore": 0,
+            "homeScoreAfter": 0,
+            "yardLine": "Dal5",
+            "endYardLine": "Dal28",
+            "driveId": 1,
+            "startPossession": {
+                "teamId": 331
+            },
+            "endPossession": {
+                "teamId": 331
+            },
+            "isContinuation": false,
+            "isReview": false,
+            "playText": "Dak Prescott pass to the left to Dez Bryant for 23 yards to the Dal28. Tackled by Jabaal Sheard.",
+            "playType": {
+                "playTypeId": 1,
+                "name": "Pass"
+            },
+            "playersInvolved": [{
+                "playerInvolvedTypeId": 1,
+                "playerInvolvedType": "player",
+                "typeSequence": 1,
+                "player": {
+                    "playerId": 591816,
+                    "firstName": "Dak",
+                    "lastName": "Prescott",
+                    "uniform": "4"
+                }
+            }, {
+                "playerInvolvedTypeId": 2,
+                "playerInvolvedType": "tackler",
+                "typeSequence": 1,
+                "player": {
+                    "playerId": 397948,
+                    "firstName": "Jabaal",
+                    "lastName": "Sheard",
+                    "uniform": "93"
+                }
+            }, {
+                "playerInvolvedTypeId": 5,
+                "playerInvolvedType": "target",
+                "typeSequence": 1,
+                "player": {
+                    "playerId": 397499,
+                    "firstName": "Dez",
+                    "lastName": "Bryant",
+                    "uniform": "88"
+                }
+            }],
+            "direction": "L",
+            "yards": 23
+        }, {
+            "playId": 8.0,
+            "period": 1,
+            "time": "14:19",
+            "down": "1",
+            "distance": "10",
+            "awayScoreBefore": 0,
+            "awayScoreAfter": 0,
+            "homeScoreBefore": 0,
+            "homeScoreAfter": 0,
+            "yardLine": "Dal28",
+            "endYardLine": "Dal33",
+            "driveId": 1,
+            "startPossession": {
+                "teamId": 331
+            },
+            "endPossession": {
+                "teamId": 331
+            },
+            "isContinuation": false,
+            "rushType": {
+                "rushTypeId": 10,
+                "name": "Off Right End"
+            },
+            "isReview": false,
+            "playText": "Darren McFadden rush to the right for 5 yards to the Dal33. Tackled by Matthias Farley and Johnathan Hankins.",
+            "playType": {
+                "playTypeId": 4,
+                "name": "Rush"
+            },
+            "playersInvolved": [{
+                "playerInvolvedTypeId": 1,
+                "playerInvolvedType": "player",
+                "typeSequence": 1,
+                "player": {
+                    "playerId": 288074,
+                    "firstName": "Darren",
+                    "lastName": "McFadden",
+                    "uniform": "20"
+                }
+            }, {
+                "playerInvolvedTypeId": 2,
+                "playerInvolvedType": "tackler",
+                "typeSequence": 1,
+                "player": {
+                    "playerId": 610937,
+                    "firstName": "Matthias",
+                    "lastName": "Farley",
+                    "uniform": "41"
+                }
+            }, {
+                "playerInvolvedTypeId": 2,
+                "playerInvolvedType": "tackler",
+                "typeSequence": 2,
+                "player": {
+                    "playerId": 553681,
+                    "firstName": "Johnathan",
+                    "lastName": "Hankins"
+                }
+            }],
+            "direction": "R",
+            "yards": 5
+        }
+      ]
+    }
+  ]
+}

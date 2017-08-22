@@ -41,6 +41,7 @@ module.exports = class extends Task
       playdetails.distance = @distanceObj play, playdetails.yardsToTouchdown
       playdetails.nextPlay = @getNextPlayTypeAndDown playdetails
       playdetails.multiplierArguments = @getMultiplierArguments playdetails
+
       return playdetails
 
   previousObj: (play) ->
@@ -193,11 +194,11 @@ module.exports = class extends Task
   getNextPlayTypeAndDown: (play) ->
     kickOffList = ["PAT", "Safety", "Field Goal"]
     pointAfterQuestionlist = [22, 47, 49, 53, 54, 55, 56]
-    if (kickOffList.indexOf(play.playdetails.scoreType) > 0)
+    if kickOffList.indexOf(play.playdetails.scoreType) > -1
       nextPlay =
         playType: "Kickoff"
         down: 6
-    else if (pointAfterQuestionlist.indexOf(play.playdetails.typeId) > 0)
+    else if (pointAfterQuestionlist.indexOf(play.playdetails.typeId) > -1)
       nextPlay =
         playType: "Kickoff"
         down: 6
@@ -205,31 +206,33 @@ module.exports = class extends Task
       nextPlay =
         playType: "PAT"
         down: 5
-    else if play.previous.down is 3 && play.playdetails.isFirstDown is false && play.distance.yardsToTouchdown < 30
-      nextPlay =
-        playType: "Punt"
-        down: 4
-    else if play.previous.down is 3 && play.playdetails.isFirstDown is false && play.distance.yardsToTouchdown > 30
-      nextPlay =
-        playType: "Field Goal Attempt"
-        down: 4
-    else if play.previous.down is 2 && play.playdetails.isFirstDown is false
-      nextPlay =
-        playType: "Third Down"
-        down: 3
-    else if play.previous.down is 2 && play.playdetails.isFirstDown is false && play.distance.isDownAndGoal
-      nextPlay =
-        playType: "Third Down && Goal"
-        down: 3
-    else if play.previous.down is 1 && play.playdetails.isFirstDown is false
-      nextPlay =
-        playType: "Second Down"
-        down: 2
     else if play.playdetails.isFirstDown || play.playdetails.teamChange || play.previous.down is NaN
       nextPlay =
         playType: "First Down"
         down: 1
         distance: 10
+    else if play.previous.down is 3
+      if play.yardsToTouchdown > 30
+        nextPlay =
+          playType: "Punt"
+          down: 4
+      else if  play.yardsToTouchdown < 30
+        nextPlay =
+          playType: "Field Goal Attempt"
+          down: 4
+    else if play.previous.down is 2
+      if play.distance.isDownAndGoal
+        nextPlay =
+          playType: "Third Down && Goal"
+          down: 3
+      else
+        nextPlay =
+          playType: "Third Down"
+          down: 3
+    else if play.previous.down is 1
+      nextPlay =
+        playType: "Second Down"
+        down: 2
     else
       nextPlay =
         playType: "Normal"
