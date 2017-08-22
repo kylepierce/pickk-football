@@ -75,7 +75,7 @@ Status: Not Started
 Priority: Next
 
 Scenario:
-1. An precursor event happened (punt, touchdown scored, field goal scored)
+1. An precursor event happened (punt, touchdown scored, field goal scored, kickoff)
 2. Set game to commercial
 3. Set commercialTime to current time
 

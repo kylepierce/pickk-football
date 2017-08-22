@@ -22,6 +22,7 @@ module.exports = class extends Task
     @Games = dependencies.mongodb.collection("games")
     @Multipliers = dependencies.mongodb.collection("multipliers")
     @Questions = dependencies.mongodb.collection("questions")
+    @Teams = dependencies.mongodb.collection("teams")
     @Answers = dependencies.mongodb.collection("answers")
     @GamePlayed = dependencies.mongodb.collection("gamePlayed")
     @Users = dependencies.mongodb.collection("users")
@@ -34,34 +35,40 @@ module.exports = class extends Task
       oldPlays =  old.pbp.length
       newPlays = update.pbp.length
     if @isNewPlay newPlays, oldPlays
+      teams = update.teams
       previousPlay = (_.last update.pbp)
-      previousPlayDetails = @getPreviousPlayDetails previousPlay
+      previousPlayDetails = @getPreviousPlayDetails previousPlay, teams
       nextPlayTypeAndDown = @getNextPlayTypeAndDown previousPlayDetails
       multiplierArguments = @getMultiplierArguments previousPlayDetails, nextPlayTypeAndDown
 
       Promise.bind @
-        .then -> @closeInactiveQuestions update.id, previousPlayDetails
+        # .then -> @closeInactiveQuestions update.id, previousPlayDetails
+        # .then -> @createCommercialQuestions update.eventId, previousPlayDetails
+        # .then -> @startCommercialBreak update.eventId, previousPlayDetails
         .then -> @createPlayQuestion update.eventId, previousPlayDetails, multiplierArguments
 
   isNewPlay: (newLength, oldLength) ->
     if newLength > oldLength
       return true
 
-  getPreviousPlayDetails: (previousPlay) ->
-    postPlaydetails =
-      playId: previousPlay.playId
-      down: previousPlay.down
-      distance: previousPlay.distance
-      yards: previousPlay.yards
-      type: @getPlayType previousPlay.playType.playTypeId
-      isFirstDown: @reachedFirstDown previousPlay.yards, previousPlay.distance
-      isDownAndGoal: @isDownAndGoal previousPlay.startPossession.teamId, previousPlay.endYardLine, previousPlay.distance
-      teamChange: @hasBallChangedTeams previousPlay.startPossession.teamId, previousPlay.endPossession.teamId
-      scoreType: @hasScoreChange previousPlay.awayScoreBefore, previousPlay.awayScoreAfter, previousPlay.homeScoreBefore, previousPlay.homeScoreAfter
-      distanceToGoal: @distanceToGoal previousPlay.startPossession.teamId, previousPlay.endYardLine
-      location: @quantifyLocation previousPlay.startPossession.teamId, previousPlay.endYardLine
-      yardsToGo: @quantifyYards previousPlay.distance
-    return postPlaydetails
+  getPreviousPlayDetails: (previousPlay, teams) ->
+    if previousPlay
+      postPlaydetails =
+        playId: previousPlay.playId
+        down: parseInt(previousPlay.down)
+        distance: parseInt(previousPlay.distance)
+        yards: parseInt(previousPlay.yards)
+        typeId: previousPlay.playType.playTypeId
+        type: @getPlayType previousPlay.playType.playTypeId
+        isFirstDown: @reachedFirstDown previousPlay.yards, previousPlay.distance
+        isDownAndGoal: @isDownAndGoal previousPlay.endPossession.teamId, previousPlay.endYardLine, previousPlay.distance, teams
+        teamChange: @hasBallChangedTeams previousPlay.startPossession.teamId, previousPlay.endPossession.teamId
+        scoreType: @hasScoreChange previousPlay.awayScoreBefore, previousPlay.awayScoreAfter, previousPlay.homeScoreBefore, previousPlay.homeScoreAfter
+        distanceToGoal: @distanceToGoal previousPlay.endPossession.teamId, previousPlay.endYardLine, teams
+        location: @quantifyLocation previousPlay.endPossession.teamId, previousPlay.endYardLine, teams
+        yardsToGo: @quantifyYards previousPlay.distance
+      return postPlaydetails
+
 
   getPlayType: (playTypeId) ->
       playType = [
@@ -107,8 +114,8 @@ module.exports = class extends Task
     else
       return false
 
-  isDownAndGoal: (teamIdWithBall, location, yards) ->
-    distance = @distanceToGoal teamIdWithBall, location
+  isDownAndGoal: (teamIdWithBall, location, yards, teams) ->
+    distance = @distanceToGoal teamIdWithBall, location, teams
     if distance > 20
       return true
 
@@ -142,30 +149,28 @@ module.exports = class extends Task
     else
       return false
 
-  distanceToGoal: (teamIdWithBall, location) ->
-    # Use teamIdWithBall shortcode
-    # See if they are on their side or the other teams
-    # Example: TeamA is going to TeamB's 0 yard line. Or TMB0
-    # if on the their side add 50 yards
-    # TMA21 is 71 yards away
-    # value = 71
-    # if on their opponents side its the number
-    # TMB32 is 32 yards from goal
-    # value is 32
+  distanceToGoal: (teamIdWithBall, location, teams) ->
+    team = _.find teams, (team) ->
+      return team.teamId is teamIdWithBall
+    numbers = location.replace(/\D+/g, '')
+    if (location.indexOf team.abbreviation > 0)
+      return 100 - parseInt(numbers)
+    else
+      return numbers
 
-  quantifyLocation: (teamIdWithBall, location) ->
-    distance = @distanceToGoal teamIdWithBall, location
-    if location >= 0 && location <= 10
+  quantifyLocation: (teamIdWithBall, location, teams) ->
+    distance = @distanceToGoal teamIdWithBall, location, teams
+    if distance >= 0 && distance <= 10
       return 1
-    else if location > 10 && location <= 30
+    else if distance > 10 && distance <= 30
       return 2
-    else if location > 30 && location <= 60
+    else if distance > 30 && distance <= 60
       return 3
-    else if location > 60 && location <= 80
+    else if distance > 60 && distance <= 80
       return 4
-    else if location > 80 && location <= 90
+    else if distance > 80 && distance <= 90
       return 5
-    else if location > 90
+    else if distance > 90
       return 6
 
   quantifyYards: (number) ->
@@ -185,38 +190,47 @@ module.exports = class extends Task
 
   getNextPlayTypeAndDown: (play) ->
     kickOffList = ["PAT", "Safety", "Field Goal"]
-    if (list.indexOf(play.scoreType) > 0)
+    pointAfterQuestionlist = [22, 47, 49, 53, 54, 55, 56]
+    if (kickOffList.indexOf(play.scoreType) > 0)
       nextPlay =
         playType: "Kickoff"
         down: 6
-    if play.scoreType is "Touchdown"
+    else if (pointAfterQuestionlist.indexOf(play.typeId) > 0)
+      nextPlay =
+        playType: "Kickoff"
+        down: 6
+    else if play.scoreType is "Touchdown"
       nextPlay =
         playType: "PAT"
         down: 5
-    if play.down is 3 and play.isFirstDown is false and play.distanceToGoal < 30
+    else if play.down is 3 && play.isFirstDown is false && play.distanceToGoal < 30
       nextPlay =
         playType: "Punt"
         down: 4
-    if play.down is 3 and play.isFirstDown is false and play.distanceToGoal > 30
+    else if play.down is 3 && play.isFirstDown is false && play.distanceToGoal > 30
       nextPlay =
         playType: "Field Goal Attempt"
         down: 4
-    if play.down is 2 and play.isFirstDown is false
+    else if play.down is 2 && play.isFirstDown is false
       nextPlay =
         playType: "Third Down"
         down: 3
-    if play.down is 2 and play.isFirstDown is false and play.isDownAndGoal
+    else if play.down is 2 && play.isFirstDown is false && play.isDownAndGoal
       nextPlay =
-        playType: "Third Down and Goal"
+        playType: "Third Down && Goal"
         down: 3
-    if play.down is 1 and play.isFirstDown is false
+    else if play.down is 1 && play.isFirstDown is false
       nextPlay =
         playType: "Second Down"
         down: 2
-    if play.isFirstDown || play.teamChange
+    else if play.isFirstDown || play.teamChange
       nextPlay =
         playType: "First Down"
         down: 1
+    else
+      nextPlay =
+        playType: "Normal"
+        down: 2
     return nextPlay
 
   getMultiplierArguments: (previous, nextPlay) ->
@@ -226,7 +240,7 @@ module.exports = class extends Task
       area: previous.location #Range 1-6
       yards: previous.yardsToGo #Range 1-6
       style: 2 #Range 1-3 when complete
-      playType: nextPlay.playType # String
+      # playType: nextPlay.playType # String
     return multiplierArguments
 
   closeInactiveQuestions: (eventId) ->
@@ -238,7 +252,7 @@ module.exports = class extends Task
   closeQuestion: (question) ->
     Promise.bind @
       .then -> @getSinglePlayResult question
-      .then (result) -> getCorrectOptionNumber question, result
+      .then (result) -> @getCorrectOptionNumber question, result
       .then (optionNumber) -> @updateQuestionAndAnswers question._id, optionNumber
       .map (answer) -> @awardUsers answer, outcome
 
@@ -251,7 +265,7 @@ module.exports = class extends Task
   getPlays: (game) ->
     Promise.bind @
       .then -> _.flatten game.pbp, 'playId'
-      .then (list) -> _.filter list, @ignoreList play
+      .then (list) -> _.filter list, @ignoreList
 
   ignoreList: (single) ->
     list = [10, 11, 13, 29, 57, 58]
@@ -285,19 +299,19 @@ module.exports = class extends Task
     #   down:
     #   distance:
     #   yards:
-    playDetails = @getPreviousPlayDetails result
-    playType = @playType playDetails
-    Promise.bind @
-      .then -> @kickoffQuestion question, result, playDetails
-      .then -> @pointAfterQuestion question, result, playDetails
-      .then -> @puntQuestion question, result, playDetails
-      .then -> @fieldGoalQuestion question, result, playDetails
-      .then -> @thirdDownQuestion question, result, playDetails
-      .then -> @normalQuestion question, result, playDetails
+    # playDetails = @getPreviousPlayDetails result
+    # playType = @playType playDetails
+    # Promise.bind @
+    #   .then -> @kickoffQuestion question, result, playDetails
+    #   .then -> @pointAfterQuestion question, result, playDetails
+    #   .then -> @puntQuestion question, result, playDetails
+    #   .then -> @fieldGoalQuestion question, result, playDetails
+    #   .then -> @thirdDownQuestion question, result, playDetails
+    #   .then -> @normalQuestion question, result, playDetails
 
   kickoffQuestion: (question, result, playDetails) ->
     list = [5, 6, 25, 41, 43]
-    if (list.indexOf(result.playType.playTypeId) > 0)
+    # if (list.indexOf(result.playType.playTypeId) > 0)
       # if teamChange is false
         # "Fumble",
         # "Successful Onside",
@@ -314,7 +328,7 @@ module.exports = class extends Task
 
   pointAfterQuestion: (question, result, playDetails) ->
     list = [22, 47, 49, 53, 54, 55, 56]
-    if playDetails.scoreType is "PAT"
+    # if playDetails.scoreType is "PAT"
     # "Kick Good!",
     # "Fake Kick No Score",
     # "Blocked Kick",
@@ -337,7 +351,7 @@ module.exports = class extends Task
   fieldGoalQuestion: (question, result, playDetails) ->
     list = [17, 35, 36, 42, 50]
     # Field goal - Successful?
-    if down is 4
+    # if down is 4
     # "Kick Good!",
     # "Run",
     # "Pass",
@@ -346,32 +360,32 @@ module.exports = class extends Task
     # "Blocked Kick"
 
   thirdDownQuestion: (question, result, playDetails) ->
-    if result.down is 3
-      # if distance from endzone is less then 10
-      # else
-      if playDetails.isFirstDown
-        return "Convert to First Down"
-      if !playDetails.isFirstDown
-        return "Unable to Covert First Down",
-      if teamChange
-        # "Interception",
-        # "Fumble",
-        if scoreType
-          # "Pick Six",
-      if scoreType
+    # if result.down is 3
+    #   # if distance from endzone is less then 10
+    #   # else
+    #   if playDetails.isFirstDown
+    #     return "Convert to First Down"
+    #   if !playDetails.isFirstDown
+    #     return "Unable to Covert First Down",
+    #   if teamChange
+    #     # "Interception",
+    #     # "Fumble",
+    #     if scoreType
+    #       # "Pick Six",
+    #   if scoreType
         # "Touchdown"
 
   normalQuestion: (question, result, playDetails) ->
-    if result.down is 1 || result.down is 2
-      # if playTypeId is "Run",
-      # if playTypeId is "Pass",
-      if teamChange
-        # "Interception",
-        # "Fumble",
-        # "Turnover",
-        if scoreType
-          # "Pick Six",
-      if scoreType
+    # if result.down is 1 || result.down is 2
+    #   # if playTypeId is "Run",
+    #   # if playTypeId is "Pass",
+    #   if teamChange
+    #     # "Interception",
+    #     # "Fumble",
+    #     # "Turnover",
+    #     if scoreType
+    #       # "Pick Six",
+    #   if scoreType
         # "Touchdown"
 
   getPlayOptionNumber: (question, optionTitle) ->
@@ -379,7 +393,6 @@ module.exports = class extends Task
       .then -> _.invert _.mapObject question['options'], (option) -> option['title']
       .then (options) -> console.log "-------- \n", "Play Outcome:", options[optionTitle], "\n", outcome, "\n", options
       # .then (options) -> options[outcome]
-      # .then (result) -> console.log result
 
   updateQuestionAndAnswers: (questionId, outcome) ->
     Promise.bind @
@@ -407,9 +420,22 @@ module.exports = class extends Task
           sharable: false
           shareMessage: ""
 
+
+
+  createCommercialQuestions: (eventId, previous) ->
+
+  startCommercialBreak: (eventId, previous) ->
+    list = ["Punt", "Touchdown", "Field Goal", "Kickoff", "Timeout", "Two Min"]
+    if (list.indexOf(previous.playType) > 0)
+      Promise.bind @
+        .then -> getGame eventId
+        .then (game) -> @Games.update({_id: game._id}, {$set: {commercial: true, commercialTime: new Date}})
+
+
+
   createPlayQuestion: (eventId, details, multiplierArguments) ->
     Promise.bind @
-      .then -> @Multipliers.find {multiplierArguments}
+      .then -> @Multipliers.find multiplierArguments
       .then (result) -> @parseOptions result[0].options
       .then (options) -> @insertPlayQuestion eventId, details, multiplierArguments, options
 
@@ -427,6 +453,7 @@ module.exports = class extends Task
     return options
 
   insertPlayQuestion: (eventId, details, multiplierArguments, options) ->
+    console.log multiplierArguments
     Promise.bind @
       .then ->@Games.find {eventId: eventId}
       .then (result) ->
@@ -441,17 +468,17 @@ module.exports = class extends Task
           type: "play"
           active: true
           commercial: false
-          que: @generateQuestionTitle details
+          que: @generateQuestionTitle details, multiplierArguments
           options: options
           usersAnswered: []
 
-  generateQuestionTitle: (details) ->
-    if details.
-    if details.playType isnt "Normal" && details.playType isnt "First Down"
-      que = details.playType
-    else
-      downGrammer = @downGrammer details.down
-      que =  downGrammer + " & " + details.distance
+  generateQuestionTitle: (details, multiplierArguments) ->
+    console.log details
+    downGrammer = @downGrammer multiplierArguments.down
+    que =  downGrammer + " & " + details.yardsToGo
+
+    console.log que
+    return que
 
   downGrammer: (down) ->
     switch down
