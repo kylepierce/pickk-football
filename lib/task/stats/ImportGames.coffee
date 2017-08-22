@@ -20,11 +20,12 @@ module.exports = class extends Task
     @registerEvents ['upserted']
 
   execute: ->
+    todaysDate = new Date()
     Promise.bind @
-    .then -> @api.getScheduledGames 7
-    .then (result) -> result.apiResults[0].league.season.eventType[0].events
-    .map @upsertGame
-    .return true
+      .then -> @api.getScheduledGames todaysDate, 7
+      .then (result) -> result.apiResults[0].league.season.eventType[0].events
+      .map @upsertGame
+      .return true
 
   upsertGame: (data) ->
     game = new Game data

@@ -12,7 +12,7 @@
     "url": "mongodb://localhost/%database%"
   },
   "stats": {
-    "apiKey": "kw3k3f8n9zcy92ufe7g8gwy4"
+    "apiKey": "9j5gedassyresqsrg3dhvv6d",
+    "secret": "H83B8eDBxw"
   }
-
 }

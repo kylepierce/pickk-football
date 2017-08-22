@@ -49,11 +49,11 @@ module.exports = class
         console.log error.message #, _.extend({stack: error.stack}, error.details)
         retry(error)
 
-  getScheduledGames: (days, format = "json") ->
+  getScheduledGames: (date, days, format = "json") ->
+    Match.check date, Date
     Match.check days, Number
     Match.check format, formatPattern
 
-    date = new Date()
     # cast to EDT timezone
     EDT_OFFSET = 60 * 12
     date = moment(date).subtract(EDT_OFFSET + moment(date).utcOffset(), 'minutes').toDate()

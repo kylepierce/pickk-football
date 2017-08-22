@@ -32,17 +32,19 @@ module.exports = class extends Task
 
   execute: (old, update) ->
     if old.pbp
-      oldPlays =  old.pbp.length
+      oldPlays = old.pbp.length
       newPlays = update.pbp.length
     if @isNewPlay newPlays, oldPlays
       teams = update.teams
       previousPlay = (_.last update.pbp)
       previousPlayDetails = @getPreviousPlayDetails previousPlay, teams
       nextPlayTypeAndDown = @getNextPlayTypeAndDown previousPlayDetails
+      previousPlayDetails.down = nextPlayTypeAndDown.down
+      previousPlayDetails.nextPlayType = nextPlayTypeAndDown.playType
       multiplierArguments = @getMultiplierArguments previousPlayDetails, nextPlayTypeAndDown
 
       Promise.bind @
-        # .then -> @closeInactiveQuestions update.id, previousPlayDetails
+        .then -> @closeInactiveQuestions update.id, teams
         # .then -> @createCommercialQuestions update.eventId, previousPlayDetails
         # .then -> @startCommercialBreak update.eventId, previousPlayDetails
         .then -> @createPlayQuestion update.eventId, previousPlayDetails, multiplierArguments
@@ -51,24 +53,24 @@ module.exports = class extends Task
     if newLength > oldLength
       return true
 
-  getPreviousPlayDetails: (previousPlay, teams) ->
-    if previousPlay
+  getPreviousPlayDetails: (play, teams) ->
+    if play
       postPlaydetails =
-        playId: previousPlay.playId
-        down: parseInt(previousPlay.down)
-        distance: parseInt(previousPlay.distance)
-        yards: parseInt(previousPlay.yards)
-        typeId: previousPlay.playType.playTypeId
-        type: @getPlayType previousPlay.playType.playTypeId
-        isFirstDown: @reachedFirstDown previousPlay.yards, previousPlay.distance
-        isDownAndGoal: @isDownAndGoal previousPlay.endPossession.teamId, previousPlay.endYardLine, previousPlay.distance, teams
-        teamChange: @hasBallChangedTeams previousPlay.startPossession.teamId, previousPlay.endPossession.teamId
-        scoreType: @hasScoreChange previousPlay.awayScoreBefore, previousPlay.awayScoreAfter, previousPlay.homeScoreBefore, previousPlay.homeScoreAfter
-        distanceToGoal: @distanceToGoal previousPlay.endPossession.teamId, previousPlay.endYardLine, teams
-        location: @quantifyLocation previousPlay.endPossession.teamId, previousPlay.endYardLine, teams
-        yardsToGo: @quantifyYards previousPlay.distance
+        playId: play.playId
+        down: parseInt(play.down)
+        distance: parseInt(play.distance)
+        yards: parseInt(play.yards)
+        yardsToGo: parseInt(play.distance) - parseInt(play.yards)
+        typeId: play.playType.playTypeId
+        type: @getPlayType play.playType.playTypeId
+        isFirstDown: @reachedFirstDown play.yards, play.distance
+        isDownAndGoal: @isDownAndGoal play.endPossession.teamId, play.endYardLine, play.distance, teams
+        teamChange: @hasBallChangedTeams play.startPossession.teamId, play.endPossession.teamId
+        scoreType: @hasScoreChange play.awayScoreBefore, play.awayScoreAfter, play.homeScoreBefore, play.homeScoreAfter
+        distanceToGoal: @distanceToGoal play.endPossession.teamId, play.endYardLine, teams
+        location: @quantifyLocation play.endPossession.teamId, play.endYardLine, teams
+        yardsArea: @quantifyYards play.distance
       return postPlaydetails
-
 
   getPlayType: (playTypeId) ->
       playType = [
@@ -227,6 +229,7 @@ module.exports = class extends Task
       nextPlay =
         playType: "First Down"
         down: 1
+        distance: 10
     else
       nextPlay =
         playType: "Normal"
@@ -238,23 +241,25 @@ module.exports = class extends Task
     multiplierArguments =
       down: nextPlay.down #Range 1-6
       area: previous.location #Range 1-6
-      yards: previous.yardsToGo #Range 1-6
+      yards: previous.yardsArea #Range 1-6
       style: 2 #Range 1-3 when complete
       # playType: nextPlay.playType # String
     return multiplierArguments
 
-  closeInactiveQuestions: (eventId) ->
+
+
+  closeInactiveQuestions: (eventId, teams) ->
     Promise.bind @
       .then -> @Games.find({id: eventId})
       .then (game) -> @Questions.find({gameId: game[0]._id, type: "play", active: true});
-      .map (questions) -> @closeQuestion questions
+      .map (questions) -> @closeQuestion questions, teams
 
-  closeQuestion: (question) ->
+  closeQuestion: (question, teams) ->
     Promise.bind @
       .then -> @getSinglePlayResult question
-      .then (result) -> @getCorrectOptionNumber question, result
-      .then (optionNumber) -> @updateQuestionAndAnswers question._id, optionNumber
-      .map (answer) -> @awardUsers answer, outcome
+      .then (result) -> @getCorrectOptionNumber question, result, teams
+      # .then (optionNumber) -> @updateQuestionAndAnswers question._id, optionNumber
+      # .map (answer) -> @awardUsers answer, outcome
 
   getSinglePlayResult: (question) ->
     Promise.bind @
@@ -277,16 +282,20 @@ module.exports = class extends Task
     # Unfortunately there is not other way to associate that I am aware of.
     Promise.bind @
       # Find the index of previous play in pbp array
-      .then -> _.indexOf(list, playId)
+      .then ->_.indexOf list,  _.find list, (play) -> return play.playId is playId
       # Then find the next item in the pbp array. Which should be this question's result.
       .then (index) -> list[index + 1]
 
-  getCorrectOptionNumber: (question, result) ->
+  getPlayIndex: (list, playId) ->
     Promise.bind @
-      .then (result) -> @getPlayOptionTitle question, result
+    .then ->
+
+  getCorrectOptionNumber: (question, result, team) ->
+    Promise.bind @
+      .then -> @getPlayOptionTitle question, result, team
       .then (optionTitle) -> @getPlayOptionNumber question, optionTitle
 
-  getPlayOptionTitle: (question, result) ->
+  getPlayOptionTitle: (question, result, team) ->
     # details =
     #   playId:
     #   isFirstDown:
@@ -299,18 +308,22 @@ module.exports = class extends Task
     #   down:
     #   distance:
     #   yards:
-    # playDetails = @getPreviousPlayDetails result
-    # playType = @playType playDetails
-    # Promise.bind @
-    #   .then -> @kickoffQuestion question, result, playDetails
-    #   .then -> @pointAfterQuestion question, result, playDetails
-    #   .then -> @puntQuestion question, result, playDetails
-    #   .then -> @fieldGoalQuestion question, result, playDetails
-    #   .then -> @thirdDownQuestion question, result, playDetails
-    #   .then -> @normalQuestion question, result, playDetails
+    playDetails = @getPreviousPlayDetails result, team
+    # console.log "\n", "Play Details", "\n", playDetails, "\n"
+    Promise.bind @
+      .then -> @kickoffQuestion question, playDetails
+      .then -> @pointAfterQuestion question, playDetails
+      .then -> @puntQuestion question, playDetails
+      .then -> @fieldGoalQuestion question, playDetails
+      .then -> @thirdDownQuestion question, playDetails
+      .then -> @normalQuestion question, playDetails
 
-  kickoffQuestion: (question, result, playDetails) ->
+  kickoffQuestion: (question, playDetails) ->
     list = [5, 6, 25, 41, 43]
+    if playDetails.playType is "Kickoff"
+      console.log "Kickoff"
+      console.log question.que
+      console.log playDetails
     # if (list.indexOf(result.playType.playTypeId) > 0)
       # if teamChange is false
         # "Fumble",
@@ -326,8 +339,12 @@ module.exports = class extends Task
         # "46+",
         # "Failed Onside",
 
-  pointAfterQuestion: (question, result, playDetails) ->
+  pointAfterQuestion: (question, playDetails) ->
     list = [22, 47, 49, 53, 54, 55, 56]
+    if playDetails.playType is "PAT"
+      console.log "PAT"
+      console.log question.que
+      console.log playDetails
     # if playDetails.scoreType is "PAT"
     # "Kick Good!",
     # "Fake Kick No Score",
@@ -336,8 +353,12 @@ module.exports = class extends Task
     # "Two Point Good",
     # "Two Point No Good"
 
-  puntQuestion: (question, result, playDetails) ->
+  puntQuestion: (question, playDetails) ->
     list = [7, 8, 18, 24, 71]
+    if playDetails.playType is "Punt"
+      console.log "Punt"
+      console.log question.que
+      console.log playDetails
     # Punt - Return yards
     # When play type is 7
     # Down is 4
@@ -348,8 +369,12 @@ module.exports = class extends Task
     # "Fumble", - playTypeId: 14, KickType: 12
     # "Touchdown" -
 
-  fieldGoalQuestion: (question, result, playDetails) ->
+  fieldGoalQuestion: (question, playDetails) ->
     list = [17, 35, 36, 42, 50]
+    if playDetails.playType is "Field Goal"
+      console.log "Field Goal"
+      console.log question.que
+      console.log playDetails
     # Field goal - Successful?
     # if down is 4
     # "Kick Good!",
@@ -359,36 +384,48 @@ module.exports = class extends Task
     # "Missed Kick",
     # "Blocked Kick"
 
-  thirdDownQuestion: (question, result, playDetails) ->
+  thirdDownQuestion: (question, playDetails) ->
     # if result.down is 3
+    if playDetails.down is 3
+      console.log "Third Down"
+      console.log question.que
+      console.log playDetailsn
     #   # if distance from endzone is less then 10
     #   # else
-    #   if playDetails.isFirstDown
-    #     return "Convert to First Down"
-    #   if !playDetails.isFirstDown
-    #     return "Unable to Covert First Down",
-    #   if teamChange
-    #     # "Interception",
-    #     # "Fumble",
-    #     if scoreType
-    #       # "Pick Six",
-    #   if scoreType
-        # "Touchdown"
+      if playDetails.isFirstDown
+        return "Convert to First Down"
+      else if !playDetails.isFirstDown
+        return "Unable to Covert First Down"
+      if playDetails.teamChange
+        console.log "Turnover"
+        return
+        # "Interception",
+        # "Fumble",
+        # if playDetails.scoreType
+          # "Pick Six",
+      if playDetails.scoreType
+        return "Touchdown"
 
-  normalQuestion: (question, result, playDetails) ->
-    # if result.down is 1 || result.down is 2
-    #   # if playTypeId is "Run",
-    #   # if playTypeId is "Pass",
-    #   if teamChange
-    #     # "Interception",
-    #     # "Fumble",
-    #     # "Turnover",
-    #     if scoreType
-    #       # "Pick Six",
-    #   if scoreType
-        # "Touchdown"
+  normalQuestion: (question, playDetails) ->
+    if playDetails.down is 1 || playDetails.down is 2
+      console.log "Normal Play"
+      console.log question.que
+      console.log playDetails
+      if playDetails.playTypeId is "Run"
+        return "Run"
+      else if playDetailsplayTypeId is "Pass"
+        return "Pass"
+      if playDetails.teamChange
+        # "Interception",
+        # "Fumble",
+        return "Turnover"
+        # if scoreType
+          # "Pick Six",
+      if playDetails.scoreType
+        return "Touchdown"
 
   getPlayOptionNumber: (question, optionTitle) ->
+    console.log "Play Outcome", optionTitle
     Promise.bind @
       .then -> _.invert _.mapObject question['options'], (option) -> option['title']
       .then (options) -> console.log "-------- \n", "Play Outcome:", options[optionTitle], "\n", outcome, "\n", options
@@ -453,7 +490,6 @@ module.exports = class extends Task
     return options
 
   insertPlayQuestion: (eventId, details, multiplierArguments, options) ->
-    console.log multiplierArguments
     Promise.bind @
       .then ->@Games.find {eventId: eventId}
       .then (result) ->
@@ -468,16 +504,23 @@ module.exports = class extends Task
           type: "play"
           active: true
           commercial: false
-          que: @generateQuestionTitle details, multiplierArguments
+          que: @generateQuestionTitle details
           options: options
           usersAnswered: []
 
-  generateQuestionTitle: (details, multiplierArguments) ->
-    console.log details
-    downGrammer = @downGrammer multiplierArguments.down
-    que =  downGrammer + " & " + details.yardsToGo
-
-    console.log que
+  generateQuestionTitle: (details) ->
+    # console.log details.nextPlayType
+    if details.isFirstDown
+      details.down = 1
+      details.yardsToGo = 10
+    else if details.nextPlayType is "PAT"
+      que = "Point After Attempt"
+    else if details.nextPlayType is "Kickoff"
+      que = "Kickoff"
+    else
+      downGrammer = @downGrammer details.down
+      que =  downGrammer + " & " + details.yardsToGo
+    # console.log que
     return que
 
   downGrammer: (down) ->
