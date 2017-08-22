@@ -8,6 +8,7 @@ ImportGameDetails = require "../../task/stats/ImportGameDetails"
 ProcessGame = require "../../task/stats/ProcessGame"
 promiseRetry = require 'promise-retry'
 Game = require "../../model/Game"
+full = require "../../../test/fixtures/task/stats/processGame/collection/FullGame.json"
 base = require "../../../test/fixtures/task/stats/processGame/collection/base.json"
 baseWithPlays = require "../../../test/fixtures/task/stats/processGame/collection/baseWithPlays.json"
 kickoff = require "../../../test/fixtures/task/stats/processGame/collection/kickoff.json"
@@ -34,6 +35,8 @@ module.exports = class extends Strategy
   execute: ->
     game = @Games.find({_id: "598f92166e51160efdee87a7"});
     base = base.games[0]
+    full = full.games[0]
+    pbp = full.pbp
     # kickoff = kickoff.games[0] # 👍
     # firstDown = firstDown.games[0] # 👍
     # secondDown = secondDown.games[0] #👍
@@ -42,6 +45,12 @@ module.exports = class extends Strategy
     # fieldGoal = fieldGoal.games[0] #👍
     # pat = pat.games[0] #👍
 
-    Promise.bind @
-      .then -> @importGameDetails.upsertGame base
-      # .then (result) -> @processGame.execute thirdDown, result
+    Promise.each(pbp, (element) ->
+      console.log element.playId
+      #return Promise.resolve(element+'.');
+    )
+    # .then (allItems) ->
+    #   console.dir allItems
+    #   return
+      # .then -> @importGameDetails.upsertGame base
+      # .then (result) -> @processGame.execute games, result
