@@ -77,9 +77,12 @@ module.exports = class extends Task
     team = _.find teams, (team) ->
       return team.teamId is teamIdWithBall
     numbers = location.replace(/\D+/g, '')
-    if (location.indexOf team.abbreviation > 0)
+    # If Dal is on their side (Furthest from scoring)
+    if location.indexOf(team.abbreviation) is 0
+      # Dal7 would be 93, Dal42 would be 58
       return 100 - parseInt(numbers)
     else
+      # Ind7 would be 7, Ind42 would be 42
       return numbers
 
   getPlayType: (playTypeId) ->
@@ -163,13 +166,14 @@ module.exports = class extends Task
       return false
 
   quantifyLocation: (distance) ->
+    distance = 100 - distance
     if distance >= 0 && distance <= 10
       return 1
     else if distance > 10 && distance <= 30
       return 2
     else if distance > 30 && distance <= 60
       return 3
-    else if distance > 60 && distance <= 80
+    else if distance > 0 && distance <= 80
       return 4
     else if distance > 80 && distance <= 90
       return 5

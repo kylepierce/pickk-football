@@ -25,7 +25,11 @@
           "score": true
       },
       "eventStatus": {
+          "down": 1,
+          "distance": 10,
           "eventStatusId": 2,
+          "minutes": 10,
+          "seconds": 3,
           "period": 4,
           "isActive": true,
           "name": "In-Progress"
@@ -117,7 +121,7 @@
               "teamId": 338
           },
           "endPossession": {
-              "teamId": 331
+              "teamId": 338
           },
           "isContinuation": true,
           "kickType": {

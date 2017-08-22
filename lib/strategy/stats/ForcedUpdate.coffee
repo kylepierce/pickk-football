@@ -24,6 +24,7 @@ module.exports = class extends Strategy
     super
 
     @mongodb = dependencies.mongodb
+    @Games = dependencies.mongodb.collection("games")
     @importGames = new ImportGames dependencies
     @getActiveGames = new GetActiveGames dependencies
     @importGameDetails = new ImportGameDetails dependencies
@@ -31,23 +32,16 @@ module.exports = class extends Strategy
     @logger = dependencies.logger
 
   execute: ->
-    # existing = baseWithPlays.games[0]
-    # newPlay = @combinedArrays firstDown1
-    # firstDown1 = base.pbp.push(firstDown1)
-    # console.log firstDown1
-    kickoff = kickoff.games[0]
-    firstDown = firstDown.games[0]
-    secondDown = secondDown.games[0]
-    thirdDown = thirdDown.games[0]
-    punt = punt.games[0]
-    fieldGoal = fieldGoal.games[0]
-    pat = pat.games[0]
-    Promise.bind @
-      .then -> @importGameDetails.upsertGame punt
-      .then (result) -> @processGame.execute firstDown, result
+    game = @Games.find({_id: "598f92166e51160efdee87a7"});
+    base = base.games[0]
+    # kickoff = kickoff.games[0] # 👍
+    # firstDown = firstDown.games[0] # 👍
+    # secondDown = secondDown.games[0] #👍
+    # thirdDown = thirdDown.games[0] #👍
+    # punt = punt.games[0] #👍
+    # fieldGoal = fieldGoal.games[0] #👍
+    # pat = pat.games[0] #👍
 
-  combinedArrays: (newPlay) ->
-    existing = baseWithPlays.games[0]
-    newPlay.playId = 45.0
-    existing.pbp.push(newPlay)
-    return existing
+    Promise.bind @
+      .then -> @importGameDetails.upsertGame base
+      # .then (result) -> @processGame.execute thirdDown, result
