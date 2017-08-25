@@ -12,7 +12,6 @@ promiseRetry = require 'promise-retry'
 chance = new (require 'chance')
 CreatePlayQuestions = require "./CreatePlayQuestions"
 GetPlayDetails = require "./GetPlayDetails"
-# ProcessGame = require "./ProcessGame"
 
 module.exports = class extends Task
   constructor: (dependencies) ->
@@ -30,7 +29,6 @@ module.exports = class extends Task
     @GamePlayed = dependencies.mongodb.collection("gamePlayed")
     @Users = dependencies.mongodb.collection("users")
     @Notifications = dependencies.mongodb.collection("notifications")
-    # @processGame = new ProcessGame dependencies
     @gameParser = new GameParser dependencies
     @endOfGame = new EndOfGame dependencies
     @getPlayDetails = new GetPlayDetails dependencies
@@ -55,53 +53,195 @@ module.exports = class extends Task
       .then (game) -> _.flatten game[0].pbp, 'playId'
       .then (list) -> @getPlayResult list, question.playId
 
-  # getPlays: (game) ->
-  #   Promise.bind @
-  #     .then ->
-  #     .then (list) -> _.filter list, @ignoreList
-
-  # ignoreList: (single) ->
-  #   list = [10, 11, 13, 29, 57, 58]
-  #   if (list.indexOf(single) is -1)
-  #     return true
-
   getPlayResult: (list, playId) ->
     # The playId comes from the play that happened before the question was created.
     # Unfortunately there is not other way to associate that I am aware of.
     Promise.bind @
-    # Find the index of previous play in pbp array
-    .then ->_.indexOf list,  _.find list, (play) -> return play.playId is playId
-    # Then find the next item in the pbp array. Which should be this question's result.
-    .then (index) -> list[index + 1]
+      .then ->_.indexOf list,  _.find list, (play) -> return play.playId is playId # Find the index of previous play in pbp array
+      .then (index) -> list[index + 1] # Then find the next item in the pbp array. Which should be this question's result.
 
   getCorrectOptionNumber: (question, result, teams) ->
     playDetails = @getPlayDetails.execute result, teams
     Promise.bind @
       .then -> _.map question.options, (option) -> return option['title']
       .then (titles) -> @getPlayOptionTitle titles, playDetails
-      # .then (optionTitle) -> @getPlayOptionNumber question, optionTitle
+      .then (title) -> console.log question.que, ">>>", title
+      # .then (optionTitle) -> console.log optionTitle
+        # @getPlayOptionNumber optionTitle
 
-  getPlayOptionTitle: (titles, playDetails) ->
+  getPlayOptionTitle: (titles, play) ->
     Promise.bind @
-      .then -> console.log "Possible Question Outcomes: \n", titles, "\n", "Play Result: \n", playDetails, "\n \n"
-      # .then -> return titles
-      # .map (title) ->
-      #   console.log title
-      # .then -> @kickoffQuestion playDetails
-      # .then -> @pointAfterQuestion playDetails
-      # .then -> @puntQuestion playDetails
-      # .then -> @fieldGoalQuestion playDetails
-      # .then -> @thirdDownQuestion playDetails
-      # .then -> @normalQuestion playDetails
+      # .then -> console.log "Possible Question Outcomes: \n", titles, "\n", "Play Result: \n", play, "\n \n"
+      .then -> answers = [
+        title: "Run",
+        requirements:
+          typeId: [3, 4]
+      ,
+        title: "Pass",
+        requirements:
+          typeId: [1, 2, 9, 19, 23]
+      ,
+        title: "Interception",
+        requirements:
+          typeId: [9, 19],
+          teamChange: true
+      ,
+        title: "Fumble",
+        requirements:
+          typeId: [14, 15, 16],
+          teamChange: true
+      ,
+        title: "Pick Six",
+        requirements:
+          typeId: [19],
+          teamChange: true
+      ,
+        title: "Unable to Covert First Down",
+        requirements:
+          isFirstDown: false
+      ,
+        title: "Convert to First Down",
+        requirements:
+          isFirstDown: false
+      ,
+        title: "Touchdown",
+        requirements:
+          scoreType: "Touchdown"
+      ,
+        title: "Kick Good!,"
+        requirements:
+          scoreType: ["Field Goal", "PAT"]
+      ,
+        title: "Two Point Good",
+        requirements:
+          scoreType: "Two Points"
+      ,
+        title: "Safety",
+        requirements:
+          scoreType: "Two Points",
+          teamChange: true
+      ,
+        title: "Missed Kick",
+        requirements:
+          playType: "Field Goal"
+      ,
+        title: "Blocked Kick",
+        requirements:
+           playType: ["Field Goal", "Punt"]
+      ,
+        title: "Failed Onside",
+        requirements:
+          playType: ["Kickoff"],
+          teamChange: true
+      ,
+        title: "Successful Onside",
+        requirements:
+          playType: ["Kickoff"],
+          teamChange: false
+      ,
+        title: "Blocked Punt",
+        requirements:
+          playType: ["Punt"],
+          typeId: [18]
+      ,
+      #   title: "Fake Kick No Score"
+      #,   requirements:
+      # ,
+        title: "Two Point No Good",
+        requirements:
+          typeId: [53, 54, 55]
+      ,
+        title: "Fair Catch/No Return",
+        requirements:
+           playType: ["Punt"],
+           typeId: [21]
+      ,
+        title: "Touchback/No Return",
+        requirements:
+          playType: ["Kickoff"],
+          typeId: [21]
+      ,
+        title: "Neg to 25 Yard Return",
+        requirements:
+          playType: ["Kickoff"]
+          # yards: <25
+      ,
+        title: "Neg to 20 Yard Return",
+        requirements:
+          playType: ["Punt"]
+          # yards: <20
+      ,
+        title: "21-40 Yard Return",
+        requirements:
+          playType: ["Punt"]
+          # yards: >= 21 && yards <= 40
+      ,
+        title: "26+ Return",
+        requirements:
+          playType: ["Punt"]
+          # yards: >= 26
+      ,
+        title: "26-45 Return",
+        requirements:
+          playType: ["Punt"]
+          # yards:
+      ,
+        title: "46+,"
+        requirements:
+          playType: ["Punt"]
+          # yards: > 21 || < 40
+      ]
 
-  kickoffQuestion: (play) ->
+      .then (answers) ->
+        correct = []
+        _.each titles, (title) -> # Look at each optionTitle
+          _.find answers, (answer) -> # Find answer with matching title
+            if answer['title'] is title
+              keys = _.allKeys answer.requirements
+
+              _.each keys, (key) ->
+                answerValue = answer.requirements[key]
+                playValue = play.playDetails[key]
+
+                if _.isArray answerValue
+                  if (answerValue.indexOf playValue) > -1
+                    # console.log answer.title
+                    # return true
+                    correct.push(answer.title)
+
+                else if answerValue is playValue
+                  # console.log answer.title
+                  # return true
+                  correct.push(answer.title)
+              # console.log outcome
+        return correct
+
+                # if answer[key] is play.playDetails[key]
+                #   console.log answer
+            # Does the playDetails match the requirements
+            # if it does add it to the correct answer array.
+
+      # drive
+			# "Punt",
+      # "Field Goal",
+      # "Turnover",
+      # "Touchdown",
+      # "Turnover on Downs",
+      # "Safety"
+
+  penalty: (typeId) ->
+    if typeId is 10 || typeId is 11
+      console.log "penalty -- Delete Last Question"
+      return "Penalty"
+
+  kickoffQuestion: (titles, play) ->
     list = [5, 6, 25, 41, 43]
-    if play.playdetails.type is "Kickoff"
+    if play.playDetails.type is "Kickoff"
       console.log "Kickoff"
-      if play.playdetails.teamChange is false
+      if play.playDetails.teamChange is false
         return "Fumble"
         # "Successful Onside"
-      if play.playdetails.scoreType
+      if play.playDetails.scoreType
         return "Touchdown"
       # if no return
       #   "Touchback/No Return",
@@ -112,9 +252,9 @@ module.exports = class extends Task
         # "46+",
         # "Failed Onside",
 
-  pointAfterQuestion: (play) ->
+  pointAfterQuestion: (titles, play) ->
     list = [22, 47, 49, 53, 54, 55, 56]
-    if play.playdetails.type is "PAT"
+    if play.playDetails.type is "PAT"
       console.log "PAT"
     # "Kick Good!",
     # "Fake Kick No Score",
@@ -123,9 +263,9 @@ module.exports = class extends Task
     # "Two Point Good",
     # "Two Point No Good"
 
-  puntQuestion: (play) ->
+  puntQuestion: (titles, play) ->
     list = [7, 8, 18, 24, 71]
-    if play.playdetails.type is "Punt"
+    if play.playDetails.type is "Punt"
       console.log "Punt"
     # Punt - Return yards
     # When play type is 7
@@ -137,9 +277,9 @@ module.exports = class extends Task
     # "Fumble", - playTypeId: 14, KickType: 12
     # "Touchdown" -
 
-  fieldGoalQuestion: (play) ->
+  fieldGoalQuestion: (titles, play) ->
     list = [17, 35, 36, 42, 50]
-    if play.playdetails.type is "Field Goal"
+    if play.playDetails.type is "Field Goal"
       console.log "Field Goal"
     # Field goal - Successful?
     # if down is 4
@@ -150,7 +290,7 @@ module.exports = class extends Task
     # "Missed Kick",
     # "Blocked Kick"
 
-  thirdDownQuestion: (play) ->
+  thirdDownQuestion: (titles, play) ->
     # if result.down is 3
     if play.previous.down is 3
       console.log "Third Down"
@@ -170,12 +310,12 @@ module.exports = class extends Task
       if play.playDetails.coreType
         return "Touchdown"
 
-  normalQuestion: (play) ->
+  normalQuestion: (titles, play) ->
     if play.previous.down is 1 || play.previous.down is 2
       console.log "Normal Play"
-      if play.previous.playType is "Run"
+      if play.playDetails.playType is "Run"
         return "Run"
-      else if play.previous.playType is "Pass"
+      else if play.playDetails.playType is "Pass"
         return "Pass"
       if play.playDetails.teamChange
         # "Interception",
@@ -187,9 +327,9 @@ module.exports = class extends Task
         return "Touchdown"
 
   getPlayOptionNumber: (optionTitle) ->
-    # console.log "Play Outcome", optionTitle
-    Promise.bind @
-      .then -> _.invert _.mapObject question['options'], (option) -> option['title']
+    console.log "Play Outcome", optionTitle
+    # Promise.bind @
+      # .then -> _.invert _.mapObject question['options'], (option) -> option['title']
       # .then (options) -> console.log "-------- \n", "Play Outcome:", options[optionTitle], "\n", outcome, "\n", options
       # .then (options) -> options[outcome]
 

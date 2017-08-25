@@ -30,11 +30,14 @@ module.exports = class extends Strategy
     fullGame = full.games[0]
     plays = fullGame.pbp
 
-    playNumber = 7
-    old.pbp = _.first plays, playNumber
-    update.pbp = _.first plays, playNumber + 1
+    # playNumber = 6
+    # old.pbp = _.first plays, playNumber
+    # update.pbp = _.first plays, playNumber + 1
     Promise.bind @
-      .then -> @importGameDetails.upsertGame old
+      .then -> @getPbpLength old.eventId
+      .then (playNumber) ->
+        old.pbp = _.first plays, playNumber
+        update.pbp = _.first plays, playNumber + 1
       .then -> @increasePlays old, update
 
   increasePlays: (old, update) ->
@@ -42,6 +45,7 @@ module.exports = class extends Strategy
       .then -> @importGameDetails.upsertGame update
       .then (result) -> @processGame.execute old, result
 
-  getGame: (gameId) ->
+  getPbpLength: (eventId) ->
     Promise.bind @
-      .then -> @Games.find {_id: gameId}
+      .then -> @Games.findOne({eventId: eventId})
+      .then (game) -> game.pbp.length

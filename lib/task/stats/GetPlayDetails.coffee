@@ -33,16 +33,16 @@ module.exports = class extends Task
 
   execute: (play, teams) ->
     if play
-      playdetails =
+      playDetails =
         yardsToTouchdown: @yardsToTouchdown play.endPossession.teamId, play.endYardLine, teams
         previous: @previousObj play
-        playdetails: @playDetailsObj play
+        playDetails: @playDetailsObj play
 
-      playdetails.distance = @distanceObj play, playdetails.yardsToTouchdown
-      playdetails.nextPlay = @getNextPlayTypeAndDown playdetails
-      playdetails.multiplierArguments = @getMultiplierArguments playdetails
+      playDetails.distance = @distanceObj play, playDetails.yardsToTouchdown
+      playDetails.nextPlay = @getNextPlayTypeAndDown playDetails
+      playDetails.multiplierArguments = @getMultiplierArguments playDetails
 
-      return playdetails
+      return playDetails
 
   previousObj: (play) ->
     return previous =
@@ -52,13 +52,15 @@ module.exports = class extends Task
       yards: parseInt(play.yards)
 
   playDetailsObj: (play) ->
-    return playdetails =
+    return playDetails =
+      playId: play.playId
       typeId: play.playType.playTypeId
       type: @getPlayType play.playType.playTypeId
       teamChange: @hasBallChangedTeams play.startPossession.teamId, play.endPossession.teamId
       scoreType: @hasScoreChange play.awayScoreBefore, play.awayScoreAfter, play.homeScoreBefore, play.homeScoreAfter
       isFirstDown: @reachedFirstDown play.yards, play.distance
       playText: play.playText
+      yards: parseInt(play.yards)
 
   distanceObj: (play, yardsToTouchdown) ->
     return distance =
@@ -159,7 +161,7 @@ module.exports = class extends Task
       if after - before is 1
         return "PAT"
       if after - before is 2
-        return "Safety"
+        return "Two Points"
       if after - before is 3
         return "Field Goal"
       if after - before is 6
@@ -200,19 +202,19 @@ module.exports = class extends Task
   getNextPlayTypeAndDown: (play) ->
     kickOffList = ["PAT", "Safety", "Field Goal"]
     pointAfterQuestionlist = [22, 47, 49, 53, 54, 55, 56]
-    if kickOffList.indexOf(play.playdetails.scoreType) > -1
+    if kickOffList.indexOf(play.playDetails.scoreType) > -1
       nextPlay =
         playType: "Kickoff"
         down: 6
-    else if (pointAfterQuestionlist.indexOf(play.playdetails.typeId) > -1)
+    else if (pointAfterQuestionlist.indexOf(play.playDetails.typeId) > -1)
       nextPlay =
         playType: "Kickoff"
         down: 6
-    else if play.playdetails.scoreType is "Touchdown"
+    else if play.playDetails.scoreType is "Touchdown"
       nextPlay =
         playType: "PAT"
         down: 5
-    else if play.playdetails.isFirstDown || play.playdetails.teamChange || play.previous.down is NaN
+    else if play.playDetails.isFirstDown || play.playDetails.teamChange || play.previous.down is NaN
       nextPlay =
         playType: "First Down"
         down: 1
@@ -245,12 +247,12 @@ module.exports = class extends Task
         down: 2
     return nextPlay
 
-  getMultiplierArguments: (playdetails) ->
+  getMultiplierArguments: (playDetails) ->
     # "down" : #, "area" : #, "yards" : #, "style" : #
     multiplierArguments =
-      down: playdetails.nextPlay.down #Range 1-6
-      area: playdetails.distance.location #Range 1-6
-      yards: playdetails.distance.yardsArea #Range 1-6
+      down: playDetails.nextPlay.down #Range 1-6
+      area: playDetails.distance.location #Range 1-6
+      yards: playDetails.distance.yardsArea #Range 1-6
       style: 2 #Range 1-3 when complete
       # playType: nextPlay.playType # String
     return multiplierArguments

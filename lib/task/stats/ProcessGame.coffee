@@ -43,10 +43,9 @@ module.exports = class extends Task
       teams = update.teams
       previousPlay = (_.last update.pbp)
       playDetails = @getPlayDetails.execute previousPlay, teams
-      console.log playDetails
 
       Promise.bind @
-        # .then -> @closeInactiveQuestions.execute update.id, teams
+        .then -> @closeInactiveQuestions.execute update.id, teams
         # .then -> @createCommercialQuestions update.eventId, previousPlayDetails
         # .then -> @startCommercialBreak update.eventId, previousPlayDetails
         .then -> @createPlayQuestions.execute update.eventId, playDetails
