@@ -6,7 +6,7 @@
       "args": [
         "--settings", "settings/dev.json",
         "--delay=10000",
-        "lib/strategy/stats/UpdateNFL.coffee"
+        "lib/strategy/stats/ForcedUpdate.coffee"
       ],
       "exec_interpreter": "coffee",
       "exec_mode": "fork",

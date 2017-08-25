@@ -35,8 +35,7 @@ module.exports = class extends Strategy
   execute: ->
     game = @Games.find({_id: "598f92166e51160efdee87a7"});
     base = base.games[0]
-    full = full.games[0]
-    pbp = full.pbp
+    fullGame = full.games[0].pbp
     # kickoff = kickoff.games[0] # 👍
     # firstDown = firstDown.games[0] # 👍
     # secondDown = secondDown.games[0] #👍
@@ -44,13 +43,19 @@ module.exports = class extends Strategy
     # punt = punt.games[0] #👍
     # fieldGoal = fieldGoal.games[0] #👍
     # pat = pat.games[0] #👍
+    @increasePlays fullGame, base
 
-    Promise.each(pbp, (element) ->
-      console.log element.playId
-      #return Promise.resolve(element+'.');
-    )
-    # .then (allItems) ->
-    #   console.dir allItems
-    #   return
-      # .then -> @importGameDetails.upsertGame base
-      # .then (result) -> @processGame.execute games, result
+
+  increasePlays: (fullGame, base) ->
+    return fullGame
+      .mapSeries( (element, index) ->
+        base.pbp.push(element)
+        console.log base.pbp.length
+        return base
+      )
+      # .then (update) -> @increasePlays update, game
+    # Promise.bind @
+    #   .then -> console.log update.pbp.length
+      # .then -> @importGameDetails.upsertGame update
+      # .then (result) -> @processGame.execute old, result
+      # .then -> timeout(10000)

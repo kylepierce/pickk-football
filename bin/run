@@ -5,7 +5,7 @@ set -eux
 ENV=${1:-}
 if [ -z $ENV ]; then
   echo "Usage: $0 ENV"
-  echo "ENV = [dev, prod]"
+  echo "ENV = [force, dev, prod]"
   exit 1
 else
   shift
