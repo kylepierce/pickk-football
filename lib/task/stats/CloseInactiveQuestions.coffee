@@ -11,6 +11,8 @@ moment = require "moment"
 promiseRetry = require 'promise-retry'
 chance = new (require 'chance')
 CreatePlayQuestions = require "./CreatePlayQuestions"
+GetPlayDetails = require "./GetPlayDetails"
+# ProcessGame = require "./ProcessGame"
 
 module.exports = class extends Task
   constructor: (dependencies) ->
@@ -28,77 +30,81 @@ module.exports = class extends Task
     @GamePlayed = dependencies.mongodb.collection("gamePlayed")
     @Users = dependencies.mongodb.collection("users")
     @Notifications = dependencies.mongodb.collection("notifications")
+    # @processGame = new ProcessGame dependencies
     @gameParser = new GameParser dependencies
     @endOfGame = new EndOfGame dependencies
+    @getPlayDetails = new GetPlayDetails dependencies
+    @createPlayQuestions = new CreatePlayQuestions dependencies
 
   execute: (eventId, teams) ->
     Promise.bind @
       .then -> @Games.find({id: eventId})
       .then (game) -> @Questions.find({gameId: game[0]._id, type: "play", active: true});
-      .map (questions) -> @closeQuestion questions, teams
+      .map (question) -> @closeQuestion question, teams
 
   closeQuestion: (question, teams) ->
     Promise.bind @
       .then -> @getSinglePlayResult question
-      .then (result) -> @getCorrectOptionNumber question, result, teams
+      .then (playResult) -> @getCorrectOptionNumber question, playResult, teams
       # .then (optionNumber) -> @updateQuestionAndAnswers question._id, optionNumber
       # .map (answer) -> @awardUsers answer, outcome
 
   getSinglePlayResult: (question) ->
     Promise.bind @
       .then -> @getGame question.gameId
-      .then (game) -> @getPlays game[0]
+      .then (game) -> _.flatten game[0].pbp, 'playId'
       .then (list) -> @getPlayResult list, question.playId
 
-  getPlays: (game) ->
-    Promise.bind @
-      .then -> _.flatten game.pbp, 'playId'
-      .then (list) -> _.filter list, @ignoreList
+  # getPlays: (game) ->
+  #   Promise.bind @
+  #     .then ->
+  #     .then (list) -> _.filter list, @ignoreList
 
-  ignoreList: (single) ->
-    list = [10, 11, 13, 29, 57, 58]
-    if (list.indexOf(single) is -1)
-      return true
+  # ignoreList: (single) ->
+  #   list = [10, 11, 13, 29, 57, 58]
+  #   if (list.indexOf(single) is -1)
+  #     return true
 
   getPlayResult: (list, playId) ->
     # The playId comes from the play that happened before the question was created.
     # Unfortunately there is not other way to associate that I am aware of.
     Promise.bind @
-      # Find the index of previous play in pbp array
-      .then ->_.indexOf list,  _.find list, (play) -> return play.playId is playId
-      # Then find the next item in the pbp array. Which should be this question's result.
-      .then (index) -> list[index + 1]
+    # Find the index of previous play in pbp array
+    .then ->_.indexOf list,  _.find list, (play) -> return play.playId is playId
+    # Then find the next item in the pbp array. Which should be this question's result.
+    .then (index) -> list[index + 1]
 
-  getCorrectOptionNumber: (question, result, team) ->
+  getCorrectOptionNumber: (question, result, teams) ->
+    playDetails = @getPlayDetails.execute result, teams
     Promise.bind @
-      .then -> @getPlayOptionTitle question, result, team
-      .then (optionTitle) -> @getPlayOptionNumber question, optionTitle
+      .then -> _.map question.options, (option) -> return option['title']
+      .then (titles) -> @getPlayOptionTitle titles, playDetails
+      # .then (optionTitle) -> @getPlayOptionNumber question, optionTitle
 
-  getPlayOptionTitle: (question, result, team) ->
-    playDetails = @getPreviousPlayDetails result, team
-    console.log playDetails
+  getPlayOptionTitle: (titles, playDetails) ->
     Promise.bind @
-      .then -> @kickoffQuestion question, playDetails
-      .then -> @pointAfterQuestion question, playDetails
-      .then -> @puntQuestion question, playDetails
-      .then -> @fieldGoalQuestion question, playDetails
-      .then -> @thirdDownQuestion question, playDetails
-      .then -> @normalQuestion question, playDetails
+      .then -> console.log "Possible Question Outcomes: \n", titles, "\n", "Play Result: \n", playDetails, "\n \n"
+      # .then -> return titles
+      # .map (title) ->
+      #   console.log title
+      # .then -> @kickoffQuestion playDetails
+      # .then -> @pointAfterQuestion playDetails
+      # .then -> @puntQuestion playDetails
+      # .then -> @fieldGoalQuestion playDetails
+      # .then -> @thirdDownQuestion playDetails
+      # .then -> @normalQuestion playDetails
 
-  kickoffQuestion: (question, playDetails) ->
+  kickoffQuestion: (play) ->
     list = [5, 6, 25, 41, 43]
-    if playDetails.playType is "Kickoff"
+    if play.playdetails.type is "Kickoff"
       console.log "Kickoff"
-      console.log question.que
-      console.log playDetails
-    # if (list.indexOf(result.playType.playTypeId) > 0)
-      # if teamChange is false
-        # "Fumble",
-        # "Successful Onside",
-      # if scoreType
-        # "Touchdown"
+      if play.playdetails.teamChange is false
+        return "Fumble"
+        # "Successful Onside"
+      if play.playdetails.scoreType
+        return "Touchdown"
       # if no return
-        # "Touchback/No Return",
+      #   "Touchback/No Return",
       # if yards
         # "Neg to 25 Yard Return",
         # "26-45 Return",
@@ -106,13 +112,10 @@ module.exports = class extends Task
         # "46+",
         # "Failed Onside",
 
-  pointAfterQuestion: (question, playDetails) ->
+  pointAfterQuestion: (play) ->
     list = [22, 47, 49, 53, 54, 55, 56]
-    if playDetails.playType is "PAT"
+    if play.playdetails.type is "PAT"
       console.log "PAT"
-      console.log question.que
-      console.log playDetails
-    # if playDetails.scoreType is "PAT"
     # "Kick Good!",
     # "Fake Kick No Score",
     # "Blocked Kick",
@@ -120,12 +123,10 @@ module.exports = class extends Task
     # "Two Point Good",
     # "Two Point No Good"
 
-  puntQuestion: (question, playDetails) ->
+  puntQuestion: (play) ->
     list = [7, 8, 18, 24, 71]
-    if playDetails.playType is "Punt"
+    if play.playdetails.type is "Punt"
       console.log "Punt"
-      console.log question.que
-      console.log playDetails
     # Punt - Return yards
     # When play type is 7
     # Down is 4
@@ -136,12 +137,10 @@ module.exports = class extends Task
     # "Fumble", - playTypeId: 14, KickType: 12
     # "Touchdown" -
 
-  fieldGoalQuestion: (question, playDetails) ->
+  fieldGoalQuestion: (play) ->
     list = [17, 35, 36, 42, 50]
-    if playDetails.playType is "Field Goal"
+    if play.playdetails.type is "Field Goal"
       console.log "Field Goal"
-      console.log question.que
-      console.log playDetails
     # Field goal - Successful?
     # if down is 4
     # "Kick Good!",
@@ -151,51 +150,47 @@ module.exports = class extends Task
     # "Missed Kick",
     # "Blocked Kick"
 
-  thirdDownQuestion: (question, playDetails) ->
+  thirdDownQuestion: (play) ->
     # if result.down is 3
-    if playDetails.down is 3
+    if play.previous.down is 3
       console.log "Third Down"
-      console.log question.que
-      console.log playDetailsn
     #   # if distance from endzone is less then 10
     #   # else
-      if playDetails.isFirstDown
+      if play.playDetails.isFirstDown
         return "Convert to First Down"
-      else if !playDetails.isFirstDown
+      else if !play.playDetails.isFirstDown
         return "Unable to Covert First Down"
-      if playDetails.teamChange
+      if play.playDetails.teamChange
         console.log "Turnover"
         return
         # "Interception",
         # "Fumble",
         # if playDetails.scoreType
           # "Pick Six",
-      if playDetails.scoreType
+      if play.playDetails.coreType
         return "Touchdown"
 
-  normalQuestion: (question, playDetails) ->
-    if playDetails.down is 1 || playDetails.down is 2
+  normalQuestion: (play) ->
+    if play.previous.down is 1 || play.previous.down is 2
       console.log "Normal Play"
-      console.log question.que
-      console.log playDetails
-      if playDetails.playTypeId is "Run"
+      if play.previous.playType is "Run"
         return "Run"
-      else if playDetails.playTypeId is "Pass"
+      else if play.previous.playType is "Pass"
         return "Pass"
-      if playDetails.teamChange
+      if play.playDetails.teamChange
         # "Interception",
         # "Fumble",
         return "Turnover"
         # if scoreType
           # "Pick Six",
-      if playDetails.scoreType
+      if play.playDetails.scoreType
         return "Touchdown"
 
-  getPlayOptionNumber: (question, optionTitle) ->
-    console.log "Play Outcome", optionTitle
+  getPlayOptionNumber: (optionTitle) ->
+    # console.log "Play Outcome", optionTitle
     Promise.bind @
       .then -> _.invert _.mapObject question['options'], (option) -> option['title']
-      .then (options) -> console.log "-------- \n", "Play Outcome:", options[optionTitle], "\n", outcome, "\n", options
+      # .then (options) -> console.log "-------- \n", "Play Outcome:", options[optionTitle], "\n", outcome, "\n", options
       # .then (options) -> options[outcome]
 
   updateQuestionAndAnswers: (questionId, outcome) ->
@@ -223,3 +218,7 @@ module.exports = class extends Task
           message: "Nice Pickk! You got #{reward} Coins!"
           sharable: false
           shareMessage: ""
+
+  getGame: (gameId) ->
+    Promise.bind @
+      .then -> @Games.find {_id: gameId}

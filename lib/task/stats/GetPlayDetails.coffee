@@ -58,6 +58,7 @@ module.exports = class extends Task
       teamChange: @hasBallChangedTeams play.startPossession.teamId, play.endPossession.teamId
       scoreType: @hasScoreChange play.awayScoreBefore, play.awayScoreAfter, play.homeScoreBefore, play.homeScoreAfter
       isFirstDown: @reachedFirstDown play.yards, play.distance
+      playText: play.playText
 
   distanceObj: (play, yardsToTouchdown) ->
     return distance =
@@ -74,6 +75,7 @@ module.exports = class extends Task
       return yardsToFirstDown
 
   yardsToTouchdown: (teamIdWithBall, location, teams) ->
+
     team = _.find teams, (team) ->
       return team.teamId is teamIdWithBall
     numbers = location.replace(/\D+/g, '')

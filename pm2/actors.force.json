@@ -1,7 +1,7 @@
 {
   "apps": [
     {
-      "name": "UpdateNFL",
+      "name": "ForcedUpdate",
       "script": "./bin/worker",
       "args": [
         "--settings", "settings/dev.json",

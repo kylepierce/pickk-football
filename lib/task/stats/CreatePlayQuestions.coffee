@@ -35,6 +35,7 @@ module.exports = class extends Task
       .then -> @Multipliers.find details.multiplierArguments
       .then (result) -> @parseOptions result[0].options
       .then (options) -> @insertPlayQuestion eventId, details, options
+      .then (result) -> console.log result.que
 
   parseOptions: (options) ->
     _.mapObject options, (option, key) ->
@@ -50,7 +51,6 @@ module.exports = class extends Task
     return options
 
   insertPlayQuestion: (eventId, details, options) ->
-    console.log details
     Promise.bind @
       .then ->@Games.find {eventId: eventId}
       .then (result) ->
@@ -59,7 +59,7 @@ module.exports = class extends Task
           dateCreated: new Date()
           gameId: result[0]._id
           period: result[0].period
-          playId:  details.playdetails.playId
+          playId:  details.previous.playId
           details:  details.multiplierArguments
           extendedDetails: details
           type: "play"

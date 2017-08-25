@@ -30,6 +30,7 @@ module.exports = class extends Task
     @GamePlayed = dependencies.mongodb.collection("gamePlayed")
     @Users = dependencies.mongodb.collection("users")
     @Notifications = dependencies.mongodb.collection("notifications")
+    @closeInactiveQuestions = new CloseInactiveQuestions dependencies
     @createPlayQuestions = new CreatePlayQuestions dependencies
     @endOfGame = new EndOfGame dependencies
     @getPlayDetails = new GetPlayDetails dependencies
@@ -44,7 +45,7 @@ module.exports = class extends Task
       playDetails = @getPlayDetails.execute previousPlay, teams
 
       Promise.bind @
-        # .then -> @closeInactiveQuestions update.id, teams
+        .then -> @closeInactiveQuestions.execute update.id, teams
         # .then -> @createCommercialQuestions update.eventId, previousPlayDetails
         # .then -> @startCommercialBreak update.eventId, previousPlayDetails
         .then -> @createPlayQuestions.execute update.eventId, playDetails

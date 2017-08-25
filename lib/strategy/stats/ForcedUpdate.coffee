@@ -43,19 +43,16 @@ module.exports = class extends Strategy
     # punt = punt.games[0] #👍
     # fieldGoal = fieldGoal.games[0] #👍
     # pat = pat.games[0] #👍
-    @increasePlays fullGame, base
+    @increasePlays kickoff, firstDown
 
-
-  increasePlays: (fullGame, base) ->
-    return fullGame
-      .mapSeries( (element, index) ->
-        base.pbp.push(element)
-        console.log base.pbp.length
-        return base
-      )
+  increasePlays: (old, update) ->
+    # return fullGame
+    #   .mapSeries( (element, index) ->
+    #     base.pbp.push(element)
+    #     console.log base.pbp.length
+    #     return base
+    #   )
       # .then (update) -> @increasePlays update, game
     # Promise.bind @
-    #   .then -> console.log update.pbp.length
-      # .then -> @importGameDetails.upsertGame update
-      # .then (result) -> @processGame.execute old, result
-      # .then -> timeout(10000)
+    #   .then -> @importGameDetails.upsertGame update
+    #   .then (result) -> @processGame.execute old, result
