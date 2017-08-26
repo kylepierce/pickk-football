@@ -29,6 +29,7 @@ module.exports = class
     @away = away
     @away_team = away.teamId
     @scoring = scoring
+    @location = (_.last @pbp).endYardLine
     @scheduled = moment(@['startDate'][1]['full']).toDate()
     @iso =  new Date(@['startDate'][1]['full']).toISOString()
     @name = "#{home.nickname} vs #{away.nickname}"
