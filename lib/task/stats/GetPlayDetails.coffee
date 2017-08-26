@@ -100,6 +100,12 @@ module.exports = class extends Task
         title: "Fumble",
         outcomes: [14, 15, 16]
       ,
+        title: "Interception",
+        outcomes: [9, 19]
+      ,
+        title: "Turnover",
+        outcomes: [9, 19, 16]
+      ,
         title: "Turnover",
         outcomes: [9, 19, 16]
       ,
@@ -117,6 +123,9 @@ module.exports = class extends Task
       ,
         title: "Field Goal",
         outcomes: [17, 42]
+      ,
+        title: "Two Point No Good",
+        outcomes: [53, 54, 55]
       ,
         title: "Turnover on Downs",
         outcomes: [18, 35, 36]

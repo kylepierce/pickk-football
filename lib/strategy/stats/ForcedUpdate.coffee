@@ -34,11 +34,16 @@ module.exports = class extends Strategy
     # old.pbp = _.first plays, playNumber
     # update.pbp = _.first plays, playNumber + 1
     Promise.bind @
+      # .then -> @resetGame
       .then -> @getPbpLength old.eventId
       .then (playNumber) ->
         old.pbp = _.first plays, playNumber
         update.pbp = _.first plays, playNumber + 1
       .then -> @increasePlays old, update
+
+  resetGame: ->
+    Promise.bind @
+      .then -> @importGameDetails.upsertGame base.games[0]
 
   increasePlays: (old, update) ->
     Promise.bind @
