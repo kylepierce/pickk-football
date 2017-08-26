@@ -23,7 +23,7 @@ module.exports = class
         runs: away.score
 
     @id = @['eventId']
-    @commercial = false
+    # @commercial = false
     @home = home
     @home_team = home.teamId
     @away = away
