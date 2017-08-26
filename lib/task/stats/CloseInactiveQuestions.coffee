@@ -106,7 +106,7 @@ module.exports = class extends Task
       ,
         title: "Kick Good!,"
         requirements:
-          scoreType: ["Field Goal", "PAT"]
+          typeId: [22, 42]
       ,
         title: "Two Point Good",
         requirements:
@@ -149,13 +149,11 @@ module.exports = class extends Task
       ,
         title: "Fair Catch/No Return",
         requirements:
-           playType: "Punt",
-           typeId: 21
+           typeId: [21, 28]
       ,
         title: "Touchback/No Return",
         requirements:
-          playType: "Kickoff",
-          typeId: 21
+          typeId: [21, 28]
       ,
         title: "Neg to 25 Yard Return",
         requirements:
@@ -208,7 +206,7 @@ module.exports = class extends Task
         return outcomes
 
   getPlayOptionNumber: (question, optionTitle) ->
-    console.log "Question", question.que, optionTitle
+    console.log "Question:", question.que, ">>>>", optionTitle
     Promise.bind @
       .then -> _.invert _.mapObject question['options'], (option) -> option['title']
       .then (options) -> options[optionTitle]

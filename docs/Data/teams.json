@@ -1,0 +1,866 @@
+{
+    "conferences": [{
+        "conferenceId": 3,
+        "name": "American Football Conference",
+        "abbreviation": "AFC",
+        "divisions": [{
+            "divisionId": 1,
+            "name": "East",
+            "abbreviation": "East",
+            "teams": [{
+                "venue": {
+                    "venueId": 506,
+                    "name": "New Era Field",
+                    "city": "Orchard Park",
+                    "state": {
+                        "stateId": 32,
+                        "name": "New York",
+                        "abbreviation": "NY"
+                    },
+                    "country": {
+                        "countryId": 1,
+                        "name": "United States",
+                        "abbreviation": "USA"
+                    }
+                },
+                "teamId": 324,
+                "location": "Buffalo",
+                "nickname": "Bills",
+                "abbreviation": "Buf",
+                "country": {
+                    "countryId": 1,
+                    "name": "United States",
+                    "abbreviation": "USA"
+                }
+            }, {
+                "venue": {
+                    "venueId": 519,
+                    "name": "Hard Rock Stadium",
+                    "city": "Miami Gardens",
+                    "state": {
+                        "stateId": 9,
+                        "name": "Florida",
+                        "abbreviation": "FL"
+                    },
+                    "country": {
+                        "countryId": 1,
+                        "name": "United States",
+                        "abbreviation": "USA"
+                    }
+                },
+                "teamId": 345,
+                "location": "Miami",
+                "nickname": "Dolphins",
+                "abbreviation": "Mia",
+                "country": {
+                    "countryId": 1,
+                    "name": "United States",
+                    "abbreviation": "USA"
+                }
+            }, {
+                "venue": {
+                    "venueId": 3392,
+                    "name": "Gillette Stadium",
+                    "city": "Foxborough",
+                    "state": {
+                        "stateId": 21,
+                        "name": "Massachusetts",
+                        "abbreviation": "MA"
+                    },
+                    "country": {
+                        "countryId": 1,
+                        "name": "United States",
+                        "abbreviation": "USA"
+                    }
+                },
+                "teamId": 348,
+                "location": "New England",
+                "nickname": "Patriots",
+                "abbreviation": "NE",
+                "country": {
+                    "countryId": 1,
+                    "name": "United States",
+                    "abbreviation": "USA"
+                }
+            }, {
+                "venue": {
+                    "venueId": 9286,
+                    "name": "MetLife Stadium",
+                    "city": "East Rutherford",
+                    "state": {
+                        "stateId": 30,
+                        "name": "New Jersey",
+                        "abbreviation": "NJ"
+                    },
+                    "country": {
+                        "countryId": 1,
+                        "name": "United States",
+                        "abbreviation": "USA"
+                    }
+                },
+                "teamId": 352,
+                "location": "New York",
+                "nickname": "Jets",
+                "abbreviation": "NYJ",
+                "country": {
+                    "countryId": 1,
+                    "name": "United States",
+                    "abbreviation": "USA"
+                }
+            }]
+        }, {
+            "divisionId": 3,
+            "name": "West",
+            "abbreviation": "West",
+            "teams": [{
+                "venue": {
+                    "venueId": 550,
+                    "name": "Sports Authority Field at Mile High",
+                    "city": "Denver",
+                    "state": {
+                        "stateId": 6,
+                        "name": "Colorado",
+                        "abbreviation": "CO"
+                    },
+                    "country": {
+                        "countryId": 1,
+                        "name": "United States",
+                        "abbreviation": "USA"
+                    }
+                },
+                "teamId": 332,
+                "location": "Denver",
+                "nickname": "Broncos",
+                "abbreviation": "Den",
+                "country": {
+                    "countryId": 1,
+                    "name": "United States",
+                    "abbreviation": "USA"
+                }
+            }, {
+                "venue": {
+                    "venueId": 516,
+                    "name": "Arrowhead Stadium",
+                    "city": "Kansas City",
+                    "state": {
+                        "stateId": 25,
+                        "name": "Missouri",
+                        "abbreviation": "MO"
+                    },
+                    "country": {
+                        "countryId": 1,
+                        "name": "United States",
+                        "abbreviation": "USA"
+                    }
+                },
+                "teamId": 339,
+                "location": "Kansas City",
+                "nickname": "Chiefs",
+                "abbreviation": "KC",
+                "country": {
+                    "countryId": 1,
+                    "name": "United States",
+                    "abbreviation": "USA"
+                }
+            }, {
+                "venue": {
+                    "venueId": 4315,
+                    "name": "StubHub Center",
+                    "city": "Carson",
+                    "state": {
+                        "stateId": 5,
+                        "name": "California",
+                        "abbreviation": "CA"
+                    },
+                    "country": {
+                        "countryId": 1,
+                        "name": "United States",
+                        "abbreviation": "USA"
+                    }
+                },
+                "teamId": 357,
+                "location": "Los Angeles",
+                "nickname": "Chargers",
+                "abbreviation": "LAC",
+                "country": {
+                    "countryId": 1,
+                    "name": "United States",
+                    "abbreviation": "USA"
+                }
+            }, {
+                "venue": {
+                    "venueId": 537,
+                    "name": "Oakland Coliseum",
+                    "city": "Oakland",
+                    "state": {
+                        "stateId": 5,
+                        "name": "California",
+                        "abbreviation": "CA"
+                    },
+                    "country": {
+                        "countryId": 1,
+                        "name": "United States",
+                        "abbreviation": "USA"
+                    }
+                },
+                "teamId": 341,
+                "location": "Oakland",
+                "nickname": "Raiders",
+                "abbreviation": "Oak",
+                "country": {
+                    "countryId": 1,
+                    "name": "United States",
+                    "abbreviation": "USA"
+                }
+            }]
+        }, {
+            "divisionId": 4,
+            "name": "North",
+            "abbreviation": "North",
+            "teams": [{
+                "venue": {
+                    "venueId": 545,
+                    "name": "M&T Bank Stadium",
+                    "city": "Baltimore",
+                    "state": {
+                        "stateId": 20,
+                        "name": "Maryland",
+                        "abbreviation": "MD"
+                    },
+                    "country": {
+                        "countryId": 1,
+                        "name": "United States",
+                        "abbreviation": "USA"
+                    }
+                },
+                "teamId": 366,
+                "location": "Baltimore",
+                "nickname": "Ravens",
+                "abbreviation": "Bal",
+                "country": {
+                    "countryId": 1,
+                    "name": "United States",
+                    "abbreviation": "USA"
+                }
+            }, {
+                "venue": {
+                    "venueId": 549,
+                    "name": "Paul Brown Stadium",
+                    "city": "Cincinnati",
+                    "state": {
+                        "stateId": 35,
+                        "name": "Ohio",
+                        "abbreviation": "OH"
+                    },
+                    "country": {
+                        "countryId": 1,
+                        "name": "United States",
+                        "abbreviation": "USA"
+                    }
+                },
+                "teamId": 327,
+                "location": "Cincinnati",
+                "nickname": "Bengals",
+                "abbreviation": "Cin",
+                "country": {
+                    "countryId": 1,
+                    "name": "United States",
+                    "abbreviation": "USA"
+                }
+            }, {
+                "venue": {
+                    "venueId": 548,
+                    "name": "FirstEnergy Stadium",
+                    "city": "Cleveland",
+                    "state": {
+                        "stateId": 35,
+                        "name": "Ohio",
+                        "abbreviation": "OH"
+                    },
+                    "country": {
+                        "countryId": 1,
+                        "name": "United States",
+                        "abbreviation": "USA"
+                    }
+                },
+                "teamId": 329,
+                "location": "Cleveland",
+                "nickname": "Browns",
+                "abbreviation": "Cle",
+                "country": {
+                    "countryId": 1,
+                    "name": "United States",
+                    "abbreviation": "USA"
+                }
+            }, {
+                "venue": {
+                    "venueId": 551,
+                    "name": "Heinz Field",
+                    "city": "Pittsburgh",
+                    "state": {
+                        "stateId": 38,
+                        "name": "Pennsylvania",
+                        "abbreviation": "PA"
+                    },
+                    "country": {
+                        "countryId": 1,
+                        "name": "United States",
+                        "abbreviation": "USA"
+                    }
+                },
+                "teamId": 356,
+                "location": "Pittsburgh",
+                "nickname": "Steelers",
+                "abbreviation": "Pit",
+                "country": {
+                    "countryId": 1,
+                    "name": "United States",
+                    "abbreviation": "USA"
+                }
+            }]
+        }, {
+            "divisionId": 5,
+            "name": "South",
+            "abbreviation": "South",
+            "teams": [{
+                "venue": {
+                    "venueId": 2791,
+                    "name": "NRG Stadium",
+                    "city": "Houston",
+                    "state": {
+                        "stateId": 43,
+                        "name": "Texas",
+                        "abbreviation": "TX"
+                    },
+                    "country": {
+                        "countryId": 1,
+                        "name": "United States",
+                        "abbreviation": "USA"
+                    }
+                },
+                "teamId": 325,
+                "location": "Houston",
+                "nickname": "Texans",
+                "abbreviation": "Hou",
+                "country": {
+                    "countryId": 1,
+                    "name": "United States",
+                    "abbreviation": "USA"
+                }
+            }, {
+                "venue": {
+                    "venueId": 6670,
+                    "name": "Lucas Oil Stadium",
+                    "city": "Indianapolis",
+                    "state": {
+                        "stateId": 14,
+                        "name": "Indiana",
+                        "abbreviation": "IN"
+                    },
+                    "country": {
+                        "countryId": 1,
+                        "name": "United States",
+                        "abbreviation": "USA"
+                    }
+                },
+                "teamId": 338,
+                "location": "Indianapolis",
+                "nickname": "Colts",
+                "abbreviation": "Ind",
+                "country": {
+                    "countryId": 1,
+                    "name": "United States",
+                    "abbreviation": "USA"
+                }
+            }, {
+                "venue": {
+                    "venueId": 538,
+                    "name": "EverBank Field",
+                    "city": "Jacksonville",
+                    "state": {
+                        "stateId": 9,
+                        "name": "Florida",
+                        "abbreviation": "FL"
+                    },
+                    "country": {
+                        "countryId": 1,
+                        "name": "United States",
+                        "abbreviation": "USA"
+                    }
+                },
+                "teamId": 365,
+                "location": "Jacksonville",
+                "nickname": "Jaguars",
+                "abbreviation": "Jax",
+                "country": {
+                    "countryId": 1,
+                    "name": "United States",
+                    "abbreviation": "USA"
+                }
+            }, {
+                "venue": {
+                    "venueId": 547,
+                    "name": "Nissan Stadium",
+                    "city": "Nashville",
+                    "state": {
+                        "stateId": 42,
+                        "name": "Tennessee",
+                        "abbreviation": "TN"
+                    },
+                    "country": {
+                        "countryId": 1,
+                        "name": "United States",
+                        "abbreviation": "USA"
+                    }
+                },
+                "teamId": 336,
+                "location": "Tennessee",
+                "nickname": "Titans",
+                "abbreviation": "Ten",
+                "country": {
+                    "countryId": 1,
+                    "name": "United States",
+                    "abbreviation": "USA"
+                }
+            }]
+        }]
+    }, {
+        "conferenceId": 4,
+        "name": "National Football Conference",
+        "abbreviation": "NFC",
+        "divisions": [{
+            "divisionId": 1,
+            "name": "East",
+            "abbreviation": "East",
+            "teams": [{
+                "venue": {
+                    "venueId": 8087,
+                    "name": "AT&T Stadium",
+                    "city": "Arlington",
+                    "state": {
+                        "stateId": 43,
+                        "name": "Texas",
+                        "abbreviation": "TX"
+                    },
+                    "country": {
+                        "countryId": 1,
+                        "name": "United States",
+                        "abbreviation": "USA"
+                    }
+                },
+                "teamId": 331,
+                "location": "Dallas",
+                "nickname": "Cowboys",
+                "abbreviation": "Dal",
+                "country": {
+                    "countryId": 1,
+                    "name": "United States",
+                    "abbreviation": "USA"
+                }
+            }, {
+                "venue": {
+                    "venueId": 9242,
+                    "name": "MetLife Stadium",
+                    "city": "East Rutherford",
+                    "state": {
+                        "stateId": 30,
+                        "name": "New Jersey",
+                        "abbreviation": "NJ"
+                    },
+                    "country": {
+                        "countryId": 1,
+                        "name": "United States",
+                        "abbreviation": "USA"
+                    }
+                },
+                "teamId": 351,
+                "location": "New York",
+                "nickname": "Giants",
+                "abbreviation": "NYG",
+                "country": {
+                    "countryId": 1,
+                    "name": "United States",
+                    "abbreviation": "USA"
+                }
+            }, {
+                "venue": {
+                    "venueId": 3494,
+                    "name": "Lincoln Financial",
+                    "city": "Philadelphia",
+                    "state": {
+                        "stateId": 38,
+                        "name": "Pennsylvania",
+                        "abbreviation": "PA"
+                    },
+                    "country": {
+                        "countryId": 1,
+                        "name": "United States",
+                        "abbreviation": "USA"
+                    }
+                },
+                "teamId": 354,
+                "location": "Philadelphia",
+                "nickname": "Eagles",
+                "abbreviation": "Phi",
+                "country": {
+                    "countryId": 1,
+                    "name": "United States",
+                    "abbreviation": "USA"
+                }
+            }, {
+                "venue": {
+                    "venueId": 543,
+                    "name": "FedEx Field",
+                    "city": "Landover",
+                    "state": {
+                        "stateId": 20,
+                        "name": "Maryland",
+                        "abbreviation": "MD"
+                    },
+                    "country": {
+                        "countryId": 1,
+                        "name": "United States",
+                        "abbreviation": "USA"
+                    }
+                },
+                "teamId": 363,
+                "location": "Washington",
+                "nickname": "Redskins",
+                "abbreviation": "Was",
+                "country": {
+                    "countryId": 1,
+                    "name": "United States",
+                    "abbreviation": "USA"
+                }
+            }]
+        }, {
+            "divisionId": 3,
+            "name": "West",
+            "abbreviation": "West",
+            "teams": [{
+                "venue": {
+                    "venueId": 4943,
+                    "name": "University of Phoenix Stadium",
+                    "city": "Glendale",
+                    "state": {
+                        "stateId": 3,
+                        "name": "Arizona",
+                        "abbreviation": "AZ"
+                    },
+                    "country": {
+                        "countryId": 1,
+                        "name": "United States",
+                        "abbreviation": "USA"
+                    }
+                },
+                "teamId": 355,
+                "location": "Arizona",
+                "nickname": "Cardinals",
+                "abbreviation": "Ari",
+                "country": {
+                    "countryId": 1,
+                    "name": "United States",
+                    "abbreviation": "USA"
+                }
+            }, {
+                "venue": {
+                    "venueId": 517,
+                    "name": "Los Angeles Memorial Coliseum",
+                    "city": "Los Angeles",
+                    "state": {
+                        "stateId": 5,
+                        "name": "California",
+                        "abbreviation": "CA"
+                    },
+                    "country": {
+                        "countryId": 1,
+                        "name": "United States",
+                        "abbreviation": "USA"
+                    }
+                },
+                "teamId": 343,
+                "location": "Los Angeles",
+                "nickname": "Rams",
+                "abbreviation": "LAR",
+                "country": {
+                    "countryId": 1,
+                    "name": "United States",
+                    "abbreviation": "USA"
+                }
+            }, {
+                "venue": {
+                    "venueId": 13672,
+                    "name": "Levi's Stadium",
+                    "city": "Santa Clara",
+                    "state": {
+                        "stateId": 5,
+                        "name": "California",
+                        "abbreviation": "CA"
+                    },
+                    "country": {
+                        "countryId": 1,
+                        "name": "United States",
+                        "abbreviation": "USA"
+                    }
+                },
+                "teamId": 359,
+                "location": "San Francisco",
+                "nickname": "49ers",
+                "abbreviation": "SF",
+                "country": {
+                    "countryId": 1,
+                    "name": "United States",
+                    "abbreviation": "USA"
+                }
+            }, {
+                "venue": {
+                    "venueId": 3395,
+                    "name": "CenturyLink Field",
+                    "city": "Seattle",
+                    "state": {
+                        "stateId": 47,
+                        "name": "Washington",
+                        "abbreviation": "WA"
+                    },
+                    "country": {
+                        "countryId": 1,
+                        "name": "United States",
+                        "abbreviation": "USA"
+                    }
+                },
+                "teamId": 361,
+                "location": "Seattle",
+                "nickname": "Seahawks",
+                "abbreviation": "Sea",
+                "country": {
+                    "countryId": 1,
+                    "name": "United States",
+                    "abbreviation": "USA"
+                }
+            }]
+        }, {
+            "divisionId": 4,
+            "name": "North",
+            "abbreviation": "North",
+            "teams": [{
+                "venue": {
+                    "venueId": 507,
+                    "name": "Soldier Field",
+                    "city": "Chicago",
+                    "state": {
+                        "stateId": 13,
+                        "name": "Illinois",
+                        "abbreviation": "IL"
+                    },
+                    "country": {
+                        "countryId": 1,
+                        "name": "United States",
+                        "abbreviation": "USA"
+                    }
+                },
+                "teamId": 326,
+                "location": "Chicago",
+                "nickname": "Bears",
+                "abbreviation": "Chi",
+                "country": {
+                    "countryId": 1,
+                    "name": "United States",
+                    "abbreviation": "USA"
+                }
+            }, {
+                "venue": {
+                    "venueId": 3394,
+                    "name": "Ford Field",
+                    "city": "Detroit",
+                    "state": {
+                        "stateId": 22,
+                        "name": "Michigan",
+                        "abbreviation": "MI"
+                    },
+                    "country": {
+                        "countryId": 1,
+                        "name": "United States",
+                        "abbreviation": "USA"
+                    }
+                },
+                "teamId": 334,
+                "location": "Detroit",
+                "nickname": "Lions",
+                "abbreviation": "Det",
+                "country": {
+                    "countryId": 1,
+                    "name": "United States",
+                    "abbreviation": "USA"
+                }
+            }, {
+                "venue": {
+                    "venueId": 513,
+                    "name": "Lambeau Field",
+                    "city": "Green Bay",
+                    "state": {
+                        "stateId": 49,
+                        "name": "Wisconsin",
+                        "abbreviation": "WI"
+                    },
+                    "country": {
+                        "countryId": 1,
+                        "name": "United States",
+                        "abbreviation": "USA"
+                    }
+                },
+                "teamId": 335,
+                "location": "Green Bay",
+                "nickname": "Packers",
+                "abbreviation": "GB",
+                "country": {
+                    "countryId": 1,
+                    "name": "United States",
+                    "abbreviation": "USA"
+                }
+            }, {
+                "venue": {
+                    "venueId": 15139,
+                    "name": "U.S. Bank Stadium",
+                    "city": "Minneapolis",
+                    "state": {
+                        "stateId": 23,
+                        "name": "Minnesota",
+                        "abbreviation": "MN"
+                    },
+                    "country": {
+                        "countryId": 1,
+                        "name": "United States",
+                        "abbreviation": "USA"
+                    }
+                },
+                "teamId": 347,
+                "location": "Minnesota",
+                "nickname": "Vikings",
+                "abbreviation": "Min",
+                "country": {
+                    "countryId": 1,
+                    "name": "United States",
+                    "abbreviation": "USA"
+                }
+            }]
+        }, {
+            "divisionId": 5,
+            "name": "South",
+            "abbreviation": "South",
+            "teams": [{
+                "venue": {
+                    "venueId": 15629,
+                    "name": "Mercedes-Benz Stadium",
+                    "city": "Atlanta",
+                    "state": {
+                        "stateId": 10,
+                        "name": "Georgia",
+                        "abbreviation": "GA"
+                    },
+                    "country": {
+                        "countryId": 1,
+                        "name": "United States",
+                        "abbreviation": "USA"
+                    }
+                },
+                "teamId": 323,
+                "location": "Atlanta",
+                "nickname": "Falcons",
+                "abbreviation": "Atl",
+                "country": {
+                    "countryId": 1,
+                    "name": "United States",
+                    "abbreviation": "USA"
+                }
+            }, {
+                "venue": {
+                    "venueId": 536,
+                    "name": "Bank of America Stadium",
+                    "city": "Charlotte",
+                    "state": {
+                        "stateId": 33,
+                        "name": "North Carolina",
+                        "abbreviation": "NC"
+                    },
+                    "country": {
+                        "countryId": 1,
+                        "name": "United States",
+                        "abbreviation": "USA"
+                    }
+                },
+                "teamId": 364,
+                "location": "Carolina",
+                "nickname": "Panthers",
+                "abbreviation": "Car",
+                "country": {
+                    "countryId": 1,
+                    "name": "United States",
+                    "abbreviation": "USA"
+                }
+            }, {
+                "venue": {
+                    "venueId": 522,
+                    "name": "Mercedes-Benz Superdome",
+                    "city": "New Orleans",
+                    "state": {
+                        "stateId": 18,
+                        "name": "Louisiana",
+                        "abbreviation": "LA"
+                    },
+                    "country": {
+                        "countryId": 1,
+                        "name": "United States",
+                        "abbreviation": "USA"
+                    }
+                },
+                "teamId": 350,
+                "location": "New Orleans",
+                "nickname": "Saints",
+                "abbreviation": "NO",
+                "country": {
+                    "countryId": 1,
+                    "name": "United States",
+                    "abbreviation": "USA"
+                }
+            }, {
+                "venue": {
+                    "venueId": 546,
+                    "name": "Raymond James Stadium",
+                    "city": "Tampa",
+                    "state": {
+                        "stateId": 9,
+                        "name": "Florida",
+                        "abbreviation": "FL"
+                    },
+                    "country": {
+                        "countryId": 1,
+                        "name": "United States",
+                        "abbreviation": "USA"
+                    }
+                },
+                "teamId": 362,
+                "location": "Tampa Bay",
+                "nickname": "Buccaneers",
+                "abbreviation": "TB",
+                "country": {
+                    "countryId": 1,
+                    "name": "United States",
+                    "abbreviation": "USA"
+                }
+            }]
+        }]
+    }],
+    "allstar": {
+        "teams": [{
+            "teamId": 478,
+            "location": "AFC",
+            "nickname": "All-Pros",
+            "abbreviation": "AFC"
+        }, {
+            "teamId": 479,
+            "location": "NFC",
+            "nickname": "All-Pros",
+            "abbreviation": "NFC"
+        }]
+    }
+}

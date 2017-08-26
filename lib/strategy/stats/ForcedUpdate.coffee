@@ -40,6 +40,9 @@ module.exports = class extends Strategy
         old.pbp = _.first plays, playNumber
         update.pbp = _.first plays, playNumber + 1
       .then -> @increasePlays old, update
+      .catch (error) =>
+        @logger.error error.message, _.extend({stack: error.stack}, error.details)
+        retry error
 
   resetGame: ->
     Promise.bind @

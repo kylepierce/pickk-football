@@ -29,7 +29,6 @@ module.exports = class
     @away = away
     @away_team = away.teamId
     @scoring = scoring
-    @location = (_.last @pbp).endYardLine
     @scheduled = moment(@['startDate'][1]['full']).toDate()
     @iso =  new Date(@['startDate'][1]['full']).toISOString()
     @name = "#{home.nickname} vs #{away.nickname}"
@@ -40,6 +39,7 @@ module.exports = class
     @status = @['eventStatus']['name']
     @football = true
     @completed = @status in ['Complete', 'Closed']
+    @location = if @status is "In-Progress" then (_.last @pbp).endYardLine
 
   getSelector: ->
     "eventId": @['eventId']
