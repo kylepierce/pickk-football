@@ -20,7 +20,7 @@
       "user": "root",
       "host": "do.pickk-prod",
       "ref": "origin/master",
-      "repo": "https://pickk@bitbucket.org/pickk/pickk-football.git",
+      "repo": "https://pickk:yreMU8aT8P4cvP3@bitbucket.org/pickk/pickk-football.git",
       "path": "/opt/pickk-football",
       "post-deploy": "npm install && pm2 startOrRestart ecosystem_prod.json --env prod"
     }
