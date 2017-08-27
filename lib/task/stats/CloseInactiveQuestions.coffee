@@ -262,7 +262,7 @@ module.exports = class extends Task
         @Notifications.insert
           _id: @Notifications.db.ObjectId().toString()
           dateCreated: new Date()
-          question: answer.questionId
+          questionId: answer.questionId
           userId: answer['userId']
           gameId: answer.gameId
           type: "coins"
