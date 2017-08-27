@@ -1,11 +1,10 @@
 {
   "apps": [
     {
-      "name": "ImportGames",
+      "name": "UpdateNFL",
       "script": "./bin/worker",
       "args": [
         "--settings", "settings/prod.json",
-        "--max-loops=50",
         "--delay=5000",
         "lib/strategy/stats/UpdateNFL.coffee"
       ],

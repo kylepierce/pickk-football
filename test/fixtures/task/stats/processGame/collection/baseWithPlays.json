@@ -1,22 +1,21 @@
 {
-  "games": [
-    {
-      "eventId": 1744080,
+  "games": [{
+      "eventId": 1744995,
       "startDate": [{
           "year": 2017,
           "month": 8,
-          "date": 19,
-          "hour": 18,
+          "date": 26,
+          "hour": 19,
           "minute": 0,
-          "full": "2017-08-19T18:00:00",
+          "full": "2017-08-26T19:00:00",
           "dateType": "Local"
       }, {
           "year": 2017,
           "month": 8,
-          "date": 19,
+          "date": 26,
           "hour": 23,
           "minute": 0,
-          "full": "2017-08-19T23:00:00",
+          "full": "2017-08-26T23:00:00",
           "dateType": "UTC"
       }],
       "isTba": false,
@@ -25,23 +24,24 @@
           "score": true
       },
       "eventStatus": {
-          "down": 1,
-          "distance": 10,
-          "eventStatusId": 2,
-          "minutes": 10,
-          "seconds": 3,
-          "period": 4,
-          "isActive": true,
-          "name": "In-Progress"
+        "down": 1,
+        "distance": 10,
+        "eventStatusId": 2,
+        "minutes": 10,
+        "seconds": 3,
+        "eventStatusId": 2,
+        "period": 2,
+        "isActive": true,
+        "name": "In-Progress"
       },
       "venue": {
-          "venueId": 8087,
-          "name": "AT&T Stadium",
-          "city": "Arlington",
+          "venueId": 545,
+          "name": "M&T Bank Stadium",
+          "city": "Baltimore",
           "state": {
-              "stateId": 43,
-              "name": "Texas",
-              "abbreviation": "TX"
+              "stateId": 20,
+              "name": "Maryland",
+              "abbreviation": "MD"
           },
           "country": {
               "countryId": 1,
@@ -49,56 +49,43 @@
               "abbreviation": "USA"
           }
       },
-      "tvStations": [{
-          "tvStationId": 305,
-          "name": "NFL Network",
-          "callLetters": "NFLN",
-          "networkType": {
-              "networkTypeId": 1,
-              "name": "National"
-          },
-          "country": {
-              "countryId": 1,
-              "name": "United States",
-              "abbreviation": "USA"
-          }
-      }],
+      "tvStations": [],
       "teams": [{
-          "teamId": 331,
-          "location": "Dallas",
-          "nickname": "Cowboys",
-          "abbreviation": "Dal",
+          "teamId": 366,
+          "location": "Baltimore",
+          "nickname": "Ravens",
+          "abbreviation": "Bal",
           "teamLocationType": {
               "teamLocationTypeId": 1,
               "name": "home"
           },
           "record": {
-              "wins": 2,
-              "losses": 1,
+              "wins": 3,
+              "losses": 0,
               "ties": 0,
-              "percentage": ".667"
+              "percentage": "1.000"
           },
-          "score": 24,
+          "score": 13,
           "isWinner": true
       }, {
-          "teamId": 338,
-          "location": "Indianapolis",
-          "nickname": "Colts",
-          "abbreviation": "Ind",
+          "teamId": 324,
+          "location": "Buffalo",
+          "nickname": "Bills",
+          "abbreviation": "Buf",
           "teamLocationType": {
               "teamLocationTypeId": 2,
               "name": "away"
           },
           "record": {
               "wins": 0,
-              "losses": 2,
+              "losses": 3,
               "ties": 0,
               "percentage": ".000"
           },
-          "score": 19,
+          "score": 9,
           "isWinner": false
       }],
-      "week": 3,
+      "week": 4,
       "coverageLevel": {
           "coverageLevelId": 8,
           "details": "STATS Primary Feed",

@@ -8,7 +8,7 @@ ImportGameDetails = require "../../task/stats/ImportGameDetails"
 ProcessGame = require "../../task/stats/ProcessGame"
 promiseRetry = require 'promise-retry'
 Game = require "../../model/Game"
-full = require "../../../test/fixtures/task/stats/processGame/collection/FullGame.json"
+full = require "../../../test/fixtures/task/stats/processGame/collection/BalVsBuf.json"
 base = require "../../../test/fixtures/task/stats/processGame/collection/base.json"
 baseWithPlays = require "../../../test/fixtures/task/stats/processGame/collection/baseWithPlays.json"
 
@@ -42,7 +42,7 @@ module.exports = class extends Strategy
       .then -> @increasePlays old, update
       .catch (error) =>
         @logger.error error.message, _.extend({stack: error.stack}, error.details)
-        retry error
+        # retry error
 
   resetGame: ->
     Promise.bind @

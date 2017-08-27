@@ -61,6 +61,7 @@ module.exports = class extends Task
 
   getCorrectOptionNumber: (question, result, teams) ->
     playDetails = @getPlayDetails.execute result, teams
+
     Promise.bind @
       .then -> _.map question.options, (option) -> return option['title']
       .then (titles) -> @getPlayOptionTitle titles, playDetails
@@ -187,6 +188,11 @@ module.exports = class extends Task
       ]
       .then (answers) ->
         outcomes = []
+        if !play
+          console.log "Missing Play..."
+        if !play.playDetails
+          console.log "Missing Details..."
+
         _.each titles, (title) -> # Look at each optionTitle
           _.each answers, (answer) ->
             if answer['title'] is title

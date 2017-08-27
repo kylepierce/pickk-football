@@ -77,7 +77,6 @@ module.exports = class extends Task
       return yardsToFirstDown
 
   yardsToTouchdown: (teamIdWithBall, location, teams) ->
-
     team = _.find teams, (team) ->
       return team.teamId is teamIdWithBall
     numbers = location.replace(/\D+/g, '')
@@ -258,8 +257,9 @@ module.exports = class extends Task
 
   getMultiplierArguments: (playDetails) ->
     # "down" : #, "area" : #, "yards" : #, "style" : #
+    # console.log playDetails
     multiplierArguments =
-      down: playDetails.nextPlay.down #Range 1-6
+      down: if playDetails.nextPlay then playDetails.nextPlay.down else playDetails.previous.down #Range 1-6
       area: playDetails.distance.location #Range 1-6
       yards: playDetails.distance.yardsArea #Range 1-6
       style: 2 #Range 1-3 when complete
