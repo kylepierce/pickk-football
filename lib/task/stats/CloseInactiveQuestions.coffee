@@ -107,7 +107,7 @@ module.exports = class extends Task
       ,
         title: "Kick Good!,"
         requirements:
-          typeId: [22, 42]
+          typeId: [17, 22, 42]
       ,
         title: "Two Point Good",
         requirements:
@@ -122,10 +122,6 @@ module.exports = class extends Task
         requirements:
           playType: "Field Goal"
       ,
-      #   title: "Blocked Kick",
-      #   requirements:
-      #      playType: ["Field Goal", "Punt"]
-      # ,
         title: "Failed Onside",
         requirements:
           playType: "Kickoff",
@@ -150,53 +146,80 @@ module.exports = class extends Task
       ,
         title: "Fair Catch/No Return",
         requirements:
-           typeId: [21, 28]
+            # typeId: [21, 28]
+            yards: true
+            yardsMin: 0
+            yardsMax: 0
       ,
         title: "Touchback/No Return",
         requirements:
-          typeId: [21, 28]
+          # typeId: [21, 28]
+          yards: true
+          yardsMin: 0
+          yardsMax: 0
       ,
         title: "Neg to 25 Yard Return",
         requirements:
-          playType: "Kickoff"
-          # yards: <25
+          yards: true
+          yardsMin: null
+          yardsMax: -1
       ,
         title: "Neg to 20 Yard Return",
         requirements:
-          playType: "Punt"
-          # yards: <20
+            yards: true
+            yardsMin: null
+            yardsMax: -1
+      ,
+        title: "Neg to 25 Yard Return",
+        requirements:
+          yards: true
+          yardsMin: 1
+          yardsMax: 25
+      ,
+        title: "Neg to 20 Yard Return",
+        requirements:
+            yards: true
+            yardsMin: 1
+            yardsMax: 20
       ,
         title: "21-40 Yard Return",
         requirements:
-          playType: "Punt"
-          # yards: >= 21 && yards <= 40
+          yards: true
+          yardsMin: 21
+          yardsMax: 40
       ,
         title: "26+ Return",
         requirements:
-          playType: "Punt"
-          # yards: >= 26
+          yards: true
+          yardsMin: 26
+          yardsMax: null
       ,
         title: "26-45 Return",
         requirements:
-          playType: "Punt"
-          # yards:
+          yards: true
+          yardsMin: 26
+          yardsMax: 45
       ,
         title: "46+,"
         requirements:
-          playType: "Punt"
-          # yards: > 21 || < 40
+          yards: true
+          yardsMin: 46
+          yardsMax: null
       ]
       .then (answers) ->
         outcomes = []
-        if !play
-          console.log "Missing Play..."
-        if !play.playDetails
-          console.log "Missing Details..."
 
         _.each titles, (title) -> # Look at each optionTitle
           _.each answers, (answer) ->
             if answer['title'] is title
               keys = _.allKeys answer.requirements
+
+              if answer.requirements.yards
+                if answer.requirements.yardsMin is null then min = -100 else min = answer.requirements.yardsMin
+                if answer.requirements.yardsMax is null then max = 100 else max = answer.requirements.yardsMax
+
+                if play.playDetails.yards >= min  && play.playDetails.yards <= max
+                  outcomes.push(answer.title)
 
               if _.isMatch play.playDetails, answer.requirements
                 outcomes.push(answer.title)
@@ -208,7 +231,7 @@ module.exports = class extends Task
                 if _.isArray answerValue
                   if (answerValue.indexOf playValue) > -1
                     outcomes.push(answer.title)
-        # console.log outcomes
+
         return outcomes
 
   getPlayOptionNumber: (question, optionTitle) ->

@@ -41,7 +41,6 @@ module.exports = class extends Task
       playDetails.distance = @distanceObj play, playDetails.yardsToTouchdown
       playDetails.nextPlay = @getNextPlayTypeAndDown playDetails
       playDetails.multiplierArguments = @getMultiplierArguments playDetails
-
       return playDetails
 
   previousObj: (play) ->
@@ -52,15 +51,17 @@ module.exports = class extends Task
       yards: parseInt(play.yards)
 
   playDetailsObj: (play) ->
-    return playDetails =
+    playDetails =
       playId: play.playId
       typeId: play.playType.playTypeId
       type: @getPlayType play.playType.playTypeId
       teamChange: @hasBallChangedTeams play.startPossession.teamId, play.endPossession.teamId
       scoreType: @hasScoreChange play.awayScoreBefore, play.awayScoreAfter, play.homeScoreBefore, play.homeScoreAfter
       isFirstDown: @reachedFirstDown play.yards, play.distance
-      playText: play.playText
       yards: parseInt(play.yards)
+
+    if play.kickType then playDetails.kick is play.kickType
+    return playDetails
 
   distanceObj: (play, yardsToTouchdown) ->
     return distance =

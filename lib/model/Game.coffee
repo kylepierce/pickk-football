@@ -39,7 +39,7 @@ module.exports = class
     @status = @['eventStatus']['name']
     @football = true
     @completed = @status in ['Complete', 'Closed']
-    # @location = if @['pbp'].length > 0 then (_.last @pbp).endYardLine
+    @location = if @['pbp'].length > 0 then (_.last @pbp).endYardLine
 
   getSelector: ->
     "eventId": @['eventId']
