@@ -219,6 +219,11 @@ module.exports = class extends Task
         playType: "Penalty"
         down: if play.playDetails.isFirstDown then 1 else play.previous.down
         distance:  @yardsToFirstDown play.previous.distance,  play.playDetails.yards
+    else if play.playDetails.type is "Timeout"
+      nextPlay =
+        playType: "Timeout"
+        down: play.previous.down
+        distance: play.previous.distance
     else if play.playDetails.typeId is 10
       nextPlay =
         playType: "Penalty"

@@ -43,13 +43,15 @@ module.exports = class extends Task
   closeQuestion: (question, teams) ->
     Promise.bind @
       .then -> @getSinglePlay question.gameId, question.playId, 1
-      .then (playResult) -> @getCorrectOptionNumber question, playResult, teams
+      .then (singlePlay) -> @getCorrectOptionNumber question, singlePlay, teams
       .then (optionNumber) -> @updateQuestionAndAnswers question._id, optionNumber
+      .catch (error) ->
+        console.log error
 
   getSinglePlay: (gameId, playId, indexPosition) ->
     Promise.bind @
       .then -> @getGame gameId
-      .then (game) -> _.flatten game[0].pbp, 'playId'
+      .then (game) -> _.flatten game.pbp, 'playId'
       .then (list) -> @getPlayResult list, playId, indexPosition
 
   getPlayResult: (list, playId, indexPosition) ->
@@ -58,15 +60,15 @@ module.exports = class extends Task
       .then ->_.indexOf list,  _.find list, (play) -> return play.playId is playId # Find the index of previous play in pbp array
       .then (index) -> list[index + indexPosition] # Then find the next or previous item in the pbp array. Which should be question's result.
 
-  getCorrectOptionNumber: (question, result, teams) ->
-    playDetails = @getPlayDetails.execute result, teams
+  getCorrectOptionNumber: (question, singlePlay, teams) ->
+    playDetails = @getPlayDetails.execute singlePlay, teams
 
     Promise.bind @
       .then -> _.map question.options, (option) -> return option['title']
-      .then (titles) -> @getPlayOptionTitle titles, playDetails
-      .map (outcome) -> @getPlayOptionNumber question, outcome
+      .then (titles) -> @getAnswerOptionTitle titles, playDetails
+      .map (optionTitle) -> @getAnswerOptionNumber question, optionTitle
 
-  getPlayOptionTitle: (titles, play) ->
+  getAnswerOptionTitle: (titles, play) ->
     Promise.bind @
       .then -> answers = [
         title: "Run",
@@ -233,7 +235,7 @@ module.exports = class extends Task
 
         return outcomes
 
-  getPlayOptionNumber: (question, optionTitle) ->
+  getAnswerOptionNumber: (question, optionTitle) ->
     console.log "Answering Question:", "[", question.gameId, "]", question.que, ">>>>", optionTitle
     Promise.bind @
       .then -> _.invert _.mapObject question['options'], (option) -> option['title']
@@ -273,4 +275,4 @@ module.exports = class extends Task
 
   getGame: (gameId) ->
     Promise.bind @
-      .then -> @Games.find {_id: gameId}
+      .then -> @Games.findOne({_id: gameId})
