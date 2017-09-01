@@ -42,22 +42,21 @@ module.exports = class extends Task
 
   closeQuestion: (question, teams) ->
     Promise.bind @
-      .then -> @getSinglePlayResult question
+      .then -> @getSinglePlay question.gameId, question.playId, 1
       .then (playResult) -> @getCorrectOptionNumber question, playResult, teams
       .then (optionNumber) -> @updateQuestionAndAnswers question._id, optionNumber
 
-  getSinglePlayResult: (question) ->
+  getSinglePlay: (gameId, playId, indexPosition) ->
     Promise.bind @
-      .then -> @getGame question.gameId
+      .then -> @getGame gameId
       .then (game) -> _.flatten game[0].pbp, 'playId'
-      .then (list) -> @getPlayResult list, question.playId
+      .then (list) -> @getPlayResult list, playId, indexPosition
 
-  getPlayResult: (list, playId) ->
-    # The playId comes from the play that happened before the question was created.
-    # Unfortunately there is not other way to associate that I am aware of.
+  getPlayResult: (list, playId, indexPosition) ->
+    # The playId comes from the play that happened before the question was created. Unfortunately there is not other way to associate that I am aware of.
     Promise.bind @
       .then ->_.indexOf list,  _.find list, (play) -> return play.playId is playId # Find the index of previous play in pbp array
-      .then (index) -> list[index + 1] # Then find the next item in the pbp array. Which should be this question's result.
+      .then (index) -> list[index + indexPosition] # Then find the next or previous item in the pbp array. Which should be question's result.
 
   getCorrectOptionNumber: (question, result, teams) ->
     playDetails = @getPlayDetails.execute result, teams

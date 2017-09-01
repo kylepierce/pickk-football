@@ -214,7 +214,17 @@ module.exports = class extends Task
   getNextPlayTypeAndDown: (play) ->
     kickOffList = ["PAT", "Safety", "Field Goal"]
     pointAfterQuestionlist = [22, 47, 49, 53, 54, 55, 56]
-    if kickOffList.indexOf(play.playDetails.scoreType) > -1
+    if play.playDetails.typeId is 11
+      nextPlay =
+        playType: "Penalty"
+        down: if play.playDetails.isFirstDown then 1 else play.previous.down
+        distance:  @yardsToFirstDown play.previous.distance,  play.playDetails.yards
+    else if play.playDetails.typeId is 10
+      nextPlay =
+        playType: "Penalty"
+        down: play.previous.down
+        distance: play.previous.distance - play.playDetails.yards
+    else if kickOffList.indexOf(play.playDetails.scoreType) > -1
       nextPlay =
         playType: "Kickoff"
         down: 6
@@ -262,11 +272,9 @@ module.exports = class extends Task
 
   getMultiplierArguments: (playDetails) ->
     # "down" : #, "area" : #, "yards" : #, "style" : #
-    # console.log playDetails
     multiplierArguments =
       down: if playDetails.nextPlay then playDetails.nextPlay.down else playDetails.previous.down #Range 1-6
       area: playDetails.distance.location #Range 1-6
       yards: playDetails.distance.yardsArea #Range 1-6
       style: 2 #Range 1-3 when complete
-      # playType: nextPlay.playType # String
     return multiplierArguments

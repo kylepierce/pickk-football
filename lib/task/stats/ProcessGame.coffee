@@ -61,7 +61,8 @@ module.exports = class extends Task
 
   startCommercialBreak: (gameId, previous) ->
     list = ["Punt", "Touchdown", "Field Goal", "Kickoff", "Timeout", "Two Min"]
-    if (list.indexOf(previous.playDetails.type) > 0)
+    if (list.indexOf(previous.playDetails.type) > -1)
+      console.log "Start commercial"
       Promise.bind @
         .then -> @Games.update({_id: gameId}, {$set: {commercial: true, commercialTime: new Date}})
 

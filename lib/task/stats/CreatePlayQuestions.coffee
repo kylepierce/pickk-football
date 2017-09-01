@@ -80,9 +80,12 @@ module.exports = class extends Task
       que = "Point After Attempt"
     else if play.nextPlay.playType is "Kickoff"
       que = "Kickoff"
-    else if play.playDetails.isFirstDown
+    else if play.nextPlay.playType is "Penalty"
+      downGrammer = @downGrammer play.nextPlay.down
+      que =  downGrammer + " & " + play.nextPlay.distance + " Yards"
+    else if play.nextPlay.playType is "First Down"
       downGrammer = @downGrammer 1
-      que =  downGrammer + " & " + play.distance.yardsToFirstDown + " Yards"
+      que =  downGrammer + " & " + play.nextPlay.distance + " Yards"
     else
       downGrammer = @downGrammer play.nextPlay.down
       que =  downGrammer + " & " + play.distance.yardsToFirstDown + " Yards"
