@@ -35,7 +35,9 @@ module.exports = class extends Task
       .then -> @Multipliers.find details.multiplierArguments
       .then (result) -> @parseOptions result[0].options
       .then (options) -> @insertPlayQuestion eventId, details, options
-      .then (result) -> console.log result.que
+      .then (result) ->
+        console.log "Creating Question: \n", "[", result.gameId, "]", details.previous, "\n", details.playDetails, "\n", details.nextPlay, "\n",  result.que
+        console.log "----------------------- \n"
 
   parseOptions: (options) ->
     _.mapObject options, (option, key) ->
@@ -70,7 +72,11 @@ module.exports = class extends Task
           usersAnswered: []
 
   generateQuestionTitle: (play) ->
-    if play.nextPlay.playType is "PAT"
+    if !play
+      console.log "No play??"
+    else if !play.nextPlay
+      console.log "No next play data"
+    else if play.nextPlay.playType is "PAT"
       que = "Point After Attempt"
     else if play.nextPlay.playType is "Kickoff"
       que = "Kickoff"

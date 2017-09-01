@@ -110,7 +110,10 @@ module.exports = class extends Task
         outcomes: [9, 19, 16]
       ,
         title: "Timeout",
-        outcomes: [13, 29, 57, 58]
+        outcomes: [29, 57, 58]
+      ,
+        title: "Two Min",
+        outcomes: [13]
       ,
         title: "Punt",
         outcomes: [7, 8]
@@ -137,7 +140,7 @@ module.exports = class extends Task
           return type
 
   reachedFirstDown: (yards, distance) ->
-    if yards > distance
+    if yards >= distance
       return true
     else
       return false
@@ -238,6 +241,7 @@ module.exports = class extends Task
           playType: "Field Goal Attempt"
           down: 4
     else if play.previous.down is 2
+      # console.log play
       if play.distance.isDownAndGoal
         nextPlay =
           playType: "Third Down && Goal"

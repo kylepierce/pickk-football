@@ -1,7 +1,7 @@
 #Requirements
 
 ### Last Updated:
-20 August 2017
+30 August 2017
 
 ## Functional Requirements
 
@@ -53,7 +53,7 @@ Scenario:
 ### Create a Play Question
 Primary Actor: STATS
 Secondary Actor: MongoDb
-Status: Pending
+Status: Done
 
 Scenario:
 1. Get relevant data
@@ -101,7 +101,7 @@ Extension: End of quarter/half
 ### Answer Question
 Primary Actor: STATS
 Secondary Actor: MongoDb, Player
-Status: Pending
+Status: Done
 
 Scenario:
 1. Get the play result
@@ -128,13 +128,19 @@ Primary Actor: STATS
 Secondary Actor: MongoDb, Player, Notifications
 Status: Not Started
 
-Scenario:
 1. Game quarter ends
+2. Move to the next period
+3. Notify user to see their ranking
+
+### Award Quarter Winners
+Primary Actor: STATS
+Secondary Actor: MongoDb, Player, Notifications
+Status: Not Started
+
+Scenarios
 2. Find open questions
 3. Close / Delete questions
 4. Award leaderboard
-5. Move to the next period
-6. Notify user to see their ranking
 
 Extension: If a drive question is still active
 1. Skip step 3 and 4

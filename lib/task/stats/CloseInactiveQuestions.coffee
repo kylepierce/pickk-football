@@ -235,7 +235,7 @@ module.exports = class extends Task
         return outcomes
 
   getPlayOptionNumber: (question, optionTitle) ->
-    console.log "Question:", question.que, ">>>>", optionTitle
+    console.log "Answering Question:", "[", question.gameId, "]", question.que, ">>>>", optionTitle
     Promise.bind @
       .then -> _.invert _.mapObject question['options'], (option) -> option['title']
       .then (options) -> options[optionTitle]
