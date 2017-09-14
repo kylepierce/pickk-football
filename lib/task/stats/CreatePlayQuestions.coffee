@@ -36,8 +36,8 @@ module.exports = class extends Task
       .then (result) -> @parseOptions result[0].options
       .then (options) -> @insertPlayQuestion eventId, details, options
       .then (result) ->
-        console.log "Creating Question: \n", "[", result.gameId, "]", details.previous, "\n", details.playDetails, "\n", details.nextPlay, "\n",  result.que
-        console.log "----------------------- \n"
+        # @logger.verbose details.previous, details.playDetails
+        @logger.verbose "Creating Question: \n", result.que, details.nextPlay
 
   parseOptions: (options) ->
     _.mapObject options, (option, key) ->
@@ -73,9 +73,9 @@ module.exports = class extends Task
 
   generateQuestionTitle: (play) ->
     if !play
-      console.log "No play??"
+      @logger.verbose "No play??"
     else if !play.nextPlay
-      console.log "No next play data"
+      @logger.verbose "No next play data"
     else if play.nextPlay.playType is "PAT"
       que = "Point After Attempt"
     else if play.nextPlay.playType is "Kickoff"

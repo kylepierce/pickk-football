@@ -46,7 +46,7 @@ module.exports = class extends Task
       .then (singlePlay) -> @getCorrectOptionNumber question, singlePlay, teams
       .then (optionNumber) -> @updateQuestionAndAnswers question._id, optionNumber
       .catch (error) ->
-        console.log error
+        @logger.verbose error
 
   getSinglePlay: (gameId, playId, indexPosition) ->
     Promise.bind @
@@ -62,17 +62,11 @@ module.exports = class extends Task
 
   getCorrectOptionNumber: (question, singlePlay, teams) ->
     playDetails = @getPlayDetails.execute singlePlay, teams
-    questionId = question._id
 
-    if playDetails.playDetails.deleteQuestion is true
-      Promise.bind @
-        .then -> @deleteQuestion questionId
-
-    else
-      Promise.bind @
-        .then -> _.map question.options, (option) -> return option['title']
-        .then (titles) -> @getAnswerOptionTitle titles, playDetails
-        .map (optionTitle) -> @getAnswerOptionNumber question, optionTitle
+    Promise.bind @
+      .then -> _.map question.options, (option) -> return option['title']
+      .then (titles) -> @getAnswerOptionTitle titles, playDetails
+      .map (optionTitle) -> @getAnswerOptionNumber question, optionTitle
 
   getAnswerOptionTitle: (titles, play) ->
     Promise.bind @
@@ -81,9 +75,24 @@ module.exports = class extends Task
         requirements:
           typeId: [3, 4]
       ,
+      #   title: "Run", #Fumble
+      #   requirements:
+      #     typeId: [14]
+      #     teamChange: false
+      # ,
+      #   title: "Pass", #Fumble
+      #   requirements:
+      #     typeId: [14]
+      #     teamChange: false
+      # ,
         title: "Pass",
         requirements:
           typeId: [1, 2, 9, 19, 23]
+      ,
+        title: "Pass", #Pass Interference
+        requirements:
+          typeId: 11
+          penaltyId: [41]
       ,
         title: "Interception",
         requirements:
@@ -114,11 +123,11 @@ module.exports = class extends Task
       ,
         title: "Kick Good!,"
         requirements:
-          typeId: [17, 42]
+          scoreType: "Field Goal"
       ,
         title: "Missed Kick",
         requirements:
-          playType: "Field Goal"
+          type: "Field Goal"
           scoreType: false
       ,
         title: "Kick Good!,"
@@ -131,20 +140,20 @@ module.exports = class extends Task
       ,
         title: "Blocked Kick",
         requirements:
-          playType: "PAT"
+          type: "PAT"
           typeId: 47
           scoreType: false
       ,
         title: "Missed Kick",
         requirements:
-          playType: "PAT"
+          type: "PAT"
           typeId: 22
           scoreType: false
       ,
         title: "Two Point No Good",
         requirements:
           typeId: [53, 54, 55]
-          playType: "PAT"
+          type: "PAT"
           scoreType: false
       ,
         title: "Two Point Good",
@@ -158,17 +167,17 @@ module.exports = class extends Task
       ,
         title: "Failed Onside",
         requirements:
-          playType: "Kickoff",
+          type: "Kickoff",
           teamChange: true
       ,
         title: "Successful Onside",
         requirements:
-          playType: "Kickoff",
+          type: "Kickoff",
           teamChange: false
       ,
         title: "Blocked Punt",
         requirements:
-          playType: "Punt",
+          type: "Punt",
           typeId: 18
       ,
         title: "Fair Catch/No Return",
@@ -269,20 +278,24 @@ module.exports = class extends Task
                   if (answerValue.indexOf playValue) > -1
                     outcomes.push(answer.title)
 
-        console.log outcomes
         return outcomes
 
   getAnswerOptionNumber: (question, optionTitle) ->
-    console.log "Answering Question:", "[", question.gameId, "]", question.que, ">>>>", optionTitle
+    @logger.verbose "Answer:", question.que, ">>>", optionTitle
     Promise.bind @
       .then -> _.invert _.mapObject question['options'], (option) -> option['title']
       .then (options) -> options[optionTitle]
 
   updateQuestionAndAnswers: (questionId, outcome) ->
-    Promise.bind @
-      .then -> @Questions.update {_id: questionId}, $set: {active: false, outcome: outcome, lastUpdated: new Date()}
-      .then -> return outcome
-      .each (outcome) -> @updateAnswers questionId, outcome
+    if (outcome.length > 0)
+      Promise.bind @
+        .then -> @Questions.update {_id: questionId}, $set: {active: false, outcome: outcome, lastUpdated: new Date()}
+        .then -> return outcome
+        .each (outcome) -> @updateAnswers questionId, outcome
+    else
+      @logger.warn outcome
+      Promise.bind @
+        .then -> @deleteQuestion questionId
 
   updateAnswers: (questionId, outcome) ->
     Promise.bind @
@@ -311,9 +324,7 @@ module.exports = class extends Task
           shareMessage: ""
 
   deleteQuestion: (questionId) ->
-    console.log "============"
-    console.log "PLAY DELETED!"
-    console.log "============"
+    @logger.verbose "PLAY DELETED! [" + questionId + "]"
     Promise.bind @
       .then -> @Questions.update {_id: questionId}, {$set: {active: false, outcome: "Removed", lastUpdated: new Date()}}
       .then -> @Answers.find {questionId: questionId}

@@ -38,6 +38,7 @@ module.exports = class extends Task
         previous: @previousObj play
         playDetails: @playDetailsObj play
 
+      playDetails.playDetails.deleteQuestion = @deleteQuestion playDetails
       playDetails.distance = @distanceObj play, playDetails.yardsToTouchdown
       playDetails.nextPlay = @getNextPlayTypeAndDown playDetails
       playDetails.multiplierArguments = @getMultiplierArguments playDetails
@@ -53,6 +54,7 @@ module.exports = class extends Task
   playDetailsObj: (play) ->
     playDetails =
       playId: play.playId
+      desc: play.playText
       typeId: play.playType.playTypeId
       type: @getPlayType play.playType.playTypeId
       teamChange: @hasBallChangedTeams play.startPossession.teamId, play.endPossession.teamId
@@ -61,11 +63,11 @@ module.exports = class extends Task
       yards: parseInt(play.yards)
 
     if play.kickType
-      playDetails.kick = play.kickType
+      playDetails.kickId = play.kickType.kickTypeId
+      playDetails.kickDesc = play.kickType.name
     if play.penaltyType
-      playDetails.penalty = play.penaltyType
-
-    playDetails.deleteQuestion = @deleteQuestion playDetails
+      playDetails.penaltyId = play.penaltyType.penaltyTypeId
+      playDetails.penaltyDesc = play.penaltyType.name
 
     return playDetails
 
@@ -123,6 +125,9 @@ module.exports = class extends Task
       ,
         title: "Punt",
         outcomes: [7, 8]
+      ,
+        title: "PAT",
+        outcomes: [22]
       ,
         title: "Kickoff",
         outcomes: [5, 6]
@@ -196,9 +201,9 @@ module.exports = class extends Task
       return 1
     else if distance > 10 && distance <= 30
       return 2
-    else if distance > 30 && distance <= 60
+    else if distance > 30 && distance <= 65
       return 3
-    else if distance > 0 && distance <= 80
+    else if distance > 65 && distance <= 80
       return 4
     else if distance > 80 && distance <= 90
       return 5
@@ -233,7 +238,7 @@ module.exports = class extends Task
         playType: "Timeout"
         down: play.previous.down
         distance: play.previous.distance
-    else if play.playDetails.typeId is 10
+    else if play.playDetails.deleteQuestion
       nextPlay =
         playType: "Penalty"
         down: play.previous.down
@@ -265,7 +270,6 @@ module.exports = class extends Task
           playType: "Field Goal Attempt"
           down: 4
     else if play.previous.down is 2
-      # console.log play
       if play.distance.isDownAndGoal
         nextPlay =
           playType: "Third Down && Goal"
@@ -293,19 +297,22 @@ module.exports = class extends Task
       style: 2 #Range 1-3 when complete
     return multiplierArguments
 
-  deleteQuestion: (playDetails) ->
-    penalties = [56, 76, 63, 64, 67, 68, 70, 84, 88, 96, 98, 5, 7, 8, 11, 17, 19, 20, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 38, 43, 44, 48, 49]
-    if playDetails.typeId is 10
-      if playDetails.teamChange is false
+  deleteQuestion: (play) ->
+    penalties = [5, 7, 8, 11, 12, 15, 17, 19, 20, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 38, 43, 44, 48, 49, 56, 76, 63, 64, 67, 68, 70, 84, 88, 96, 98]
+    removeForKick = [5, 7, 11, 25, 27, 30, 38, 43, 44, 48, 53, 63, 70, 84, 88]
+    if play.playDetails.type is "Timeout"
+      return true
+    else if play.playDetails.typeId is 13
+      return true
+    else if play.playDetails.penaltyId
+      if play.previous.down is 4
+        if (removeForKick.indexOf(play.playDetails.penaltyId) > -1)
+          return true
+        else
+          return false
+      else if (penalties.indexOf(play.playDetails.penaltyId) > -1)
         return true
       else
         return false
-    else if playDetails.type is "Timeout"
-      return true
-    else if playDetails.typeId is 13
-      return true
-    else if playDetails.penalty
-      if (penalties.indexOf(playDetails.penalty.penaltyTypeId) > -1)
-        return true
     else
       return false
