@@ -9,7 +9,7 @@ ImportGameDetails = require "../../task/stats/ImportGameDetails"
 ProcessGame = require "../../task/stats/ProcessGame"
 promiseRetry = require 'promise-retry'
 Game = require "../../model/Game"
-full = require "../../../test/fixtures/task/stats/processGame/collection/BalVsBuf.json"
+full = require "../../../test/fixtures/task/stats/processGame/collection/ChiVsAtl.json"
 base = require "../../../test/fixtures/task/stats/processGame/collection/base.json"
 baseWithPlays = require "../../../test/fixtures/task/stats/processGame/collection/baseWithPlays.json"
 
@@ -26,9 +26,15 @@ module.exports = class extends Strategy
     @logger = dependencies.logger
 
   execute: () ->
-    old = base.games[0]
-    update = baseWithPlays.games[0]
     fullGame = full.games[0]
+    old = base.games[0]
+    old.eventId = fullGame.eventId
+    old.teams = fullGame.teams
+    old.startDate = fullGame.startDate
+    update = baseWithPlays.games[0]
+    update.eventId = fullGame.eventId
+    update.teams = fullGame.teams
+    update.startDate = fullGame.startDate
     plays = fullGame.pbp
 
     # Promise.bind @
@@ -45,7 +51,6 @@ module.exports = class extends Strategy
 
   resetGame: (old) ->
     Promise.bind @
-      .then -> @Games.remove({eventId: old.eventId});
       .then -> @importGames.upsertGame old
 
   increasePlays: (old, update) ->

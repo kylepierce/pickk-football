@@ -61,11 +61,11 @@ module.exports = class extends Task
       .then (index) -> list[index + indexPosition] # Then find the next or previous item in the pbp array. Which should be question's result.
 
   getCorrectOptionNumber: (question, singlePlay, teams) ->
-    playDetails = @getPlayDetails.execute singlePlay, teams
+    @playDetails = @getPlayDetails.execute singlePlay, teams
 
     Promise.bind @
       .then -> _.map question.options, (option) -> return option['title']
-      .then (titles) -> @getAnswerOptionTitle titles, playDetails
+      .then (titles) -> @getAnswerOptionTitle titles, @playDetails
       .map (optionTitle) -> @getAnswerOptionNumber question, optionTitle
 
   getAnswerOptionTitle: (titles, play) ->
@@ -92,7 +92,7 @@ module.exports = class extends Task
         title: "Pass", #Pass Interference
         requirements:
           typeId: 11
-          penaltyId: [41]
+          penaltyId: 41
       ,
         title: "Interception",
         requirements:
@@ -121,7 +121,7 @@ module.exports = class extends Task
         requirements:
           scoreType: "Touchdown"
       ,
-        title: "Kick Good!,"
+        title: "Kick Good!"
         requirements:
           scoreType: "Field Goal"
       ,
@@ -130,7 +130,7 @@ module.exports = class extends Task
           type: "Field Goal"
           scoreType: false
       ,
-        title: "Kick Good!,"
+        title: "Kick Good!"
         requirements:
           scoreType: "PAT"
       ,
@@ -182,19 +182,13 @@ module.exports = class extends Task
       ,
         title: "Fair Catch/No Return",
         requirements:
-            # typeId: [21, 28]
-            teamChange: true
-            yards: true
-            yardsMin: 0
-            yardsMax: 0
+          type: "Punt"
+          kickId: [6, 9, 10, 11, 15]
       ,
         title: "Touchback/No Return",
         requirements:
-          # typeId: [21, 28]
-          teamChange: true
-          yards: true
-          yardsMin: 0
-          yardsMax: 0
+          type: "Kickoff"
+          kickId: [6, 9, 10, 11, 15]
       ,
         title: "Neg to 25 Yard Return",
         requirements:
@@ -287,15 +281,14 @@ module.exports = class extends Task
       .then (options) -> options[optionTitle]
 
   updateQuestionAndAnswers: (questionId, outcome) ->
-    if (outcome.length > 0)
-      Promise.bind @
-        .then -> @Questions.update {_id: questionId}, $set: {active: false, outcome: outcome, lastUpdated: new Date()}
-        .then -> return outcome
-        .each (outcome) -> @updateAnswers questionId, outcome
-    else
-      @logger.warn outcome
+    if @playDetails.playDetails.deleteQuestion
       Promise.bind @
         .then -> @deleteQuestion questionId
+    else
+      Promise.bind @
+        .then -> @Questions.update {_id: questionId}, $set: {active: false, outcome: outcome, extendedDetails: @playDetails, lastUpdated: new Date()}
+        .then -> return outcome
+        .each (outcome) -> @updateAnswers questionId, outcome
 
   updateAnswers: (questionId, outcome) ->
     Promise.bind @
@@ -324,9 +317,9 @@ module.exports = class extends Task
           shareMessage: ""
 
   deleteQuestion: (questionId) ->
-    @logger.verbose "PLAY DELETED! [" + questionId + "]"
+    # @logger.verbose "PLAY DELETED! [" + questionId + "]"
     Promise.bind @
-      .then -> @Questions.update {_id: questionId}, {$set: {active: false, outcome: "Removed", lastUpdated: new Date()}}
+      .then -> @Questions.update {_id: questionId}, {$set: {active: false, outcome: "Removed",  extendedDetails: @playDetails, lastUpdated: new Date()}}
       .then -> @Answers.find {questionId: questionId}
       .map (answer) -> @returnCoins answer
 

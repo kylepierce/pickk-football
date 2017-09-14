@@ -114,14 +114,8 @@ module.exports = class extends Task
         title: "Turnover",
         outcomes: [9, 19, 16]
       ,
-        title: "Turnover",
-        outcomes: [9, 19, 16]
-      ,
         title: "Timeout",
-        outcomes: [29, 57, 58]
-      ,
-        title: "Two Min",
-        outcomes: [13]
+        outcomes: [29, 57, 58, 13]
       ,
         title: "Punt",
         outcomes: [7, 8]
@@ -201,9 +195,9 @@ module.exports = class extends Task
       return 1
     else if distance > 10 && distance <= 30
       return 2
-    else if distance > 30 && distance <= 65
+    else if distance > 30 && distance <= 60
       return 3
-    else if distance > 65 && distance <= 80
+    else if distance > 60 && distance <= 80
       return 4
     else if distance > 80 && distance <= 90
       return 5
@@ -261,11 +255,11 @@ module.exports = class extends Task
         down: 1
         distance: 10
     else if play.previous.down is 3
-      if play.yardsToTouchdown > 30
+      if play.yardsToTouchdown > 40
         nextPlay =
           playType: "Punt"
           down: 4
-      else if  play.yardsToTouchdown < 30
+      else if  play.yardsToTouchdown <= 40
         nextPlay =
           playType: "Field Goal Attempt"
           down: 4

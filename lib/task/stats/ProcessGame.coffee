@@ -63,7 +63,7 @@ module.exports = class extends Task
   startCommercialBreak: (eventId, previous) ->
     list = ["Punt", "Touchdown", "Field Goal", "Kickoff", "Timeout", "Two Min"]
     if (list.indexOf(previous.playDetails.type) > -1)
-      console.log "Start commercial", eventId
+      # console.log "Start commercial", eventId
       Promise.bind @
         .then -> @Games.update({eventId: eventId}, {$set: {commercial: true, commercialTime: new Date}})
 
@@ -88,7 +88,7 @@ module.exports = class extends Task
       .then -> @getGame eventId
       .then (game) ->
         if (game.commercial is true || game.commercial is null)
-          console.log "Ending Commercial Break"
+          # console.log "Ending Commercial Break"
           Promise.bind @
             .then -> @Games.update({eventId: eventId}, {$set: {commercial: false}, $unset: {commercialTime: 1}})
 
