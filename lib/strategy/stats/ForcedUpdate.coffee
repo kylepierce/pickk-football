@@ -4,6 +4,7 @@ Promise = require "bluebird"
 Strategy = require "../Strategy"
 ImportGames = require "../../task/stats/ImportGames"
 GetActiveGames = require "../../task/GetActiveGames"
+ImportGames = require "../../task/stats/ImportGames"
 ImportGameDetails = require "../../task/stats/ImportGameDetails"
 ProcessGame = require "../../task/stats/ProcessGame"
 promiseRetry = require 'promise-retry'
@@ -30,11 +31,10 @@ module.exports = class extends Strategy
     fullGame = full.games[0]
     plays = fullGame.pbp
 
-    # playNumber = 6
-    # old.pbp = _.first plays, playNumber
-    # update.pbp = _.first plays, playNumber + 1
+    # Promise.bind @
+    #   .then -> @resetGame old
+
     Promise.bind @
-      # .then -> @resetGame
       .then -> @getPbpLength old.eventId
       .then (playNumber) ->
         old.pbp = _.first plays, playNumber
@@ -42,13 +42,26 @@ module.exports = class extends Strategy
       .then -> @increasePlays old, update
       .catch (error) =>
         @logger.error error.message, _.extend({stack: error.stack}, error.details)
-        # retry error
 
-  resetGame: ->
+  resetGame: (old) ->
     Promise.bind @
-      .then -> @importGameDetails.upsertGame base.games[0]
+      .then -> @Games.remove({eventId: old.eventId});
+      .then -> @importGames.upsertGame old
 
   increasePlays: (old, update) ->
+    lastPlay = _.last update.pbp
+
+    # Simulate live game event status info
+    update.eventStatus.down = lastPlay.down
+    update.eventStatus.distance = lastPlay.distance
+    update.eventStatus.period = lastPlay.period
+    update.location = lastPlay.endYardLine
+    timeSplit = lastPlay.time.split ":"
+    update.eventStatus.minutes = timeSplit[0]
+    update.eventStatus.seconds = timeSplit[1]
+    update['teams'][0].score = lastPlay.homeScoreAfter
+    update['teams'][1].score = lastPlay.awayScoreAfter
+
     Promise.bind @
       .then -> @importGameDetails.upsertGame update
       .then (result) -> @processGame.execute old, result
@@ -56,4 +69,4 @@ module.exports = class extends Strategy
   getPbpLength: (eventId) ->
     Promise.bind @
       .then -> @Games.findOne({eventId: eventId})
-      .then (game) -> game.pbp.length
+      .then (game) -> return game.pbp.length

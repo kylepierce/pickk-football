@@ -1,304 +1,297 @@
 {
-    "status": "OK",
-    "recordCount": 98,
-    "startTimestamp": "2017-08-01T20:01:03.8218505Z",
-    "endTimestamp": "2017-08-01T20:01:03.8452889Z",
-    "timeTaken": 0.023438399999999998,
-    "apiResults": {
-        "penaltyTypes": [{
-            "penaltyTypeId": 57,
-            "name": "HC-Horse Collar Tackle"
-        }, {
-            "penaltyTypeId": 74,
-            "name": "COH-Crown of Helmet"
-        }, {
-            "penaltyTypeId": 56,
-            "name": "IOK-Illegal Onside Kick"
-        }, {
-            "penaltyTypeId": 76,
-            "name": "Hands to the Face"
-        }, {
-            "penaltyTypeId": 54,
-            "name": "DQ-Disqualification"
-        }, {
-            "penaltyTypeId": 55,
-            "name": "LEV-Leverage"
-        }, {
-            "penaltyTypeId": 58,
-            "name": "WED-Illegal Wedge"
-        }, {
-            "penaltyTypeId": 59,
-            "name": "Chop Block"
-        }, {
-            "penaltyTypeId": 60,
-            "name": "Cut Block"
-        }, {
-            "penaltyTypeId": 61,
-            "name": "Illegal Interference"
-        }, {
-            "penaltyTypeId": 62,
-            "name": "Illegal Participation"
-        }, {
-            "penaltyTypeId": 63,
-            "name": "Illegal Punt"
-        }, {
-            "penaltyTypeId": 64,
-            "name": "Late Start"
-        }, {
-            "penaltyTypeId": 65,
-            "name": "No Yards"
-        }, {
-            "penaltyTypeId": 66,
-            "name": "Objectionable Conduct"
-        }, {
-            "penaltyTypeId": 67,
-            "name": "Offside on Kickoff"
-        }, {
-            "penaltyTypeId": 68,
-            "name": "Offside Pass"
-        }, {
-            "penaltyTypeId": 69,
-            "name": "Piling On"
-        }, {
-            "penaltyTypeId": 70,
-            "name": "Roughing Kicker"
-        }, {
-            "penaltyTypeId": 71,
-            "name": "Spearing"
-        }, {
-            "penaltyTypeId": 72,
-            "name": "Time Count"
-        }, {
-            "penaltyTypeId": 77,
-            "name": "Holding (Return)"
-        }, {
-            "penaltyTypeId": 78,
-            "name": "Illegal block (Return)"
-        }, {
-            "penaltyTypeId": 79,
-            "name": "Illegal interference Covr"
-        }, {
-            "penaltyTypeId": 80,
-            "name": "Illegally downfield kick"
-        }, {
-            "penaltyTypeId": 81,
-            "name": "No yards - 15 yard"
-        }, {
-            "penaltyTypeId": 82,
-            "name": "No yards - Interference"
-        }, {
-            "penaltyTypeId": 83,
-            "name": "Off. Pass Interference"
-        }, {
-            "penaltyTypeId": 84,
-            "name": "Offside - Defence"
-        }, {
-            "penaltyTypeId": 85,
-            "name": "Procedure - No end"
-        }, {
-            "penaltyTypeId": 86,
-            "name": "UR - Peel back block"
-        }, {
-            "penaltyTypeId": 87,
-            "name": "UR - Tourist hit"
-        }, {
-            "penaltyTypeId": 88,
-            "name": "13 men in the huddle"
-        }, {
-            "penaltyTypeId": 89,
-            "name": "Helmet violation"
-        }, {
-            "penaltyTypeId": 90,
-            "name": "Illegal blk Hands to face"
-        }, {
-            "penaltyTypeId": 91,
-            "name": "Tandem block"
-        }, {
-            "penaltyTypeId": 92,
-            "name": "Loose ball interference"
-        }, {
-            "penaltyTypeId": 93,
-            "name": "Illegal interfer Dwnfield"
-        }, {
-            "penaltyTypeId": 94,
-            "name": "Block Below the Waist"
-        }, {
-            "penaltyTypeId": 95,
-            "name": "Block in the Back"
-        }, {
-            "penaltyTypeId": 96,
-            "name": "Illegal Snap"
-        }, {
-            "penaltyTypeId": 97,
-            "name": "Roughing the Passer w/T"
-        }, {
-            "penaltyTypeId": 98,
-            "name": "Sideline Interference"
-        }, {
-            "penaltyTypeId": 1,
-            "name": "NO-No Data"
-        }, {
-            "penaltyTypeId": 2,
-            "name": "BLB-Batting Loose Ball"
-        }, {
-            "penaltyTypeId": 3,
-            "name": "CE-Change of Eligible Rec"
-        }, {
-            "penaltyTypeId": 4,
-            "name": "CL-Clipping"
-        }, {
-            "penaltyTypeId": 5,
-            "name": "DG-Delay of Game"
-        }, {
-            "penaltyTypeId": 6,
-            "name": "EC-Excess Celebration"
-        }, {
-            "penaltyTypeId": 7,
-            "name": "EN-Encroachment"
-        }, {
-            "penaltyTypeId": 8,
-            "name": "ETO-Excess Time Out"
-        }, {
-            "penaltyTypeId": 9,
-            "name": "FCI-FC Interference"
-        }, {
-            "penaltyTypeId": 10,
-            "name": "FM-Face Mask"
-        }, {
-            "penaltyTypeId": 11,
-            "name": "FS-False Start"
-        }, {
-            "penaltyTypeId": 12,
-            "name": "HO-Holding"
-        }, {
-            "penaltyTypeId": 13,
-            "name": "HR-Helping Runner"
-        }, {
-            "penaltyTypeId": 14,
-            "name": "IB-Illegal Block"
-        }, {
-            "penaltyTypeId": 15,
-            "name": "ICO-Illegal Contact"
-        }, {
-            "penaltyTypeId": 16,
-            "name": "ICB-Illegal Crackback"
-        }, {
-            "penaltyTypeId": 17,
-            "name": "IDP-Illegal Plyr Downfld"
-        }, {
-            "penaltyTypeId": 18,
-            "name": "IFC-Illegal Fair Catch"
-        }, {
-            "penaltyTypeId": 19,
-            "name": "IFO-Illegal Formation"
-        }, {
-            "penaltyTypeId": 20,
-            "name": "IFP-Illegal Forward Pass"
-        }, {
-            "penaltyTypeId": 21,
-            "name": "IG-Intentional Grounding"
-        }, {
-            "penaltyTypeId": 22,
-            "name": "IK-Kickoff OOB"
-        }, {
-            "penaltyTypeId": 23,
-            "name": "ILAT-Illegal Lateral"
-        }, {
-            "penaltyTypeId": 24,
-            "name": "ILIN-Illegal Linesman"
-        }, {
-            "penaltyTypeId": 25,
-            "name": "IM-Illegal Motion"
-        }, {
-            "penaltyTypeId": 26,
-            "name": "INR-Ineligible Receiver"
-        }, {
-            "penaltyTypeId": 27,
-            "name": "IP-Illegal Procedure"
-        }, {
-            "penaltyTypeId": 28,
-            "name": "IR-Illegal Receiver"
-        }, {
-            "penaltyTypeId": 29,
-            "name": "ISH-Illegal Shift"
-        }, {
-            "penaltyTypeId": 30,
-            "name": "ISU-Illegal Substitution"
-        }, {
-            "penaltyTypeId": 31,
-            "name": "IT-Illegal Touch"
-        }, {
-            "penaltyTypeId": 32,
-            "name": "IUF-Illegal Use of Forear"
-        }, {
-            "penaltyTypeId": 33,
-            "name": "IUH-Illegal Use of Hands"
-        }, {
-            "penaltyTypeId": 34,
-            "name": "KLB-Kicking Loose Ball"
-        }, {
-            "penaltyTypeId": 35,
-            "name": "KP-Kicking Player"
-        }, {
-            "penaltyTypeId": 36,
-            "name": "LH-Late Hit"
-        }, {
-            "penaltyTypeId": 37,
-            "name": "NPF-Non Player Foul"
-        }, {
-            "penaltyTypeId": 38,
-            "name": "OF-Offside"
-        }, {
-            "penaltyTypeId": 39,
-            "name": "OOB-Illegal Return OOB"
-        }, {
-            "penaltyTypeId": 40,
-            "name": "PF-Personal Foul"
-        }, {
-            "penaltyTypeId": 41,
-            "name": "PI-Pass Interference"
-        }, {
-            "penaltyTypeId": 42,
-            "name": "PUA-Palpably Unfair Act"
-        }, {
-            "penaltyTypeId": 43,
-            "name": "RH-Running into Holder"
-        }, {
-            "penaltyTypeId": 44,
-            "name": "RK-Running into Kicker"
-        }, {
-            "penaltyTypeId": 45,
-            "name": "RP-Roughing Passer"
-        }, {
-            "penaltyTypeId": 46,
-            "name": "SFK-Short Free Kick"
-        }, {
-            "penaltyTypeId": 47,
-            "name": "TA-Taunting"
-        }, {
-            "penaltyTypeId": 48,
-            "name": "TMM-Too Many Men on Field"
-        }, {
-            "penaltyTypeId": 49,
-            "name": "TMT-Too Many TOs"
-        }, {
-            "penaltyTypeId": 50,
-            "name": "TR-Tripping"
-        }, {
-            "penaltyTypeId": 51,
-            "name": "UC-Unsports. Conduct"
-        }, {
-            "penaltyTypeId": 52,
-            "name": "UR-Unnecessary Roughness"
-        }, {
-            "penaltyTypeId": 53,
-            "name": "LE-Leaping"
-        }, {
-            "penaltyTypeId": 73,
-            "name": "Ejection for Targeting"
-        }, {
-            "penaltyTypeId": 75,
-            "name": "Low Hit on the Passer"
-        }]
-    }
+  "penaltyTypes": [{
+      "penaltyTypeId": 57,
+      "name": "HC-Horse Collar Tackle"
+  }, {
+      "penaltyTypeId": 74,
+      "name": "COH-Crown of Helmet"
+  }, {
+      "penaltyTypeId": 56,
+      "name": "IOK-Illegal Onside Kick"
+  }, {
+      "penaltyTypeId": 76,
+      "name": "Hands to the Face"
+  }, {
+      "penaltyTypeId": 54,
+      "name": "DQ-Disqualification"
+  }, {
+      "penaltyTypeId": 55,
+      "name": "LEV-Leverage"
+  }, {
+      "penaltyTypeId": 58,
+      "name": "WED-Illegal Wedge"
+  }, {
+      "penaltyTypeId": 59,
+      "name": "Chop Block"
+  }, {
+      "penaltyTypeId": 60,
+      "name": "Cut Block"
+  }, {
+      "penaltyTypeId": 61,
+      "name": "Illegal Interference"
+  }, {
+      "penaltyTypeId": 62,
+      "name": "Illegal Participation"
+  }, {
+      "penaltyTypeId": 63,
+      "name": "Illegal Punt"
+  }, {
+      "penaltyTypeId": 64,
+      "name": "Late Start"
+  }, {
+      "penaltyTypeId": 65,
+      "name": "No Yards"
+  }, {
+      "penaltyTypeId": 66,
+      "name": "Objectionable Conduct"
+  }, {
+      "penaltyTypeId": 67,
+      "name": "Offside on Kickoff"
+  }, {
+      "penaltyTypeId": 68,
+      "name": "Offside Pass"
+  }, {
+      "penaltyTypeId": 69,
+      "name": "Piling On"
+  }, {
+      "penaltyTypeId": 70,
+      "name": "Roughing Kicker"
+  }, {
+      "penaltyTypeId": 71,
+      "name": "Spearing"
+  }, {
+      "penaltyTypeId": 72,
+      "name": "Time Count"
+  }, {
+      "penaltyTypeId": 77,
+      "name": "Holding (Return)"
+  }, {
+      "penaltyTypeId": 78,
+      "name": "Illegal block (Return)"
+  }, {
+      "penaltyTypeId": 79,
+      "name": "Illegal interference Covr"
+  }, {
+      "penaltyTypeId": 80,
+      "name": "Illegally downfield kick"
+  }, {
+      "penaltyTypeId": 81,
+      "name": "No yards - 15 yard"
+  }, {
+      "penaltyTypeId": 82,
+      "name": "No yards - Interference"
+  }, {
+      "penaltyTypeId": 83,
+      "name": "Off. Pass Interference"
+  }, {
+      "penaltyTypeId": 84,
+      "name": "Offside - Defence"
+  }, {
+      "penaltyTypeId": 85,
+      "name": "Procedure - No end"
+  }, {
+      "penaltyTypeId": 86,
+      "name": "UR - Peel back block"
+  }, {
+      "penaltyTypeId": 87,
+      "name": "UR - Tourist hit"
+  }, {
+      "penaltyTypeId": 88,
+      "name": "13 men in the huddle"
+  }, {
+      "penaltyTypeId": 89,
+      "name": "Helmet violation"
+  }, {
+      "penaltyTypeId": 90,
+      "name": "Illegal blk Hands to face"
+  }, {
+      "penaltyTypeId": 91,
+      "name": "Tandem block"
+  }, {
+      "penaltyTypeId": 92,
+      "name": "Loose ball interference"
+  }, {
+      "penaltyTypeId": 93,
+      "name": "Illegal interfer Dwnfield"
+  }, {
+      "penaltyTypeId": 94,
+      "name": "Block Below the Waist"
+  }, {
+      "penaltyTypeId": 95,
+      "name": "Block in the Back"
+  }, {
+      "penaltyTypeId": 96,
+      "name": "Illegal Snap"
+  }, {
+      "penaltyTypeId": 97,
+      "name": "Roughing the Passer w/T"
+  }, {
+      "penaltyTypeId": 98,
+      "name": "Sideline Interference"
+  }, {
+      "penaltyTypeId": 1,
+      "name": "NO-No Data"
+  }, {
+      "penaltyTypeId": 2,
+      "name": "BLB-Batting Loose Ball"
+  }, {
+      "penaltyTypeId": 3,
+      "name": "CE-Change of Eligible Rec"
+  }, {
+      "penaltyTypeId": 4,
+      "name": "CL-Clipping"
+  }, {
+      "penaltyTypeId": 5,
+      "name": "DG-Delay of Game"
+  }, {
+      "penaltyTypeId": 6,
+      "name": "EC-Excess Celebration"
+  }, {
+      "penaltyTypeId": 7,
+      "name": "EN-Encroachment"
+  }, {
+      "penaltyTypeId": 8,
+      "name": "ETO-Excess Time Out"
+  }, {
+      "penaltyTypeId": 9,
+      "name": "FCI-FC Interference"
+  }, {
+      "penaltyTypeId": 10,
+      "name": "FM-Face Mask"
+  }, {
+      "penaltyTypeId": 11,
+      "name": "FS-False Start"
+  }, {
+      "penaltyTypeId": 12,
+      "name": "HO-Holding"
+  }, {
+      "penaltyTypeId": 13,
+      "name": "HR-Helping Runner"
+  }, {
+      "penaltyTypeId": 14,
+      "name": "IB-Illegal Block"
+  }, {
+      "penaltyTypeId": 15,
+      "name": "ICO-Illegal Contact"
+  }, {
+      "penaltyTypeId": 16,
+      "name": "ICB-Illegal Crackback"
+  }, {
+      "penaltyTypeId": 17,
+      "name": "IDP-Illegal Plyr Downfld"
+  }, {
+      "penaltyTypeId": 18,
+      "name": "IFC-Illegal Fair Catch"
+  }, {
+      "penaltyTypeId": 19,
+      "name": "IFO-Illegal Formation"
+  }, {
+      "penaltyTypeId": 20,
+      "name": "IFP-Illegal Forward Pass"
+  }, {
+      "penaltyTypeId": 21,
+      "name": "IG-Intentional Grounding"
+  }, {
+      "penaltyTypeId": 22,
+      "name": "IK-Kickoff OOB"
+  }, {
+      "penaltyTypeId": 23,
+      "name": "ILAT-Illegal Lateral"
+  }, {
+      "penaltyTypeId": 24,
+      "name": "ILIN-Illegal Linesman"
+  }, {
+      "penaltyTypeId": 25,
+      "name": "IM-Illegal Motion"
+  }, {
+      "penaltyTypeId": 26,
+      "name": "INR-Ineligible Receiver"
+  }, {
+      "penaltyTypeId": 27,
+      "name": "IP-Illegal Procedure"
+  }, {
+      "penaltyTypeId": 28,
+      "name": "IR-Illegal Receiver"
+  }, {
+      "penaltyTypeId": 29,
+      "name": "ISH-Illegal Shift"
+  }, {
+      "penaltyTypeId": 30,
+      "name": "ISU-Illegal Substitution"
+  }, {
+      "penaltyTypeId": 31,
+      "name": "IT-Illegal Touch"
+  }, {
+      "penaltyTypeId": 32,
+      "name": "IUF-Illegal Use of Forear"
+  }, {
+      "penaltyTypeId": 33,
+      "name": "IUH-Illegal Use of Hands"
+  }, {
+      "penaltyTypeId": 34,
+      "name": "KLB-Kicking Loose Ball"
+  }, {
+      "penaltyTypeId": 35,
+      "name": "KP-Kicking Player"
+  }, {
+      "penaltyTypeId": 36,
+      "name": "LH-Late Hit"
+  }, {
+      "penaltyTypeId": 37,
+      "name": "NPF-Non Player Foul"
+  }, {
+      "penaltyTypeId": 38,
+      "name": "OF-Offside"
+  }, {
+      "penaltyTypeId": 39,
+      "name": "OOB-Illegal Return OOB"
+  }, {
+      "penaltyTypeId": 40,
+      "name": "PF-Personal Foul"
+  }, {
+      "penaltyTypeId": 41,
+      "name": "PI-Pass Interference"
+  }, {
+      "penaltyTypeId": 42,
+      "name": "PUA-Palpably Unfair Act"
+  }, {
+      "penaltyTypeId": 43,
+      "name": "RH-Running into Holder"
+  }, {
+      "penaltyTypeId": 44,
+      "name": "RK-Running into Kicker"
+  }, {
+      "penaltyTypeId": 45,
+      "name": "RP-Roughing Passer"
+  }, {
+      "penaltyTypeId": 46,
+      "name": "SFK-Short Free Kick"
+  }, {
+      "penaltyTypeId": 47,
+      "name": "TA-Taunting"
+  }, {
+      "penaltyTypeId": 48,
+      "name": "TMM-Too Many Men on Field"
+  }, {
+      "penaltyTypeId": 49,
+      "name": "TMT-Too Many TOs"
+  }, {
+      "penaltyTypeId": 50,
+      "name": "TR-Tripping"
+  }, {
+      "penaltyTypeId": 51,
+      "name": "UC-Unsports. Conduct"
+  }, {
+      "penaltyTypeId": 52,
+      "name": "UR-Unnecessary Roughness"
+  }, {
+      "penaltyTypeId": 53,
+      "name": "LE-Leaping"
+  }, {
+      "penaltyTypeId": 73,
+      "name": "Ejection for Targeting"
+  }, {
+      "penaltyTypeId": 75,
+      "name": "Low Hit on the Passer"
+  }]
 }

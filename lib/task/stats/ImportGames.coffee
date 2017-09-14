@@ -34,9 +34,11 @@ module.exports = class extends Task
       .then -> @Games.findOne game.getSelector()
       .then (found) ->
         if not found
+          gameId = @Games.db.ObjectId().toString()
+          console.log gameId
           gameName = game.name
           @logger.verbose "Inserting Game " + gameName
-          game["_id"] = @Games.db.ObjectId().toString()
+          game["_id"] = gameId
           Promise.bind @
           .then ->
             @Games.insert game

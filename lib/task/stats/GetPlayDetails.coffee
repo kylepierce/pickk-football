@@ -60,7 +60,13 @@ module.exports = class extends Task
       isFirstDown: @reachedFirstDown play.yards, play.distance
       yards: parseInt(play.yards)
 
-    if play.kickType then playDetails.kick is play.kickType
+    if play.kickType
+      playDetails.kick = play.kickType
+    if play.penaltyType
+      playDetails.penalty = play.penaltyType
+
+    playDetails.deleteQuestion = @deleteQuestion playDetails
+
     return playDetails
 
   distanceObj: (play, yardsToTouchdown) ->
@@ -121,8 +127,11 @@ module.exports = class extends Task
         title: "Kickoff",
         outcomes: [5, 6]
       ,
-        title: "Penalty",
-        outcomes: [10, 11] # 10 is against offense -- 11 is against defense
+        title: "Off Penalty",
+        outcomes: [10] # 10 is against offense
+      ,
+        title: "Def Penalty",
+        outcomes: [11] # 11 is against defense
       ,
         title: "Field Goal",
         outcomes: [17, 42]
@@ -283,3 +292,20 @@ module.exports = class extends Task
       yards: playDetails.distance.yardsArea #Range 1-6
       style: 2 #Range 1-3 when complete
     return multiplierArguments
+
+  deleteQuestion: (playDetails) ->
+    penalties = [56, 76, 63, 64, 67, 68, 70, 84, 88, 96, 98, 5, 7, 8, 11, 17, 19, 20, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 38, 43, 44, 48, 49]
+    if playDetails.typeId is 10
+      if playDetails.teamChange is false
+        return true
+      else
+        return false
+    else if playDetails.type is "Timeout"
+      return true
+    else if playDetails.typeId is 13
+      return true
+    else if playDetails.penalty
+      if (penalties.indexOf(playDetails.penalty.penaltyTypeId) > -1)
+        return true
+    else
+      return false

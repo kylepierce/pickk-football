@@ -62,11 +62,17 @@ module.exports = class extends Task
 
   getCorrectOptionNumber: (question, singlePlay, teams) ->
     playDetails = @getPlayDetails.execute singlePlay, teams
+    questionId = question._id
 
-    Promise.bind @
-      .then -> _.map question.options, (option) -> return option['title']
-      .then (titles) -> @getAnswerOptionTitle titles, playDetails
-      .map (optionTitle) -> @getAnswerOptionNumber question, optionTitle
+    if playDetails.playDetails.deleteQuestion is true
+      Promise.bind @
+        .then -> @deleteQuestion questionId
+
+    else
+      Promise.bind @
+        .then -> _.map question.options, (option) -> return option['title']
+        .then (titles) -> @getAnswerOptionTitle titles, playDetails
+        .map (optionTitle) -> @getAnswerOptionNumber question, optionTitle
 
   getAnswerOptionTitle: (titles, play) ->
     Promise.bind @
@@ -108,7 +114,38 @@ module.exports = class extends Task
       ,
         title: "Kick Good!,"
         requirements:
-          typeId: [17, 22, 42]
+          typeId: [17, 42]
+      ,
+        title: "Missed Kick",
+        requirements:
+          playType: "Field Goal"
+          scoreType: false
+      ,
+        title: "Kick Good!,"
+        requirements:
+          scoreType: "PAT"
+      ,
+        title: "Fake Kick No Score"
+        requirements:
+          typeId: [53, 54, 55]
+      ,
+        title: "Blocked Kick",
+        requirements:
+          playType: "PAT"
+          typeId: 47
+          scoreType: false
+      ,
+        title: "Missed Kick",
+        requirements:
+          playType: "PAT"
+          typeId: 22
+          scoreType: false
+      ,
+        title: "Two Point No Good",
+        requirements:
+          typeId: [53, 54, 55]
+          playType: "PAT"
+          scoreType: false
       ,
         title: "Two Point Good",
         requirements:
@@ -118,10 +155,6 @@ module.exports = class extends Task
         requirements:
           scoreType: "Two Points",
           teamChange: true
-      ,
-        title: "Missed Kick",
-        requirements:
-          playType: "Field Goal"
       ,
         title: "Failed Onside",
         requirements:
@@ -138,16 +171,10 @@ module.exports = class extends Task
           playType: "Punt",
           typeId: 18
       ,
-      #   title: "Fake Kick No Score"
-      #,   requirements:
-      # ,
-        title: "Two Point No Good",
-        requirements:
-          typeId: [53, 54, 55]
-      ,
         title: "Fair Catch/No Return",
         requirements:
             # typeId: [21, 28]
+            teamChange: true
             yards: true
             yardsMin: 0
             yardsMax: 0
@@ -155,54 +182,63 @@ module.exports = class extends Task
         title: "Touchback/No Return",
         requirements:
           # typeId: [21, 28]
+          teamChange: true
           yards: true
           yardsMin: 0
           yardsMax: 0
       ,
         title: "Neg to 25 Yard Return",
         requirements:
+          teamChange: true
           yards: true
           yardsMin: null
           yardsMax: -1
       ,
         title: "Neg to 20 Yard Return",
         requirements:
-            yards: true
-            yardsMin: null
-            yardsMax: -1
+          teamChange: true
+          yards: true
+          yardsMin: null
+          yardsMax: -1
       ,
         title: "Neg to 25 Yard Return",
         requirements:
+          teamChange: true
           yards: true
           yardsMin: 1
           yardsMax: 25
       ,
         title: "Neg to 20 Yard Return",
         requirements:
-            yards: true
-            yardsMin: 1
-            yardsMax: 20
+          teamChange: true
+          yards: true
+          yardsMin: 1
+          yardsMax: 20
       ,
         title: "21-40 Yard Return",
         requirements:
+          teamChange: true
           yards: true
           yardsMin: 21
           yardsMax: 40
       ,
         title: "26+ Return",
         requirements:
+          teamChange: true
           yards: true
           yardsMin: 26
           yardsMax: null
       ,
         title: "26-45 Return",
         requirements:
+          teamChange: true
           yards: true
           yardsMin: 26
           yardsMax: 45
       ,
         title: "46+,"
         requirements:
+          teamChange: true
           yards: true
           yardsMin: 46
           yardsMax: null
@@ -233,6 +269,7 @@ module.exports = class extends Task
                   if (answerValue.indexOf playValue) > -1
                     outcomes.push(answer.title)
 
+        console.log outcomes
         return outcomes
 
   getAnswerOptionNumber: (question, optionTitle) ->
@@ -270,6 +307,35 @@ module.exports = class extends Task
           value: reward
           read: false
           message: "Nice Pickk! You got #{reward} Coins!"
+          sharable: false
+          shareMessage: ""
+
+  deleteQuestion: (questionId) ->
+    console.log "============"
+    console.log "PLAY DELETED!"
+    console.log "============"
+    Promise.bind @
+      .then -> @Questions.update {_id: questionId}, {$set: {active: false, outcome: "Removed", lastUpdated: new Date()}}
+      .then -> @Answers.find {questionId: questionId}
+      .map (answer) -> @returnCoins answer
+
+  returnCoins: (answer) ->
+    amount = parseInt(answer.wager)
+    Promise.bind @
+      .then -> @GamePlayed.update {userId: answer.userId, gameId: answer.gameId,  period: answer.period}, {$inc: {coins: amount}}
+      .then -> @Answers.update {_id: answer._id}, {$set: {outcome: "Removed"}}
+      .then ->
+        @Notifications.insert
+          _id: @Notifications.db.ObjectId().toString()
+          dateCreated: new Date()
+          questionId: answer.questionId
+          userId: answer['userId']
+          gameId: answer.gameId
+          source: "removed"
+          type: "coins"
+          value: amount
+          read: false
+          message: "Play was removed. Here are your " + amount + " coins"
           sharable: false
           shareMessage: ""
 

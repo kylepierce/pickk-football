@@ -47,9 +47,10 @@ module.exports = class extends Task
       playDetails = @getPlayDetails.execute previousPlay, teams
 
       Promise.bind @
+        .then -> @endCommercialBreak old.eventId
         .then -> @closeInactiveQuestions.execute update.id, teams
-        .then -> @gameInProgress old._id
-        .then -> @startCommercialBreak old._id, playDetails
+        # .then -> @gameInProgress old.eventId
+        .then -> @startCommercialBreak old.eventId, playDetails
         # .then -> @createCommercialQuestions update.eventId, previousPlayDetail
         .then -> @createPlayQuestions.execute update.eventId, playDetails
 
@@ -59,34 +60,38 @@ module.exports = class extends Task
 
   createCommercialQuestions: (eventId, previous) ->
 
-  startCommercialBreak: (gameId, previous) ->
+  startCommercialBreak: (eventId, previous) ->
     list = ["Punt", "Touchdown", "Field Goal", "Kickoff", "Timeout", "Two Min"]
     if (list.indexOf(previous.playDetails.type) > -1)
-      console.log "Start commercial"
+      console.log "Start commercial", eventId
       Promise.bind @
-        .then -> @Games.update({_id: gameId}, {$set: {commercial: true, commercialTime: new Date}})
+        .then -> @Games.update({eventId: eventId}, {$set: {commercial: true, commercialTime: new Date}})
 
-  checkCommercialStatus: (gameId, oldTime) ->
+  checkCommercialStatus: (eventId, oldTime) ->
     newTime =  new Date
     commercialBreak = @dependencies.settings['common']['commercialTime']
     if oldTime
       oldTime = new Date moment(oldTime).add commercialBreak, "seconds"
       if newTime > oldTime
-        @endCommercialBreak gameId
+        @endCommercialBreak eventId
 
-  gameInProgress: (gameId) ->
+  # gameInProgress: (eventId) ->
+  #   Promise.bind @
+  #     .then -> @getGame eventId
+  #     .then (game) ->
+  #       if game.commercial is true
+  #         console.log "Game has resumed already!!"
+  #         @endCommercialBreak eventId
+
+  endCommercialBreak: (eventId) ->
     Promise.bind @
-      .then -> @getGame gameId
+      .then -> @getGame eventId
       .then (game) ->
-        if game.commercial is true
-          console.log "Game has resumed already!!"
-          @endCommercialBreak gameId
+        if (game.commercial is true || game.commercial is null)
+          console.log "Ending Commercial Break"
+          Promise.bind @
+            .then -> @Games.update({eventId: eventId}, {$set: {commercial: false}, $unset: {commercialTime: 1}})
 
-  endCommercialBreak: (gameId) ->
-    console.log "Ending Commercial Break"
+  getGame: (eventId) ->
     Promise.bind @
-      .then -> @Games.update({_id: gameId}, {$set: {commercial: false}, $unset: {commercialTime: 1}})
-
-  getGame: (gameId) ->
-    Promise.bind @
-      .then -> @Games.findOne {_id: gameId}
+      .then -> @Games.findOne({eventId: eventId})

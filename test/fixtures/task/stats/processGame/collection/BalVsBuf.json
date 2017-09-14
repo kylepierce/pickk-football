@@ -26,7 +26,7 @@
           "eventStatus": {
               "eventStatusId": 2,
               "period": 2,
-              "isActive": false,
+              "isActive": true,
               "name": "In-Progress"
           },
           "venue": {
