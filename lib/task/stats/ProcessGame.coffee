@@ -13,6 +13,8 @@ chance = new (require 'chance')
 CreatePlayQuestions = require "./CreatePlayQuestions"
 GetPlayDetails = require "./GetPlayDetails"
 CloseInactiveQuestions = require "./CloseInactiveQuestions"
+CommercialQuestions = require "./CommericalQuestions"
+DriveQuestions = require "./DriveQuestions"
 
 module.exports = class extends Task
   constructor: (dependencies) ->
@@ -34,6 +36,8 @@ module.exports = class extends Task
     @createPlayQuestions = new CreatePlayQuestions dependencies
     @endOfGame = new EndOfGame dependencies
     @getPlayDetails = new GetPlayDetails dependencies
+    @commercialQuestions = new CommercialQuestions dependencies
+    @driveQuestions = new DriveQuestions dependencies
 
   execute: (old, update) ->
     @checkCommercialStatus old._id, old.commercialTime
@@ -42,13 +46,14 @@ module.exports = class extends Task
       oldPlays = old.pbp.length
       newPlays = update.pbp.length
     if @isNewPlay newPlays, oldPlays
-      teams = update.teams
+      @gameTeams = update.teams
+      @updatedPbp = update.pbp
       previousPlay = (_.last update.pbp)
-      playDetails = @getPlayDetails.execute previousPlay, teams
+      playDetails = @getPlayDetails.execute previousPlay, @gameTeams
 
       Promise.bind @
         # .then -> @endCommercialBreak old._id
-        .then -> @closeInactiveQuestions.execute update.id, teams
+        .then -> @closeInactiveQuestions.execute update.id, @gameTeams
         # .then -> @gameInProgress old.eventId
         .then -> @startCommercialBreak old.eventId, playDetails
         # .then -> @createCommercialQuestions update.eventId, previousPlayDetail
@@ -61,11 +66,22 @@ module.exports = class extends Task
   createCommercialQuestions: (eventId, previous) ->
 
   startCommercialBreak: (eventId, previous) ->
-    list = ["Punt", "Touchdown", "Field Goal", "Kickoff"]
+    list = ["Punt", "PAT", "Field Goal", "Turnover", "Turnover on Downs", "Safety"]
     if (list.indexOf(previous.playDetails.type) > -1)
-      console.log "Start commercial", eventId
+      correctTeam = @correctTeam previous.playDetails.teamId, @gameTeams
+      drive = parseInt(previous.playDetails.driveId) + 1
+
       Promise.bind @
+        # .then -> @commericalQuestions.resolve gameId, true, previous
+        # .then -> @commericalQuestions.create gameId, 2
+        .then -> @driveQuestions.resolve eventId, @updatedPbp, @gameTeams
+        .then -> @driveQuestions.create eventId, correctTeam, drive
         .then -> @Games.update({eventId: eventId}, {$set: {commercial: true, commercialTime: new Date}})
+
+  correctTeam: (lastTeam, teams) ->
+    index = _.findIndex(teams, {teamId: lastTeam})
+    correctTeam = if index is 0 then teams[1] else teams[0]
+    return correctTeam
 
   checkCommercialStatus: (eventId, oldTime) ->
     newTime =  new Date

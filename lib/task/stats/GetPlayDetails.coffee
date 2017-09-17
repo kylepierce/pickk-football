@@ -54,6 +54,8 @@ module.exports = class extends Task
   playDetailsObj: (play) ->
     playDetails =
       playId: play.playId
+      teamId: play.startPossession.teamId
+      driveId: play.driveId
       desc: play.playText
       typeId: play.playType.playTypeId
       type: @getPlayType play.playType.playTypeId
@@ -140,6 +142,9 @@ module.exports = class extends Task
       ,
         title: "Turnover on Downs",
         outcomes: [18, 35, 36]
+      ,
+        title: "Safety",
+        outcomes: [20]
       ]
 
       for item in playType
