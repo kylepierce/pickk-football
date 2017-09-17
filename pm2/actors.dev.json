@@ -1,12 +1,12 @@
 {
   "apps": [
     {
-      "name": "UpdateNFL",
+      "name": "PreGamePickks",
       "script": "./bin/worker",
       "args": [
         "--settings", "settings/dev.json",
-        "--delay=10000",
-        "lib/strategy/stats/UpdateNFL.coffee"
+        "--delay=300000",
+        "lib/strategy/stats/PreGamePickks.coffee"
       ],
       "exec_interpreter": "coffee",
       "exec_mode": "fork",

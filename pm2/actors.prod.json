@@ -12,6 +12,19 @@
       "exec_mode": "fork",
       "instances": 1,
       "max_memory_restart": "512M"
+    },
+    {
+      "name": "PreGamePickks",
+      "script": "./bin/worker",
+      "args": [
+        "--settings", "settings/prod.json",
+        "--delay=900000",
+        "lib/strategy/stats/PreGamePickks.coffee"
+      ],
+      "exec_interpreter": "coffee",
+      "exec_mode": "fork",
+      "instances": 1,
+      "max_memory_restart": "1024M"
     }
   ]
 }
