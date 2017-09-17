@@ -35,7 +35,6 @@ module.exports = class extends Task
       .then (found) ->
         if not found
           gameId = @Games.db.ObjectId().toString()
-          console.log gameId
           gameName = game.name
           @logger.verbose "Inserting Game " + gameName
           game["_id"] = gameId

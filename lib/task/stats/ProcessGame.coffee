@@ -47,7 +47,7 @@ module.exports = class extends Task
       playDetails = @getPlayDetails.execute previousPlay, teams
 
       Promise.bind @
-        .then -> @endCommercialBreak old.eventId
+        .then -> @endCommercialBreak old._id
         .then -> @closeInactiveQuestions.execute update.id, teams
         # .then -> @gameInProgress old.eventId
         .then -> @startCommercialBreak old.eventId, playDetails
@@ -61,7 +61,7 @@ module.exports = class extends Task
   createCommercialQuestions: (eventId, previous) ->
 
   startCommercialBreak: (eventId, previous) ->
-    list = ["Punt", "Touchdown", "Field Goal", "Kickoff", "Timeout", "Two Min"]
+    list = ["Punt", "Touchdown", "Field Goal", "Kickoff"]
     if (list.indexOf(previous.playDetails.type) > -1)
       # console.log "Start commercial", eventId
       Promise.bind @
@@ -92,6 +92,6 @@ module.exports = class extends Task
           Promise.bind @
             .then -> @Games.update({eventId: eventId}, {$set: {commercial: false}, $unset: {commercialTime: 1}})
 
-  getGame: (eventId) ->
+  getGame: (id) ->
     Promise.bind @
-      .then -> @Games.findOne({eventId: eventId})
+      .then -> @Games.findOne({_id: id})

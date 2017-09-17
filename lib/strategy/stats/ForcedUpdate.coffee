@@ -9,7 +9,7 @@ ImportGameDetails = require "../../task/stats/ImportGameDetails"
 ProcessGame = require "../../task/stats/ProcessGame"
 promiseRetry = require 'promise-retry'
 Game = require "../../model/Game"
-full = require "../../../test/fixtures/task/stats/processGame/collection/ChiVsAtl.json"
+full = require "../../../test/fixtures/task/stats/processGame/collection/NeVsKc.json"
 base = require "../../../test/fixtures/task/stats/processGame/collection/base.json"
 baseWithPlays = require "../../../test/fixtures/task/stats/processGame/collection/baseWithPlays.json"
 

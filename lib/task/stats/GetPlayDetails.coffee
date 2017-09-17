@@ -292,7 +292,7 @@ module.exports = class extends Task
     return multiplierArguments
 
   deleteQuestion: (play) ->
-    penalties = [5, 7, 8, 11, 12, 15, 17, 19, 20, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 38, 43, 44, 48, 49, 56, 76, 63, 64, 67, 68, 70, 84, 88, 96, 98]
+    penalties = [5, 7, 8, 11, 12, 15, 17, 19, 20, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 38, 41, 43, 44, 48, 49, 56, 76, 63, 64, 67, 68, 70, 84, 88, 96, 98]
     removeForKick = [5, 7, 11, 25, 27, 30, 38, 43, 44, 48, 53, 63, 70, 84, 88]
     if play.playDetails.type is "Timeout"
       return true
