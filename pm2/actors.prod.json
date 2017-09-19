@@ -5,13 +5,13 @@
       "script": "./bin/worker",
       "args": [
         "--settings", "settings/prod.json",
-        "--delay=2000",
+        "--delay=1000",
         "lib/strategy/stats/UpdateNFL.coffee"
       ],
       "exec_interpreter": "coffee",
       "exec_mode": "fork",
       "instances": 1,
-      "max_memory_restart": "512M"
+      "max_memory_restart": "1024M"
     },
     {
       "name": "PreGamePickks",

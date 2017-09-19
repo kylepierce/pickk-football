@@ -65,10 +65,15 @@ module.exports = class extends Task
 
     Promise.bind @
       .then -> _.map question.options, (option) -> return option['title']
-      .then (titles) -> @getAnswerOptionTitle titles, @playDetails
+      .then (titles) -> @getAnswerOptionTitle titles, singlePlay, teams
       .map (optionTitle) -> @getAnswerOptionNumber question, optionTitle
 
-  getAnswerOptionTitle: (titles, play) ->
+  getAnswerOptionTitle: (titles, singlePlay, teams) ->
+    play = @getPlayDetails.execute singlePlay, teams
+
+    if !play
+      console.log singlePlay
+
     Promise.bind @
       .then -> answers = [
         title: "Run",
@@ -300,8 +305,9 @@ module.exports = class extends Task
     reward = Math.floor answer['wager'] * answer['multiplier']
     Promise.bind @
       .then -> @Answers.update {_id: answer._id}, {$set: {outcome: "win"}} #
-      .then -> @GamePlayed.update {userId: answer['userId'], gameId: answer.gameId}, {$inc: {coins: reward}}
-      .tap -> @logger.verbose "Awarding correct users!"
+      .then -> @GamePlayed.update {period: answer.period, userId: answer['userId'], gameId: answer.gameId}, {$inc: {coins: reward}}
+      .then -> @GamePlayed.find {period: answer.period, userId: answer['userId'], gameId: answer.gameId}
+      .tap (result) -> @logger.verbose "Awarding correct users!"
       .then ->
         @Notifications.insert
           _id: @Notifications.db.ObjectId().toString()
@@ -309,6 +315,7 @@ module.exports = class extends Task
           questionId: answer.questionId
           userId: answer['userId']
           gameId: answer.gameId
+          period: answer.period
           type: "coins"
           value: reward
           read: false
@@ -317,7 +324,7 @@ module.exports = class extends Task
           shareMessage: ""
 
   deleteQuestion: (questionId) ->
-    # @logger.verbose "PLAY DELETED! [" + questionId + "]"
+    @logger.verbose "PLAY DELETED! [" + questionId + "]"
     Promise.bind @
       .then -> @Questions.update {_id: questionId}, {$set: {active: false, outcome: "Removed",  extendedDetails: @playDetails, lastUpdated: new Date()}}
       .then -> @Answers.find {questionId: questionId}

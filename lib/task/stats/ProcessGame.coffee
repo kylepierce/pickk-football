@@ -52,7 +52,7 @@ module.exports = class extends Task
       playDetails = @getPlayDetails.execute previousPlay, @gameTeams
 
       Promise.bind @
-        # .then -> @endCommercialBreak old._id
+        .then -> @endCommercialBreak old.eventId
         .then -> @closeInactiveQuestions.execute update.id, @gameTeams
         # .then -> @gameInProgress old.eventId
         .then -> @startCommercialBreak old.eventId, playDetails
@@ -103,11 +103,9 @@ module.exports = class extends Task
     Promise.bind @
       .then -> @getGame eventId
       .then (game) ->
-        if (game.commercial is true || game.commercial is null)
-          # console.log "Ending Commercial Break"
           Promise.bind @
             .then -> @Games.update({eventId: eventId}, {$set: {commercial: false}, $unset: {commercialTime: 1}})
 
   getGame: (id) ->
     Promise.bind @
-      .then -> @Games.findOne({_id: id})
+      .then -> @Games.findOne({eventId: id})

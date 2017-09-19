@@ -42,26 +42,32 @@ module.exports = class extends Task
       option1:
         low: 2.15
         high: 2.37
+        multiplier: (Math.random() * (2.37-2.15) + 2.15).toFixed(1)
         title: "Punt"
       option2:
         low: 2.5
         high: 2.91
+        multiplier: (Math.random() * (2.91-2.5) + 2.5).toFixed(1)
         title: "Field Goal"
       option3:
         low: 4.6
         high: 6.42
+        multiplier: (Math.random() * (6.42-4.6) + 4.6).toFixed(1)
         title: "Turnover"
       option4:
         low: 3.4
         high: 5.62
+        multiplier: (Math.random() * (5.62-3.4) + 3.4).toFixed(1)
         title: "Touchdown"
       option5:
         low: 5.4
         high: 6.7
+        multiplier: (Math.random() * ( 6.7-5.4) + 5.4).toFixed(1)
         title: "Turnover on Downs"
       option6:
         low: 15.9
         high: 21.61
+        multiplier: (Math.random() * (21.61-15.9) + 15.9).toFixed(1)
         title: "Safety"
 
     Promise.bind @
@@ -81,6 +87,19 @@ module.exports = class extends Task
           options: @mults
           usersAnswered: []
       # .then (result) -> console.log result
+
+  parseOptions: (options) ->
+    _.mapObject options, (option, key) ->
+      if _.isEmpty option
+        delete options[key]
+        return false
+
+      max = option.high
+      min = option.low
+      multi = (Math.random() * (max-min) + min).toFixed(1)
+      option.multiplier = parseFloat(multi)
+
+    return options
 
   resolve: (eventId, pbp, teams) ->
     Promise.bind @
