@@ -26,6 +26,7 @@ module.exports = class extends Task
     @logger = @dependencies.logger
     @Games = dependencies.mongodb.collection("games")
     @Multipliers = dependencies.mongodb.collection("multipliers")
+    @QuestionTemplate = dependencies.mongodb.collection("questionTemplate")
     @Questions = dependencies.mongodb.collection("questions")
     @Teams = dependencies.mongodb.collection("teams")
     @Answers = dependencies.mongodb.collection("answers")
@@ -73,10 +74,19 @@ module.exports = class extends Task
 
       Promise.bind @
         .then -> @commercialQuestions.resolveAll eventId, previous, true
-        .then -> @commercialQuestions.create eventId, "yDnDmrzvyoLaDdcra"
+        .then -> @getCommercialBreakQuestion "NFL", "drive", 2
+        .map (templateId) -> @commercialQuestions.create eventId, templateId
         .then -> @driveQuestions.resolve eventId, @updatedPbp, @gameTeams
         .then -> @driveQuestions.create eventId, correctTeam, drive
         .then -> @Games.update({eventId: eventId}, {$set: {commercial: true, commercialTime: new Date}})
+
+  getCommercialBreakQuestion: (sport, length, number) ->
+    query = {sport: sport, length: length}
+    Promise.bind @
+      .then -> @QuestionTemplate.count(query)
+      .then (count) -> return Math.floor(Math.random() * count)
+      .then (randomNum) -> @QuestionTemplate.find(query).limit(number).skip(randomNum);
+      .map (template) -> return template._id
 
   correctTeam: (lastTeam, teams) ->
     index = _.findIndex(teams, {teamId: lastTeam})

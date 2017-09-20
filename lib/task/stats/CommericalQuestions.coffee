@@ -2,11 +2,6 @@ _ = require "underscore"
 Match = require "mtr-match"
 Promise = require "bluebird"
 Task = require "../Task"
-Game = require "../../model/Game"
-EndOfGame = require "./EndOfGame"
-Team = require "../../model/Team"
-Player = require "../../model/Player"
-GameParser = require "./helper/GameParser"
 moment = require "moment"
 promiseRetry = require 'promise-retry'
 CloseInactiveQuestions = require "./CloseInactiveQuestions"
@@ -20,22 +15,19 @@ module.exports = class extends Task
 
     @logger = @dependencies.logger
     @Games = dependencies.mongodb.collection("games")
-    @Multipliers = dependencies.mongodb.collection("multipliers")
     @Questions = dependencies.mongodb.collection("questions")
     @QuestionTemplate = dependencies.mongodb.collection("questionTemplate")
-    @Teams = dependencies.mongodb.collection("teams")
     @Answers = dependencies.mongodb.collection("answers")
     @GamePlayed = dependencies.mongodb.collection("gamePlayed")
     @Users = dependencies.mongodb.collection("users")
     @Notifications = dependencies.mongodb.collection("notifications")
-    @gameParser = new GameParser dependencies
-    @endOfGame = new EndOfGame dependencies
     @closeInactiveQuestions = new CloseInactiveQuestions dependencies
 
   execute: ->
     Promise.bind @
 
   create: (eventId, questionTemplateId) ->
+    console.log questionTemplateId
     Promise.bind @
       .then -> @QuestionTemplate.findOne({_id: questionTemplateId})
       .then (result) -> @insertQuestion eventId, result
@@ -44,13 +36,14 @@ module.exports = class extends Task
     Promise.bind @
       .then -> @Games.findOne {eventId: eventId}
       .then (result) ->
+        driveId = _.last(result.pbp).driveId
         @Questions.insert
           _id: @Questions.db.ObjectId().toString()
           dateCreated: new Date()
           gameId: result._id
           period: result.period
-          length: "drive"
-          # driveId: driveId
+          length: qt.length
+          driveId: driveId + 1
           type: "freePickk"
           active: true
           commercial: true
