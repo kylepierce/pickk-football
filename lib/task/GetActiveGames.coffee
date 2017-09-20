@@ -20,9 +20,11 @@ module.exports = class extends Task
 
   preGame: ->
     now = moment().toISOString()
-    soon = moment().add(30, "m").toISOString()
+    soon = moment().add(120, "h").toISOString()
     Promise.bind @
-      .then -> @Games.find {sport: "NFL", status: "Pre-Game", pre_game_processed: {$exists: false}, iso: {$lt: soon}}
+      .then -> @Games.find {sport: "NFL", status: "Pre-Game", pre_game_processed: {$exists: true}, iso: {$lt: soon}}
+      # .then (result) -> console.log result
+      # .then (result) -> console.log result
 
       # "2017-09-17T21:00:00.000Z" - at T20:30 I want to create questions and send out a push.
 

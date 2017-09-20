@@ -12,6 +12,19 @@
       "exec_mode": "fork",
       "instances": 1,
       "max_memory_restart": "1024M"
-    }
+    },
+    {
+      "name": "ImportFutureGames",
+      "script": "./bin/worker",
+      "args": [
+        "--settings", "settings/dev.json",
+        "--delay=300000",
+        "lib/strategy/stats/ImportFutureGamesStrategy.coffee"
+      ],
+      "exec_interpreter": "coffee",
+      "exec_mode": "fork",
+      "instances": 1,
+      "max_memory_restart": "1024M"
+    },
   ]
 }

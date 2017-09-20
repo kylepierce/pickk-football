@@ -13,8 +13,11 @@ module.exports = class extends Strategy
   constructor: (dependencies) ->
     super
 
-    @mongodb = dependencies.mongodb
+    Match.check dependencies, Match.ObjectIncluding
+      mongodb: Match.Any
 
+    # @mongodb = dependencies.mongodb
+    @Games = dependencies.mongodb.collection("games")
     @importGames = new ImportGames dependencies
     @getActiveGames = new GetActiveGames dependencies
     @importGameDetails = new ImportGameDetails dependencies
@@ -25,7 +28,9 @@ module.exports = class extends Strategy
     Promise.bind @
       .then -> @getActiveGames.preGame()
       .map (game) ->
-        console.log game.name, game.iso
+        Promise.bind @
+          .then -> @Games.update({_id: game._id}, {$set: {pre_game_processed: true}})
+        # console.log game.name, game.iso
         # Promise.bind @
         #   .then -> @importGameDetails.execute game['eventId']
         #   .then (result) -> @processGame.execute game, result[0]
