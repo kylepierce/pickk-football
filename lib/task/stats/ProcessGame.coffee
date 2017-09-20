@@ -51,11 +51,12 @@ module.exports = class extends Task
       @updatedPbp = update.pbp
       previousPlay = (_.last update.pbp)
       playDetails = @getPlayDetails.execute previousPlay, @gameTeams
+      all = ["drive", "period", "half", "game"]
 
       Promise.bind @
         .then -> @endCommercialBreak old.eventId
         .then -> @closeInactiveQuestions.execute update.id, @gameTeams
-        .then -> @commercialQuestions.resolveAll update.id, playDetails, false
+        .then -> @commercialQuestions.resolveAll update.id, playDetails, all
         # .then -> @gameInProgress old.eventId
         .then -> @startCommercialBreak update.eventId, playDetails
         .then -> @createPlayQuestions.execute update.eventId, playDetails
@@ -73,7 +74,7 @@ module.exports = class extends Task
       drive = parseInt(previous.playDetails.driveId) + 1
 
       Promise.bind @
-        .then -> @commercialQuestions.resolveAll eventId, previous, true
+        .then -> @commercialQuestions.resolveAll eventId, previous, ["drive"], "drive"
         .then -> @getCommercialBreakQuestion "NFL", "drive", 2
         .map (templateId) -> @commercialQuestions.create eventId, templateId
         .then -> @driveQuestions.resolve eventId, @updatedPbp, @gameTeams

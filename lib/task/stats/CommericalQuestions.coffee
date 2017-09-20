@@ -27,7 +27,6 @@ module.exports = class extends Task
     Promise.bind @
 
   create: (eventId, questionTemplateId) ->
-    console.log questionTemplateId
     Promise.bind @
       .then -> @QuestionTemplate.findOne({_id: questionTemplateId})
       .then (result) -> @insertQuestion eventId, result
@@ -44,7 +43,7 @@ module.exports = class extends Task
           period: result.period
           length: qt.length
           driveId: driveId + 1
-          type: "freePickk"
+          type: qt.type
           active: true
           commercial: true
           que: qt.que
@@ -68,7 +67,7 @@ module.exports = class extends Task
 
     return updated
 
-  resolveAll: (eventId, playDetails, endOfDrive) ->
+  resolveAll: (eventId, playDetails, length, endOf) ->
     Promise.bind @
       .then -> @getGame eventId
       .then (game) ->
@@ -76,15 +75,16 @@ module.exports = class extends Task
           gameId: game._id,
           period: game.period,
           commercial: true,
-          type: "freePickk",
+          length: {$in: length}
+          type: {$ne: "drive"},
           active: true
         }
-      .map (question) -> @resolve question, playDetails, endOfDrive
+      .map (question) -> @resolve question, playDetails, endOf
 
-  resolve: (question, playDetails, endOfDrive)->
+  resolve: (question, playDetails, endOf)->
     outcomes = @checkDetailsToRequirements question.options, playDetails.playDetails
 
-    if endOfDrive is true
+    if endOf is "drive"
       outcomes = ['option2']
 
     if outcomes.length > 0
