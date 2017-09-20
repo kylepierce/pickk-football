@@ -60,11 +60,12 @@ module.exports = class extends Task
           length: "drive"
           # driveId: driveId
           requirements:
-            typeId: [1, 2, 9, 19, 23]
+            typeId: [10, 11]
+            penaltyId: 14
           type: "freePickk"
           active: true
           commercial: true
-          que: "Will There be Pass on this Drive?"
+          que: "Will There be a Penalty on this Drive?"
           options: options
           usersAnswered: []
 

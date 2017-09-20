@@ -56,7 +56,7 @@ module.exports = class extends Task
         .then -> @closeInactiveQuestions.execute update.id, @gameTeams
         .then -> @commercialQuestions.resolveAll update.id, playDetails, false
         # .then -> @gameInProgress old.eventId
-        .then -> @startCommercialBreak old.eventId, playDetails
+        .then -> @startCommercialBreak update.eventId, playDetails
         .then -> @createPlayQuestions.execute update.eventId, playDetails
 
   isNewPlay: (newLength, oldLength) ->
@@ -68,12 +68,11 @@ module.exports = class extends Task
   startCommercialBreak: (eventId, previous) ->
     list = ["Punt", "PAT", "Field Goal", "Turnover", "Turnover on Downs", "Safety"]
     if (list.indexOf(previous.playDetails.type) > -1)
-
       correctTeam = @correctTeam previous.playDetails.teamId, @gameTeams
       drive = parseInt(previous.playDetails.driveId) + 1
 
       Promise.bind @
-        # .then -> @commericalQuestions.resolveAll eventId, previous, true
+        .then -> @commercialQuestions.resolveAll eventId, previous, true
         .then -> @commercialQuestions.create eventId
         .then -> @driveQuestions.resolve eventId, @updatedPbp, @gameTeams
         .then -> @driveQuestions.create eventId, correctTeam, drive
