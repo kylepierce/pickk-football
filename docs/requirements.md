@@ -1,7 +1,7 @@
 #Requirements
 
 ### Last Updated:
-30 August 2017
+19 Sept 2017
 
 ## Functional Requirements
 
@@ -40,8 +40,7 @@ Scenario:
 ### Create Drive Question
 Primary Actor: STATS
 Secondary Actor: MongoDb
-Status: Not Started
-Priority: Next
+Status: Done
 
 Scenario:
 1. Get relevant data
@@ -71,8 +70,7 @@ Extension: Close to the end of the game
 ### Commercial break
 Primary Actor: STATS
 Secondary Actor: MongoDb
-Status: Not Started
-Priority: Next
+Status: Done
 
 Scenario:
 1. An precursor event happened (punt, touchdown scored, field goal scored, kickoff)
@@ -116,7 +114,7 @@ Extension: No matching option
 ### Award Correct Users
 Primary Actor: STATS
 Secondary Actor: MongoDb, Player
-Status: Pending
+Status: Done
 
 Scenario:
 1. Get single answer for player

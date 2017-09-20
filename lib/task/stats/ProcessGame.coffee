@@ -54,9 +54,9 @@ module.exports = class extends Task
       Promise.bind @
         .then -> @endCommercialBreak old.eventId
         .then -> @closeInactiveQuestions.execute update.id, @gameTeams
+        .then -> @commercialQuestions.resolveAll update.id, playDetails, false
         # .then -> @gameInProgress old.eventId
         .then -> @startCommercialBreak old.eventId, playDetails
-        # .then -> @createCommercialQuestions update.eventId, previousPlayDetail
         .then -> @createPlayQuestions.execute update.eventId, playDetails
 
   isNewPlay: (newLength, oldLength) ->
@@ -68,12 +68,13 @@ module.exports = class extends Task
   startCommercialBreak: (eventId, previous) ->
     list = ["Punt", "PAT", "Field Goal", "Turnover", "Turnover on Downs", "Safety"]
     if (list.indexOf(previous.playDetails.type) > -1)
+
       correctTeam = @correctTeam previous.playDetails.teamId, @gameTeams
       drive = parseInt(previous.playDetails.driveId) + 1
 
       Promise.bind @
-        # .then -> @commericalQuestions.resolve gameId, true, previous
-        # .then -> @commericalQuestions.create gameId, 2
+        # .then -> @commericalQuestions.resolveAll eventId, previous, true
+        .then -> @commercialQuestions.create eventId
         .then -> @driveQuestions.resolve eventId, @updatedPbp, @gameTeams
         .then -> @driveQuestions.create eventId, correctTeam, drive
         .then -> @Games.update({eventId: eventId}, {$set: {commercial: true, commercialTime: new Date}})

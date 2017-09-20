@@ -36,8 +36,8 @@ module.exports = class extends Task
 
   execute: (eventId, teams) ->
     Promise.bind @
-      .then -> @Games.find({id: eventId})
-      .then (game) -> @Questions.find({gameId: game[0]._id, type: "play", active: true});
+      .then -> @Games.findOne({id: eventId})
+      .then (game) -> @Questions.find({gameId: game._id, type: "play", active: true});
       .map (question) -> @closeQuestion question, teams
 
   closeQuestion: (question, teams) ->
@@ -70,9 +70,6 @@ module.exports = class extends Task
 
   getAnswerOptionTitle: (titles, singlePlay, teams) ->
     play = @getPlayDetails.execute singlePlay, teams
-
-    if !play
-      console.log singlePlay
 
     Promise.bind @
       .then -> answers = [
@@ -280,20 +277,22 @@ module.exports = class extends Task
         return outcomes
 
   getAnswerOptionNumber: (question, optionTitle) ->
-    @logger.verbose "Answer:", question.que, ">>>", optionTitle
+    # @logger.verbose "Answer:", question.que, ">>>", optionTitle
     Promise.bind @
       .then -> _.invert _.mapObject question['options'], (option) -> option['title']
-      .then (options) -> options[optionTitle]
+      .then (options) -> return options[optionTitle]
 
   updateQuestionAndAnswers: (questionId, outcome) ->
-    if @playDetails.playDetails.deleteQuestion
-      Promise.bind @
-        .then -> @deleteQuestion questionId
-    else
-      Promise.bind @
-        .then -> @Questions.update {_id: questionId}, $set: {active: false, outcome: outcome, extendedDetails: @playDetails, lastUpdated: new Date()}
-        .then -> return outcome
-        .each (outcome) -> @updateAnswers questionId, outcome
+    # extendedDetails: @playDetails
+    # if @playDetails.playDetails.deleteQuestion
+    #   Promise.bind @
+    #     .then -> @deleteQuestion questionId
+    # else
+    # console.log questionId, outcome
+    Promise.bind @
+      .then -> @Questions.update {_id: questionId}, $set: {active: false, outcome: outcome, lastUpdated: new Date()}
+      .then -> return outcome
+      .each (outcome) -> @updateAnswers questionId, outcome
 
   updateAnswers: (questionId, outcome) ->
     Promise.bind @
@@ -307,7 +306,7 @@ module.exports = class extends Task
       .then -> @Answers.update {_id: answer._id}, {$set: {outcome: "win"}} #
       .then -> @GamePlayed.update {period: answer.period, userId: answer['userId'], gameId: answer.gameId}, {$inc: {coins: reward}}
       .then -> @GamePlayed.find {period: answer.period, userId: answer['userId'], gameId: answer.gameId}
-      .tap (result) -> @logger.verbose "Awarding correct users!"
+      # .tap (result) -> @logger.verbose "Awarding correct users!"
       .then ->
         @Notifications.insert
           _id: @Notifications.db.ObjectId().toString()
