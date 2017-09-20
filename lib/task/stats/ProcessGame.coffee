@@ -25,14 +25,9 @@ module.exports = class extends Task
 
     @logger = @dependencies.logger
     @Games = dependencies.mongodb.collection("games")
-    @Multipliers = dependencies.mongodb.collection("multipliers")
     @QuestionTemplate = dependencies.mongodb.collection("questionTemplate")
     @Questions = dependencies.mongodb.collection("questions")
     @Teams = dependencies.mongodb.collection("teams")
-    @Answers = dependencies.mongodb.collection("answers")
-    @GamePlayed = dependencies.mongodb.collection("gamePlayed")
-    @Users = dependencies.mongodb.collection("users")
-    @Notifications = dependencies.mongodb.collection("notifications")
     @closeInactiveQuestions = new CloseInactiveQuestions dependencies
     @createPlayQuestions = new CreatePlayQuestions dependencies
     @endOfGame = new EndOfGame dependencies
@@ -41,7 +36,7 @@ module.exports = class extends Task
     @driveQuestions = new DriveQuestions dependencies
 
   execute: (old, update) ->
-    @checkCommercialStatus old._id, old.commercialTime
+    @checkCommercialStatus update.eventId
 
     if old.pbp
       oldPlays = old.pbp.length
@@ -91,16 +86,26 @@ module.exports = class extends Task
 
   correctTeam: (lastTeam, teams) ->
     index = _.findIndex(teams, {teamId: lastTeam})
-    correctTeam = if index is 0 then teams[1] else teams[0]
+
+    if index is 0
+      correctTeam = teams[1]
+    else if index is 1
+      correctTeam = teams[0]
+
     return correctTeam
 
-  checkCommercialStatus: (eventId, oldTime) ->
-    newTime =  new Date
+  checkCommercialStatus: (eventId) ->
+    newTime =  moment(new Date).toISOString()
     commercialBreak = @dependencies.settings['common']['commercialTime']
-    if oldTime
-      oldTime = new Date moment(oldTime).add commercialBreak, "seconds"
-      if newTime > oldTime
-        @endCommercialBreak eventId
+    Promise.bind @
+      .then -> @getGame eventId
+      .then (game) ->
+        if game.commercialTime
+          oldTime = moment(game.commercialTime).add(commercialBreak, 'seconds').toISOString()
+          if newTime > oldTime
+            Promise.bind @
+              .then -> @endCommercialBreak eventId
+
 
   # gameInProgress: (eventId) ->
   #   Promise.bind @
@@ -114,8 +119,10 @@ module.exports = class extends Task
     Promise.bind @
       .then -> @getGame eventId
       .then (game) ->
-          Promise.bind @
-            .then -> @Games.update({eventId: eventId}, {$set: {commercial: false}, $unset: {commercialTime: 1}})
+        Promise.bind @
+          .then -> @Games.update({eventId: eventId}, {$set: {commercial: false}, $unset: {commercialTime: 1}})
+          .then -> @Questions.update({gameId: game._id, period: game.period, active: true, commercial: false}, {$set: {dateCreated: new Date()}})
+          .then (result) -> console.log "Reactivated:", result.que
 
   getGame: (id) ->
     Promise.bind @

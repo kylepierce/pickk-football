@@ -64,8 +64,8 @@ module.exports = class extends Strategy
     timeSplit = lastPlay.time.split ":"
     update.eventStatus.minutes = timeSplit[0]
     update.eventStatus.seconds = timeSplit[1]
-    update['teams'][0].score = lastPlay.homeScoreAfter
-    update['teams'][1].score = lastPlay.awayScoreAfter
+    update['teams'][1].score = lastPlay.homeScoreAfter
+    update['teams'][0].score = lastPlay.awayScoreAfter
 
     Promise.bind @
       .then -> @importGameDetails.upsertGame update
