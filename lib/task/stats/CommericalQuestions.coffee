@@ -9,7 +9,6 @@ Player = require "../../model/Player"
 GameParser = require "./helper/GameParser"
 moment = require "moment"
 promiseRetry = require 'promise-retry'
-chance = new (require 'chance')
 CloseInactiveQuestions = require "./CloseInactiveQuestions"
 
 module.exports = class extends Task
@@ -23,7 +22,7 @@ module.exports = class extends Task
     @Games = dependencies.mongodb.collection("games")
     @Multipliers = dependencies.mongodb.collection("multipliers")
     @Questions = dependencies.mongodb.collection("questions")
-    @QuestionTemplates = dependencies.mongodb.collection("questionTemplates")
+    @QuestionTemplate = dependencies.mongodb.collection("questionTemplate")
     @Teams = dependencies.mongodb.collection("teams")
     @Answers = dependencies.mongodb.collection("answers")
     @GamePlayed = dependencies.mongodb.collection("gamePlayed")
@@ -36,21 +35,14 @@ module.exports = class extends Task
   execute: ->
     Promise.bind @
 
-  create: (eventId) ->
-    options =
-      option1:
-        low: 2.15
-        high: 2.37
-        multiplier: (Math.random() * (2.37-2.15) + 2.15).toFixed(1)
-        title: "True"
-      option2:
-        low: 2.15
-        high: 2.37
-        multiplier: (Math.random() * (2.37-2.15) + 2.15).toFixed(1)
-        title: "False"
-
+  create: (eventId, questionTemplateId) ->
     Promise.bind @
-      .then ->@Games.findOne {eventId: eventId}
+      .then -> @QuestionTemplate.findOne({_id: questionTemplateId})
+      .then (result) -> @insertQuestion eventId, result
+
+  insertQuestion: (eventId, qt) ->
+    Promise.bind @
+      .then -> @Games.findOne {eventId: eventId}
       .then (result) ->
         @Questions.insert
           _id: @Questions.db.ObjectId().toString()
@@ -59,15 +51,29 @@ module.exports = class extends Task
           period: result.period
           length: "drive"
           # driveId: driveId
-          requirements:
-            typeId: [10, 11]
-            penaltyId: 14
           type: "freePickk"
           active: true
           commercial: true
-          que: "Will There be a Penalty on this Drive?"
-          options: options
+          que: qt.que
+          options: @parseOptions qt.options
           usersAnswered: []
+
+  parseOptions: (options) ->
+    updated = {}
+    counter = 1
+    _.mapObject options, (option, key) ->
+      if !option.hasOwnProperty("multiplier")
+        max = parseFloat option.high
+        min = parseFloat option.low
+        multi = (Math.random() * (max-min) + min).toFixed(1)
+        option.multiplier = multi
+
+      option.requirements = JSON.parse(option.requirements)
+
+      updated["option" + counter] = option
+      counter++
+
+    return updated
 
   resolveAll: (eventId, playDetails, endOfDrive) ->
     Promise.bind @
@@ -83,43 +89,55 @@ module.exports = class extends Task
       .map (question) -> @resolve question, playDetails, endOfDrive
 
   resolve: (question, playDetails, endOfDrive)->
-    requirementsChecked = @checkDetailsToRequirements question.requirements, playDetails.playDetails
+    outcomes = @checkDetailsToRequirements question.options, playDetails.playDetails
 
-    if requirementsChecked || endOfDrive is true
-      outcome = if requirementsChecked is true then ["option1"] else ["option2"]
+    if endOfDrive is true
+      outcomes = ['option2']
+
+    if outcomes.length > 0
       Promise.bind @
-        .then -> @closeInactiveQuestions.updateQuestionAndAnswers question._id, outcome
+        .then -> @closeInactiveQuestions.updateQuestionAndAnswers question._id, outcomes
 
-  checkDetailsToRequirements: (requirements, details) ->
-    keys = _.allKeys requirements
-    obj = {}
+  checkDetailsToRequirements: (options, details) ->
+    outcome = []
+    _.each options, (option, i) ->
+      req = option.requirements
+      if req is null || req is "null"
+        return false
+      keys = _.allKeys req
+      obj = {}
 
-    _.map keys, (key) ->
-      questionValue = requirements[key]
-      playValue = details[key]
+      _.map keys, (key) ->
+        questionValue = req[key]
+        playValue = details[key]
 
-      if questionValue is playValue
-        obj[key] = true
-
-      else if _.isArray questionValue
-        if (questionValue.indexOf playValue) > -1
+        if questionValue is playValue
           obj[key] = true
+
+        else if _.isArray questionValue
+          if (questionValue.indexOf playValue) > -1
+            obj[key] = true
+          else
+            obj[key] = false
+
         else
           obj[key] = false
 
-      else
-        obj[key] = false
+      allGood = Object.keys(obj).every (key) ->
+        obj[key]
 
-    return Object.keys(obj).every (key) ->
-      obj[key]
+      if allGood is true
+        outcome.push(i)
 
-      # Check if any of them match the requirements
-      # If its a partial match update the question
-      # If they do award winners and close question
+    return outcome
 
   getGame: (id) ->
     Promise.bind @
       .then -> @Games.findOne({eventId: id})
+
+    # Check if any of them match the requirements
+    # If its a partial match update the question
+    # If they do award winners and close question
 
   # matchesRequirements: (question, play) ->
   #   # perfect = @perfectMatch question.requirements, play.playDetails

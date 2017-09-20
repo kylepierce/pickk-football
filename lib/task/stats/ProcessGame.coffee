@@ -73,7 +73,7 @@ module.exports = class extends Task
 
       Promise.bind @
         .then -> @commercialQuestions.resolveAll eventId, previous, true
-        .then -> @commercialQuestions.create eventId
+        .then -> @commercialQuestions.create eventId, "yDnDmrzvyoLaDdcra"
         .then -> @driveQuestions.resolve eventId, @updatedPbp, @gameTeams
         .then -> @driveQuestions.create eventId, correctTeam, drive
         .then -> @Games.update({eventId: eventId}, {$set: {commercial: true, commercialTime: new Date}})
