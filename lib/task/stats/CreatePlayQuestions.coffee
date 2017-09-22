@@ -36,7 +36,7 @@ module.exports = class extends Task
       .then (result) -> @parseOptions result[0].options
       .then (options) -> @insertPlayQuestion eventId, details, options
       .then (result) ->
-        # @logger.verbose "Creating Question: [", result.gameId, "]", result.que, details.nextPlay
+        @logger.verbose "Creating Question: [", result.gameId, "]", result.que, details.nextPlay
 
   parseOptions: (options) ->
     _.mapObject options, (option, key) ->

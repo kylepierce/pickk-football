@@ -121,8 +121,8 @@ module.exports = class extends Task
       .then (game) ->
         Promise.bind @
           .then -> @Games.update({eventId: eventId}, {$set: {commercial: false}, $unset: {commercialTime: 1}})
-          .then -> @Questions.update({gameId: game._id, period: game.period, active: true, commercial: false}, {$set: {dateCreated: new Date()}})
-          .then (result) -> console.log "Reactivated:", result.que
+          # .then -> @Questions.update({gameId: game._id, period: game.period, active: true, commercial: false}, {$set: {dateCreated: new Date()}})
+          # .then (result) -> console.log "Reactivated:", result.que
 
   getGame: (id) ->
     Promise.bind @

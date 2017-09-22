@@ -277,22 +277,22 @@ module.exports = class extends Task
         return outcomes
 
   getAnswerOptionNumber: (question, optionTitle) ->
-    # @logger.verbose "Answer:", question.que, ">>>", optionTitle
+    @logger.verbose "Answer:", question.que, ">>>", optionTitle
     Promise.bind @
       .then -> _.invert _.mapObject question['options'], (option) -> option['title']
       .then (options) -> return options[optionTitle]
 
   updateQuestionAndAnswers: (questionId, outcome) ->
     # extendedDetails: @playDetails
-    # if @playDetails.playDetails.deleteQuestion
-    #   Promise.bind @
-    #     .then -> @deleteQuestion questionId
-    # else
+    if @playDetails.playDetails.deleteQuestion
+      Promise.bind @
+        .then -> @deleteQuestion questionId
+    else
     # console.log questionId, outcome
-    Promise.bind @
-      .then -> @Questions.update {_id: questionId}, $set: {active: false, outcome: outcome, lastUpdated: new Date()}
-      .then -> return outcome
-      .each (outcome) -> @updateAnswers questionId, outcome
+      Promise.bind @
+        .then -> @Questions.update {_id: questionId}, $set: {active: false, outcome: outcome, lastUpdated: new Date()}
+        .then -> return outcome
+        .each (outcome) -> @updateAnswers questionId, outcome
 
   updateAnswers: (questionId, outcome) ->
     Promise.bind @
