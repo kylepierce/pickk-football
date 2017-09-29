@@ -8,8 +8,8 @@ module.exports = class
 
     _.extend @, data
 
-    away = @['teams'][1]
-    home = @['teams'][0]
+    away = @['teams'][0]
+    home = @['teams'][1]
     scoring =
       home:
         id: home.teamId
@@ -29,16 +29,16 @@ module.exports = class
     @away_team = away.teamId
     @scoring = scoring
     @scheduled = moment(@['startDate'][1]['full']).toDate()
+    @dateCreated = moment(@['startDate'][1]['full']).toDate()
     @iso =  new Date(@['startDate'][1]['full']).toISOString()
     @name = "#{home.nickname} vs #{away.nickname}"
     @sport = "NFL"
-    @period = if @['eventStatus']['period'] then @['eventStatus']['period'] else 0 
+    @period = if @['eventStatus']['period'] then @['eventStatus']['period'] else 0
     @tv = if @['tvStations'][0] then @['tvStations'][0].callLetters else "No TV"
     @live = @['eventStatus']['name'] is "In-Progress"
     @status = @['eventStatus']['name']
     @football = true
     @completed = @status in ['Complete', 'Closed']
-    # @location = if @live then (_.last @pbp).endYardLine
 
   getSelector: ->
     "eventId": @['eventId']

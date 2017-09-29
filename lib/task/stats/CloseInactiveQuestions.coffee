@@ -284,10 +284,10 @@ module.exports = class extends Task
 
   updateQuestionAndAnswers: (questionId, outcome) ->
     # extendedDetails: @playDetails
-    if @playDetails.playDetails.deleteQuestion
-      Promise.bind @
-        .then -> @deleteQuestion questionId
-    else
+    # if @playDetails.playDetails.deleteQuestion
+    #   Promise.bind @
+    #     .then -> @deleteQuestion questionId
+    # else
     # console.log questionId, outcome
       Promise.bind @
         .then -> @Questions.update {_id: questionId}, $set: {active: false, outcome: outcome, lastUpdated: new Date()}

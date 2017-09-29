@@ -60,6 +60,8 @@ module.exports = class extends Task
         multi = (Math.random() * (max-min) + min).toFixed(1)
         option.multiplier = multi
 
+      req = JSON.stringify(option.requirements)
+      console.log req, option.requirements
       option.requirements = JSON.parse(option.requirements)
 
       updated["option" + counter] = option

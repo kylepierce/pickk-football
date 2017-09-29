@@ -4,18 +4,18 @@
       "startDate": [{
           "year": 2017,
           "month": 9,
-          "date": 7,
-          "hour": 20,
-          "minute": 30,
-          "full": "2017-09-07T20:30:00",
+          "date": 26,
+          "hour": 23,
+          "minute": 0,
+          "full": "2017-09-26T23:00:00",
           "dateType": "Local"
       }, {
           "year": 2017,
           "month": 9,
-          "date": 8,
-          "hour": 0,
-          "minute": 30,
-          "full": "2017-09-08T00:30:00",
+          "date": 27,
+          "hour": 3,
+          "minute": 0,
+          "full": "2017-09-27T03:00:00",
           "dateType": "UTC"
       }],
       "isTba": false,

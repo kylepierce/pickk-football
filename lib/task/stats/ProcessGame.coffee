@@ -49,6 +49,7 @@ module.exports = class extends Task
       all = ["drive", "period", "half", "game"]
 
       Promise.bind @
+        .then -> @setLocation old.eventId
         .then -> @endCommercialBreak old.eventId
         .then -> @closeInactiveQuestions.execute update.id, @gameTeams
         .then -> @commercialQuestions.resolveAll update.id, playDetails, all
@@ -69,12 +70,16 @@ module.exports = class extends Task
       drive = parseInt(previous.playDetails.driveId) + 1
 
       Promise.bind @
-        .then -> @commercialQuestions.resolveAll eventId, previous, ["drive"], "drive"
-        .then -> @getCommercialBreakQuestion "NFL", "drive", 2
-        .map (templateId) -> @commercialQuestions.create eventId, templateId
+        # .then -> @commercialQuestions.resolveAll eventId, previous, ["drive"], "drive"
+        # .then -> @getCommercialBreakQuestion "NFL", "drive", 2
+        # .map (templateId) -> @commercialQuestions.create eventId, templateId
         .then -> @driveQuestions.resolve eventId, @updatedPbp, @gameTeams
         .then -> @driveQuestions.create eventId, correctTeam, drive
         .then -> @Games.update({eventId: eventId}, {$set: {commercial: true, commercialTime: new Date}})
+
+  setLocation: (eventId) ->
+    location = (_.last @updatedPbp).endYardLine
+    @Games.update({eventId: eventId}, {$set: {location: location}})
 
   getCommercialBreakQuestion: (sport, length, number) ->
     query = {sport: sport, length: length}
