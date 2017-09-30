@@ -26,14 +26,14 @@ module.exports = class extends Task
   execute: ->
     Promise.bind @
 
-  create: (eventId, questionTemplateId) ->
+  create: (gameId, questionTemplateId) ->
     Promise.bind @
       .then -> @QuestionTemplate.findOne({_id: questionTemplateId})
-      .then (result) -> @insertQuestion eventId, result
+      .then (result) -> @insertQuestion gameId, result
 
-  insertQuestion: (eventId, qt) ->
+  insertQuestion: (gameId, qt) ->
     Promise.bind @
-      .then -> @Games.findOne {eventId: eventId}
+      .then -> @Games.findOne {_id: gameId}
       .then (result) ->
         driveId = _.last(result.pbp).driveId
         @Questions.insert
@@ -61,7 +61,7 @@ module.exports = class extends Task
         option.multiplier = multi
 
       req = JSON.stringify(option.requirements)
-      console.log req, option.requirements
+      console.log "ParseOptions", req, option.requirements
       option.requirements = JSON.parse(option.requirements)
 
       updated["option" + counter] = option
@@ -69,9 +69,9 @@ module.exports = class extends Task
 
     return updated
 
-  resolveAll: (eventId, playDetails, length, endOf) ->
+  resolveAll: (gameId, playDetails, length, endOf) ->
     Promise.bind @
-      .then -> @getGame eventId
+      .then -> @Games.findOne({_id: gameId})
       .then (game) ->
         @Questions.find {
           gameId: game._id,
@@ -125,10 +125,6 @@ module.exports = class extends Task
         outcome.push(i)
 
     return outcome
-
-  getGame: (id) ->
-    Promise.bind @
-      .then -> @Games.findOne({eventId: id})
 
     # Check if any of them match the requirements
     # If its a partial match update the question

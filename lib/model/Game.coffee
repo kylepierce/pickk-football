@@ -8,8 +8,8 @@ module.exports = class
 
     _.extend @, data
 
-    away = @['teams'][0]
-    home = @['teams'][1]
+    home = @['teams'][0]
+    away = @['teams'][1]
     scoring =
       home:
         id: home.teamId

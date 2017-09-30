@@ -34,43 +34,27 @@ module.exports = class extends Task
     @getPlayDetails = new GetPlayDetails dependencies
     @createPlayQuestions = new CreatePlayQuestions dependencies
 
-  execute: (eventId, teams) ->
+  execute: (gameId, plays, gameTeams) ->
     Promise.bind @
-      .then -> @Games.findOne({id: eventId})
-      .then (game) -> @Questions.find({gameId: game._id, type: "play", active: true});
-      .map (question) -> @closeQuestion question, teams
+      .then -> @Questions.find({gameId: gameId, type: "play", active: true});
+      .map (question) -> @closeSingleQuestion gameId, plays, question, gameTeams
 
-  closeQuestion: (question, teams) ->
-    Promise.bind @
-      .then -> @getSinglePlay question.gameId, question.playId, 1
-      .then (singlePlay) -> @getCorrectOptionNumber question, singlePlay, teams
-      .then (optionNumber) -> @updateQuestionAndAnswers question._id, optionNumber
-      .catch (error) ->
-        @logger.verbose error
-
-  getSinglePlay: (gameId, playId, indexPosition) ->
-    Promise.bind @
-      .then -> @getGame gameId
-      .then (game) -> _.flatten game.pbp, 'playId'
-      .then (list) -> @getPlayResult list, playId, indexPosition
-
-  getPlayResult: (list, playId, indexPosition) ->
+  closeSingleQuestion: (gameId, pbp, question, gameTeams) ->
     # The playId comes from the play that happened before the question was created. Unfortunately there is not other way to associate that I am aware of.
-    Promise.bind @
-      .then ->_.indexOf list,  _.find list, (play) -> return play.playId is playId # Find the index of previous play in pbp array
-      .then (index) -> list[index + indexPosition] # Then find the next or previous item in the pbp array. Which should be question's result.
-
-  getCorrectOptionNumber: (question, singlePlay, teams) ->
-    @playDetails = @getPlayDetails.execute singlePlay, teams
+    index = _.indexOf pbp, _.find pbp, (play, index) -> return play.playId is question.playId
+    # Then find the next item in the pbp array. Which should be question's result.
+    play = pbp[index + 1]
+    playDetails = @getPlayDetails.execute play, gameTeams
 
     Promise.bind @
       .then -> _.map question.options, (option) -> return option['title']
-      .then (titles) -> @getAnswerOptionTitle titles, singlePlay, teams
-      .map (optionTitle) -> @getAnswerOptionNumber question, optionTitle
+      .then (titles) -> @getAnswerOptionTitle titles, playDetails
+      .map (title) -> @getAnswerOptionNumber question, title
+      .then (correctOptions) -> @updateQuestionAndAnswers question._id, playDetails, correctOptions
+      .catch (error) ->
+        @logger.verbose error
 
-  getAnswerOptionTitle: (titles, singlePlay, teams) ->
-    play = @getPlayDetails.execute singlePlay, teams
-
+  getAnswerOptionTitle: (titles, play) ->
     Promise.bind @
       .then -> answers = [
         title: "Run",
@@ -282,16 +266,14 @@ module.exports = class extends Task
       .then -> _.invert _.mapObject question['options'], (option) -> option['title']
       .then (options) -> return options[optionTitle]
 
-  updateQuestionAndAnswers: (questionId, outcome) ->
-    # extendedDetails: @playDetails
-    # if @playDetails.playDetails.deleteQuestion
-    #   Promise.bind @
-    #     .then -> @deleteQuestion questionId
-    # else
-    # console.log questionId, outcome
+  updateQuestionAndAnswers: (questionId, play, correctOptions) ->
+    if play.playDetails.deleteQuestion
       Promise.bind @
-        .then -> @Questions.update {_id: questionId}, $set: {active: false, outcome: outcome, lastUpdated: new Date()}
-        .then -> return outcome
+        .then -> @deleteQuestion questionId
+    else
+      Promise.bind @
+        .then -> @Questions.update {_id: questionId}, $set: {active: false, outcome: correctOptions, lastUpdated: new Date()}
+        .then -> return correctOptions
         .each (outcome) -> @updateAnswers questionId, outcome
 
   updateAnswers: (questionId, outcome) ->
@@ -303,10 +285,9 @@ module.exports = class extends Task
   awardUsers: (answer, outcomeOption) ->
     reward = Math.floor answer['wager'] * answer['multiplier']
     Promise.bind @
-      .then -> @Answers.update {_id: answer._id}, {$set: {outcome: "win"}} #
+      .then -> @Answers.update {_id: answer._id}, {$set: {outcome: "win"}}
       .then -> @GamePlayed.update {period: answer.period, userId: answer['userId'], gameId: answer.gameId}, {$inc: {coins: reward}}
       .then -> @GamePlayed.find {period: answer.period, userId: answer['userId'], gameId: answer.gameId}
-      # .tap (result) -> @logger.verbose "Awarding correct users!"
       .then ->
         @Notifications.insert
           _id: @Notifications.db.ObjectId().toString()

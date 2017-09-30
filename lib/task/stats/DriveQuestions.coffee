@@ -36,7 +36,7 @@ module.exports = class extends Task
 
   execute: ->
 
-  create: (eventId, team, driveId) ->
+  create: (gameId, team, driveId) ->
     # Temp until mongodb objects can be created.
     @mults =
       option1:
@@ -71,7 +71,7 @@ module.exports = class extends Task
         title: "Safety"
 
     Promise.bind @
-      .then -> @Games.findOne {eventId: eventId}
+      .then -> @Games.findOne {_id: gameId}
       .then (result) ->
         @Questions.insert
           _id: @Questions.db.ObjectId().toString()
@@ -101,13 +101,12 @@ module.exports = class extends Task
 
     return options
 
-  resolve: (eventId, pbp, teams) ->
+  resolve: (gameId, pbp, teams, gameTeams) ->
     Promise.bind @
-      .then -> @Games.findOne {eventId: eventId}
-      .then (result) -> @Questions.find {gameId: result._id, active: true, type: "drive"}
+      .then (result) -> @Questions.find {gameId: gameId, active: true, type: "drive"}
       .map (question) ->
         lastPlayInDrive = _.findLastIndex(pbp, {driveId: question.driveId})
-        play = @getPlayDetails.execute pbp[lastPlayInDrive], teams
+        play = @getPlayDetails.execute pbp[lastPlayInDrive], gameTeams
 
         if play.playDetails.type is "PAT"
           correctAnswer = "Touchdown"

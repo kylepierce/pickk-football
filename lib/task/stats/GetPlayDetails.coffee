@@ -31,18 +31,20 @@ module.exports = class extends Task
     @gameParser = new GameParser dependencies
     @endOfGame = new EndOfGame dependencies
 
-  execute: (play, teams) ->
-    if play
-      playDetails =
-        yardsToTouchdown: @yardsToTouchdown play.endPossession.teamId, play.endYardLine, teams
-        previous: @previousObj play
-        playDetails: @playDetailsObj play
+  execute: (play, gameTeams) ->
+    playDetails =
+      yardsToTouchdown: @yardsToTouchdown play.endPossession.teamId, play.endYardLine, gameTeams
+      previous: @previousObj play
+      playDetails: @playDetailsObj play
+      time: play.time
+      period: play.period
 
-      playDetails.playDetails.deleteQuestion = @deleteQuestion playDetails
-      playDetails.distance = @distanceObj play, playDetails.yardsToTouchdown
-      playDetails.nextPlay = @getNextPlayTypeAndDown playDetails
-      playDetails.multiplierArguments = @getMultiplierArguments playDetails
-      return playDetails
+    playDetails.playDetails.deleteQuestion = @deleteQuestion playDetails
+    playDetails.distance = @distanceObj play, playDetails.yardsToTouchdown
+    playDetails.nextPlay = @getNextPlayTypeAndDown playDetails
+    playDetails.multiplierArguments = @getMultiplierArguments playDetails
+
+    return playDetails
 
   previousObj: (play) ->
     return previous =
@@ -55,6 +57,7 @@ module.exports = class extends Task
     playDetails =
       playId: play.playId
       teamId: play.startPossession.teamId
+      endTeamId: play.endPossession.teamId
       driveId: play.driveId
       desc: play.playText
       typeId: play.playType.playTypeId
@@ -88,8 +91,7 @@ module.exports = class extends Task
       return yardsToFirstDown
 
   yardsToTouchdown: (teamIdWithBall, location, teams) ->
-    team = _.find teams, (team) ->
-      return team.teamId is teamIdWithBall
+    team = _.find teams, (team) -> return team.teamId is teamIdWithBall
     numbers = location.replace(/\D+/g, '')
     # If Dal is on their side (Furthest from scoring)
     if location.indexOf(team.abbreviation) is 0

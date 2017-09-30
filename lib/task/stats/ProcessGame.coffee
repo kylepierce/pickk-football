@@ -36,50 +36,68 @@ module.exports = class extends Task
     @driveQuestions = new DriveQuestions dependencies
 
   execute: (old, update) ->
-    @checkCommercialStatus update.eventId
+    gameId = "59c4bad2ce7aa66f131fbd3c"
+    @checkCommercialStatus gameId
 
     if old.pbp
       oldPlays = old.pbp.length
       newPlays = update.pbp.length
     if @isNewPlay newPlays, oldPlays
-      @gameTeams = update.teams
+      gameTeams = update.teams
       @updatedPbp = update.pbp
-      previousPlay = (_.last update.pbp)
-      playDetails = @getPlayDetails.execute previousPlay, @gameTeams
-      all = ["drive", "period", "half", "game"]
+      previousPlay = _.last @updatedPbp
+      play = @getPlayDetails.execute previousPlay, gameTeams
 
       Promise.bind @
-        .then -> @setLocation old.eventId
-        .then -> @endCommercialBreak old.eventId
-        .then -> @closeInactiveQuestions.execute update.id, @gameTeams
-        .then -> @commercialQuestions.resolveAll update.id, playDetails, all
-        # .then -> @gameInProgress old.eventId
-        .then -> @startCommercialBreak update.eventId, playDetails
-        .then -> @createPlayQuestions.execute update.eventId, playDetails
+        .then -> @endCommercialBreak gameId
+        .then -> @closeInactiveQuestions.execute gameId, @updatedPbp, gameTeams
+        .then -> @processWithPreviousDetails gameId, play, gameTeams
+
+  processWithPreviousDetails: (gameId, play, gameTeams) ->
+    all = ["drive", "period", "half", "game"]
+
+    Promise.bind @
+      .then -> @createPlayQuestions.execute gameId, play, gameTeams
+      .then (question) -> @updateGameCard gameId, play, question
+      .then -> @commercialQuestions.resolveAll gameId, play, all, gameTeams
+      .then -> @startCommercialBreak gameId, play
 
   isNewPlay: (newLength, oldLength) ->
     if newLength > oldLength
       return true
 
-  createCommercialQuestions: (eventId, previous) ->
+  createCommercialQuestions: (gameId, previous) ->
 
-  startCommercialBreak: (eventId, previous) ->
+  startCommercialBreak: (gameId, previous, gameTeams) ->
     list = ["Punt", "PAT", "Field Goal", "Turnover", "Turnover on Downs", "Safety"]
     if (list.indexOf(previous.playDetails.type) > -1)
       correctTeam = @correctTeam previous.playDetails.teamId, @gameTeams
       drive = parseInt(previous.playDetails.driveId) + 1
 
       Promise.bind @
-        # .then -> @commercialQuestions.resolveAll eventId, previous, ["drive"], "drive"
-        # .then -> @getCommercialBreakQuestion "NFL", "drive", 2
-        # .map (templateId) -> @commercialQuestions.create eventId, templateId
-        .then -> @driveQuestions.resolve eventId, @updatedPbp, @gameTeams
-        .then -> @driveQuestions.create eventId, correctTeam, drive
-        .then -> @Games.update({eventId: eventId}, {$set: {commercial: true, commercialTime: new Date}})
+        .then -> @commercialQuestions.resolveAll gameId, previous, ["drive"], "drive"
+        .then -> @getCommercialBreakQuestion "NFL", "drive", 2
+        .map (templateId) -> @commercialQuestions.create gameId, templateId
+        .then -> @driveQuestions.resolve gameId, @updatedPbp, gameTeams
+        .then -> @driveQuestions.create gameId, correctTeam, drive, gameTeams
+        .then -> @Games.update({_id: gameId}, {$set: {commercial: true, commercialTime: new Date}})
 
-  setLocation: (eventId) ->
+  updateGameCard: (gameId, play, question) ->
+    if play.period is 1 then quarter = "1st"
+    if play.period is 2 then quarter = "2nd"
+    if play.period is 3 then quarter = "3rd"
+    if play.period is 4 then quarter = "4th"
+    if play.period > 4 then quarter = "Overtime"
     location = (_.last @updatedPbp).endYardLine
-    @Games.update({eventId: eventId}, {$set: {location: location}})
+    @Games.update({_id: gameId}, {$set: {
+      location: location
+      downAndDistance: question.que
+      time: play.time
+      quarter: quarter
+      distanceToTouchdown: play.yardsToTouchdown
+      distanceToFirstDown: play.distance.yardsToFirstDown
+      whoHasBall: play.playDetails.endTeamId
+    }})
 
   getCommercialBreakQuestion: (sport, length, number) ->
     query = {sport: sport, length: length}
@@ -99,18 +117,17 @@ module.exports = class extends Task
 
     return correctTeam
 
-  checkCommercialStatus: (eventId) ->
+  checkCommercialStatus: (gameId) ->
     newTime =  moment(new Date).toISOString()
     commercialBreak = @dependencies.settings['common']['commercialTime']
     Promise.bind @
-      .then -> @getGame eventId
+      .then -> @Games.find({_id: gameId})
       .then (game) ->
         if game.commercialTime
           oldTime = moment(game.commercialTime).add(commercialBreak, 'seconds').toISOString()
           if newTime > oldTime
             Promise.bind @
-              .then -> @endCommercialBreak eventId
-
+              .then -> @endCommercialBreak gameId
 
   # gameInProgress: (eventId) ->
   #   Promise.bind @
@@ -120,15 +137,8 @@ module.exports = class extends Task
   #         console.log "Game has resumed already!!"
   #         @endCommercialBreak eventId
 
-  endCommercialBreak: (eventId) ->
+  endCommercialBreak: (gameId) ->
     Promise.bind @
-      .then -> @getGame eventId
-      .then (game) ->
-        Promise.bind @
-          .then -> @Games.update({eventId: eventId}, {$set: {commercial: false}, $unset: {commercialTime: 1}})
+      .then -> @Games.update({_id: gameId}, {$set: {commercial: false}, $unset: {commercialTime: 1}})
           # .then -> @Questions.update({gameId: game._id, period: game.period, active: true, commercial: false}, {$set: {dateCreated: new Date()}})
           # .then (result) -> console.log "Reactivated:", result.que
-
-  getGame: (id) ->
-    Promise.bind @
-      .then -> @Games.findOne({eventId: id})
