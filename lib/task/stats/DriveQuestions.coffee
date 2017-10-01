@@ -86,7 +86,7 @@ module.exports = class extends Task
           que: "How Will " + team.location + " " +  team.nickname + " Drive End?"
           options: @mults
           usersAnswered: []
-      # .then (result) -> console.log result
+      .then (result) -> console.log "Created:", result.que
 
   parseOptions: (options) ->
     _.mapObject options, (option, key) ->

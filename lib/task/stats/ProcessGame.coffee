@@ -49,6 +49,7 @@ module.exports = class extends Task
       play = @getPlayDetails.execute previousPlay, gameTeams
 
       Promise.bind @
+        .then -> @endOfDrive update.pbp, old.pbp
         .then -> @endCommercialBreak gameId
         .then -> @closeInactiveQuestions.execute gameId, @updatedPbp, gameTeams
         .then -> @processWithPreviousDetails gameId, play, gameTeams
@@ -59,8 +60,8 @@ module.exports = class extends Task
     Promise.bind @
       .then -> @createPlayQuestions.execute gameId, play, gameTeams
       .then (question) -> @updateGameCard gameId, play, question
-      .then -> @commercialQuestions.resolveAll gameId, play, all, gameTeams
-      .then -> @startCommercialBreak gameId, play
+      .then -> @commercialQuestions.resolveAll gameId, play, all
+      .then -> @startCommercialBreak gameId, play, gameTeams
 
   isNewPlay: (newLength, oldLength) ->
     if newLength > oldLength
@@ -68,10 +69,16 @@ module.exports = class extends Task
 
   createCommercialQuestions: (gameId, previous) ->
 
+  endOfDrive: (update, old) ->
+    newPlay = _.last update
+    oldPlay = _.last old
+    if newPlay.driveId > oldPlay.driveId
+      console.log "New Drive!"
+
   startCommercialBreak: (gameId, previous, gameTeams) ->
     list = ["Punt", "PAT", "Field Goal", "Turnover", "Turnover on Downs", "Safety"]
     if (list.indexOf(previous.playDetails.type) > -1)
-      correctTeam = @correctTeam previous.playDetails.teamId, @gameTeams
+      correctTeam = @correctTeam previous.playDetails.teamId, gameTeams
       drive = parseInt(previous.playDetails.driveId) + 1
 
       Promise.bind @

@@ -32,6 +32,7 @@ module.exports = class extends Task
       .then (result) -> @insertQuestion gameId, result
 
   insertQuestion: (gameId, qt) ->
+    console.log "Creating:", qt.que
     Promise.bind @
       .then -> @Games.findOne {_id: gameId}
       .then (result) ->
@@ -54,15 +55,12 @@ module.exports = class extends Task
     updated = {}
     counter = 1
     _.mapObject options, (option, key) ->
+
       if !option.hasOwnProperty("multiplier")
         max = parseFloat option.high
         min = parseFloat option.low
         multi = (Math.random() * (max-min) + min).toFixed(1)
         option.multiplier = multi
-
-      req = JSON.stringify(option.requirements)
-      console.log "ParseOptions", req, option.requirements
-      option.requirements = JSON.parse(option.requirements)
 
       updated["option" + counter] = option
       counter++
@@ -90,15 +88,18 @@ module.exports = class extends Task
       outcomes = ['option2']
 
     if outcomes.length > 0
+      console.log "Question Resolved: ", question.que, playDetails.playDetails.desc, outcomes
       Promise.bind @
         .then -> @closeInactiveQuestions.updateQuestionAndAnswers question._id, outcomes
 
   checkDetailsToRequirements: (options, details) ->
+    details
     outcome = []
     _.each options, (option, i) ->
       req = option.requirements
       if req is null || req is "null"
         return false
+
       keys = _.allKeys req
       obj = {}
 

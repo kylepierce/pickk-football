@@ -44,17 +44,19 @@ module.exports = class extends Task
     index = _.indexOf pbp, _.find pbp, (play, index) -> return play.playId is question.playId
     # Then find the next item in the pbp array. Which should be question's result.
     play = pbp[index + 1]
-    playDetails = @getPlayDetails.execute play, gameTeams
+    @playDetails = @getPlayDetails.execute play, gameTeams
+    # console.log "delete?", @playDetails.playDetails.deleteQuestion
 
     Promise.bind @
       .then -> _.map question.options, (option) -> return option['title']
-      .then (titles) -> @getAnswerOptionTitle titles, playDetails
+      .then (titles) -> @getAnswerOptionTitle titles, @playDetails
       .map (title) -> @getAnswerOptionNumber question, title
-      .then (correctOptions) -> @updateQuestionAndAnswers question._id, playDetails, correctOptions
+      .then (correctOptions) -> @updateQuestionAndAnswers question._id, correctOptions, @playDetails
       .catch (error) ->
         @logger.verbose error
 
   getAnswerOptionTitle: (titles, play) ->
+    console.log play.playDetails.desc
     Promise.bind @
       .then -> answers = [
         title: "Run",
@@ -266,8 +268,8 @@ module.exports = class extends Task
       .then -> _.invert _.mapObject question['options'], (option) -> option['title']
       .then (options) -> return options[optionTitle]
 
-  updateQuestionAndAnswers: (questionId, play, correctOptions) ->
-    if play.playDetails.deleteQuestion
+  updateQuestionAndAnswers: (questionId, correctOptions, play) ->
+    if play && play.playDetails.deleteQuestion
       Promise.bind @
         .then -> @deleteQuestion questionId
     else

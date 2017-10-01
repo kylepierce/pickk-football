@@ -43,7 +43,6 @@ module.exports = class extends Task
     playDetails.distance = @distanceObj play, playDetails.yardsToTouchdown
     playDetails.nextPlay = @getNextPlayTypeAndDown playDetails
     playDetails.multiplierArguments = @getMultiplierArguments playDetails
-
     return playDetails
 
   previousObj: (play) ->
@@ -94,7 +93,7 @@ module.exports = class extends Task
     team = _.find teams, (team) -> return team.teamId is teamIdWithBall
     numbers = location.replace(/\D+/g, '')
     # If Dal is on their side (Furthest from scoring)
-    if location.indexOf(team.abbreviation) is 0
+    if team && location.indexOf(team.abbreviation) is 0
       # Dal7 would be 93, Dal42 would be 58
       return 100 - parseInt(numbers)
     else
