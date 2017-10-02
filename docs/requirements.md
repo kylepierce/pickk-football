@@ -1,7 +1,7 @@
 #Requirements
 
 ### Last Updated:
-19 Sept 2017
+02 Oct 2017
 
 ## Functional Requirements
 
@@ -86,7 +86,7 @@ Extension: Game play continues
 Primary Actor: STATS
 Secondary Actor: MongoDb
 Status: Not Started
-Priority: Next
+Priority: Done
 
 Scenario:
 1. Game is in a commercial break

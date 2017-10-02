@@ -29,4 +29,4 @@ module.exports = class extends Strategy
         Promise.bind @
           .then -> @importGameDetails.execute game['eventId']
           .then (result) -> @processGame.execute game, result[0]
-      , {concurrency: 1}
+      # , {concurrency: 1}

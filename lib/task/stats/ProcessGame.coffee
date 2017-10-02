@@ -36,7 +36,11 @@ module.exports = class extends Task
     @driveQuestions = new DriveQuestions dependencies
 
   execute: (old, update) ->
-    gameId = "59c4bad2ce7aa66f131fbd3c"
+    Promise.bind @
+      .then -> @Games.findOne({eventId: update.eventId})
+      .then (result) -> @other old, update, result._id
+
+  other: (old, update, gameId) ->
     @checkCommercialStatus gameId
 
     if old.pbp
@@ -49,7 +53,7 @@ module.exports = class extends Task
       play = @getPlayDetails.execute previousPlay, gameTeams
 
       Promise.bind @
-        .then -> @endOfDrive update.pbp, old.pbp
+        # .then -> @endOfDrive update.pbp, old.pbp
         .then -> @endCommercialBreak gameId
         .then -> @closeInactiveQuestions.execute gameId, @updatedPbp, gameTeams
         .then -> @processWithPreviousDetails gameId, play, gameTeams
@@ -95,10 +99,14 @@ module.exports = class extends Task
     if play.period is 3 then quarter = "3rd"
     if play.period is 4 then quarter = "4th"
     if play.period > 4 then quarter = "Overtime"
+    yards = question.que.indexOf("Yards")
+    clean = question.que.substr 0, yards
+    if yards is -1
+      clean = question.que
     location = (_.last @updatedPbp).endYardLine
     @Games.update({_id: gameId}, {$set: {
       location: location
-      downAndDistance: question.que
+      downAndDistance: clean
       time: play.time
       quarter: quarter
       distanceToTouchdown: play.yardsToTouchdown

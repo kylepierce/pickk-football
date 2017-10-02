@@ -5,7 +5,7 @@
       "script": "./bin/worker",
       "args": [
         "--settings", "settings/prod.json",
-        "--delay=1000",
+        "--delay=500",
         "lib/strategy/stats/UpdateNFL.coffee"
       ],
       "exec_interpreter": "coffee",
