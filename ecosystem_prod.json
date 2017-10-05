@@ -1,11 +1,11 @@
 {
   "apps": [
     {
-      "name": "ImportGames",
+      "name": "UpdateNFL",
       "script": "./bin/worker",
       "args": [
         "--settings", "settings/prod.json",
-        "--delay=2000",
+        "--delay=1000",
         "lib/strategy/stats/UpdateNFL.coffee"
       ],
       "exec_interpreter": "coffee",
@@ -20,7 +20,7 @@
       "user": "root",
       "host": "do.pickk-prod",
       "ref": "origin/master",
-      "repo": "https://pickk:yreMU8aT8P4cvP3@bitbucket.org/pickk/pickk-football.git",
+      "repo": "git@bitbucket.org/pickk/pickk-football.git",
       "path": "/opt/pickk-football",
       "post-deploy": "npm install && pm2 startOrRestart ecosystem_prod.json --env prod"
     }

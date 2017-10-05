@@ -13,16 +13,5 @@
       "instances": 1,
       "max_memory_restart": "1024M"
     }
-  ],
-  "deploy": {
-    "prod": {
-      "user": "root",
-      "password": "g2EMwbKFMMcL31DHZuEX",
-      "host": "do.pickk-prod",
-      "ref": "origin/master",
-      "repo": "https://pickk:yreMU8aT8P4cvP3@bitbucket.org/pickk/pickk-football.git",
-      "path": "/opt/pickk-football",
-      "post-deploy": "npm install && pm2 startOrRestart ecosystem_prod.json --env prod"
-    }
-    }
+  ]
 }
