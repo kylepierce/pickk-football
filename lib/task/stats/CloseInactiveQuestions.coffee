@@ -34,18 +34,16 @@ module.exports = class extends Task
     @getPlayDetails = new GetPlayDetails dependencies
     @createPlayQuestions = new CreatePlayQuestions dependencies
 
-  execute: (gameId, plays, gameTeams) ->
+  execute: (game, plays) ->
     Promise.bind @
-      .then -> @Questions.find({gameId: gameId, type: "play", active: true});
-      .map (question) -> @closeSingleQuestion gameId, plays, question, gameTeams
+      .then -> @Questions.find({gameId: game._id, type: "play", active: true});
+      .map (question) -> @closeSingleQuestion game, plays, question
 
-  closeSingleQuestion: (gameId, pbp, question, gameTeams) ->
+  closeSingleQuestion: (game, pbp, question) ->
     # The playId comes from the play that happened before the question was created. Unfortunately there is not other way to associate that I am aware of.
     index = _.indexOf pbp, _.find pbp, (play, index) -> return play.playId is question.playId
-    # Then find the next item in the pbp array. Which should be question's result.
-    play = pbp[index + 1]
-    @playDetails = @getPlayDetails.execute play, gameTeams
-    # console.log "delete?", @playDetails.playDetails.deleteQuestion
+    play = pbp[index + 1] # Then find the next item in the pbp array. Which should be question's result.
+    @playDetails = @getPlayDetails.execute play, game.teams
 
     Promise.bind @
       .then -> _.map question.options, (option) -> return option['title']
@@ -56,7 +54,6 @@ module.exports = class extends Task
         @logger.verbose error
 
   getAnswerOptionTitle: (titles, play) ->
-    console.log play.playDetails.desc
     Promise.bind @
       .then -> answers = [
         title: "Run",
@@ -263,7 +260,7 @@ module.exports = class extends Task
         return outcomes
 
   getAnswerOptionNumber: (question, optionTitle) ->
-    @logger.verbose "Answer:", question.que, ">>>", optionTitle
+    @logger.verbose "- Answer:", question.que, ">>>", optionTitle
     Promise.bind @
       .then -> _.invert _.mapObject question['options'], (option) -> option['title']
       .then (options) -> return options[optionTitle]
@@ -331,7 +328,3 @@ module.exports = class extends Task
           message: "Play was removed. Here are your " + amount + " coins"
           sharable: false
           shareMessage: ""
-
-  getGame: (gameId) ->
-    Promise.bind @
-      .then -> @Games.findOne({_id: gameId})

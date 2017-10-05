@@ -35,7 +35,8 @@ module.exports = class extends Task
       .then -> @Multipliers.findOne(details.multiplierArguments)
       .then (result) -> @parseOptions result.options
       .then (options) -> @insertPlayQuestion gameId, details, options
-      .tap (result) -> @logger.verbose "Creating Question: [", result.gameId, "]", result.que, details.nextPlay
+      .tap (result) -> @logger.verbose "+ Creating Play:", result.que
+      #  [", result.gameId, "]",
       .then (result) -> return result
 
   parseOptions: (options) ->
