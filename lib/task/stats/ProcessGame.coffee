@@ -53,9 +53,10 @@ module.exports = class extends Task
         play = @getPlayDetails.execute previousPlay, gameTeams
 
         Promise.bind @
-          # .then -> @endOfDrive update.pbp, old.pbp
+          .then -> @endOfDrive update.pbp, old.pbp
+          .then -> @endOfQuarter update.pbp, old.pbp
           .then -> @endCommercialBreak game
-          .then -> @closeInactiveQuestions.execute game._id, @updatedPbp, gameTeams
+          .then -> @closeInactiveQuestions.execute game, @updatedPbp
           .then -> @processWithPreviousDetails game._id, play, gameTeams
 
   checkCommercialStatus: (game) ->
@@ -64,14 +65,25 @@ module.exports = class extends Task
     if game.commercialTime
       oldTime = moment(game.commercialTime).add(commercialBreak, 'seconds').toISOString()
       if newTime > oldTime
+        console.log "Time to close this commercial"
         Promise.bind @
-          .then -> @endCommercialBreak gameId
+          .then -> @endCommercialBreak game._id
+
+  endOfQuarter: (update, old) ->
+    newPlay = _.last update
+    oldPlay = _.last old
+    if newPlay.period > oldPlay.period
+      console.log "--------------------------\n"
+      console.log "\n New quarter! \n"
+      console.log "--------------------------\n"
 
   endOfDrive: (update, old) ->
     newPlay = _.last update
     oldPlay = _.last old
     if newPlay.driveId > oldPlay.driveId
+      console.log "--------------------------\n"
       console.log "\n New Drive! \n"
+      console.log "--------------------------\n"
 
   endCommercialBreak: (game) ->
     Promise.bind @
