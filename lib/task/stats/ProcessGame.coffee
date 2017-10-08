@@ -67,7 +67,6 @@ module.exports = class extends Task
       if newTime > oldTime
         Promise.bind @
           .then -> @endCommercialBreak game._id
-          # .tap -> @logger.verbose "Commercial Ended"
 
   endOfQuarter: (update, old) ->
     newPlay = _.last update
