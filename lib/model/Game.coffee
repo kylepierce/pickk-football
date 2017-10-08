@@ -15,12 +15,12 @@ module.exports = class
         id: home.teamId
         name: home.nickname
         abbr: home.abbreviation
-        runs: home.score
+        runs: away.score
       away:
         id: away.teamId
         name: away.nickname
         abbr: away.abbreviation
-        runs: away.score
+        runs: home.score
 
     @id = @['eventId']
     @home = home

@@ -65,7 +65,6 @@ module.exports = class extends Task
     if game.commercialTime
       oldTime = moment(game.commercialTime).add(commercialBreak, 'seconds').toISOString()
       if newTime > oldTime
-        console.log "Time to close this commercial"
         Promise.bind @
           .then -> @endCommercialBreak game._id
 
@@ -86,6 +85,7 @@ module.exports = class extends Task
       console.log "--------------------------\n"
 
   endCommercialBreak: (game) ->
+    console.log "Time to close this commercial"
     Promise.bind @
       .then -> @Games.update({_id: game._id}, {$set: {commercial: false}, $unset: {commercialTime: 1}})
       .then -> @Questions.update({gameId: game._id, period: game.period, active: true, commercial: false}, {$set: {dateCreated: new Date()}})
