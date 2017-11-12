@@ -72,6 +72,23 @@ module.exports = class
     path = "events/#{gameId}?pbp=true&accept=#{format}"
     @_nflRequest path
 
+  getGameWeather: (gameId) ->
+    Match.check gameId, Number
+
+    path = "weatherforecasts/#{gameId}"
+    @_nflRequest path
+
+  getGameOdds: (gameId) ->
+    Match.check gameId, Number
+
+    path = "odds/#{gameId}"
+    @_nflRequest path
+  
+  # getTeamLeaders: (teamId) ->
+  #   Match.check teamId, Number
+  #   path = "teamLeaders/#{teamId}"
+  #   @_nflRequest path
+    
   # getTeamProfile: (teamId, format = "json") ->
   #   Match.check teamId, Number
   #   Match.check format, formatPattern

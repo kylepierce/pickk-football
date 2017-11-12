@@ -161,7 +161,7 @@ Secondary Actor: MongoDb, Notifications
 Status: Not Started
 
 Scenario:
-1. 2 Hours before scheduled time
+1. 30 mins before scheduled time
 2. Create 1st quarter initial questions
 3. Notify registered users
 4. Update game that questions were made dont need to create them

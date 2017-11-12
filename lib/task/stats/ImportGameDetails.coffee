@@ -12,16 +12,17 @@ module.exports = class extends Task
       stats: Match.Any
       mongodb: Match.Any
 
+    @api = @dependencies.stats
     @Games = dependencies.mongodb.collection("games")
 
   execute: (eventId) ->
     Match.check eventId, Number
 
-    api = @dependencies.stats
+    
     @logger = @dependencies.logger
 
     Promise.bind @
-      .then -> api.getPlayByPlay eventId
+      .then -> @api.getPlayByPlay eventId
       .then (result) -> result.apiResults[0].league.season.eventType[0].events
       .map @upsertGame
 
@@ -29,3 +30,9 @@ module.exports = class extends Task
     game = new Game game
     @Games.update {eventId: game.eventId}, {$set: game}, {upsert: true}
     return game
+
+  getGameOdds: () ->
+    Promise.bind @
+      .then -> @api.getTeamLeaders(350);
+      .then (result) -> console.log(result.apiResults[0].league.season.eventType[0])
+      # .lineEvents[0].lines[0]) 

@@ -5,8 +5,8 @@
       "script": "./bin/worker",
       "args": [
         "--settings", "settings/dev.json",
-        "--delay=15000",
-        "lib/strategy/stats/ForcedUpdate.coffee"
+        "--delay=150000000",
+        "lib/strategy/stats/getSingleGameInfo.coffee"
       ],
       "exec_interpreter": "coffee",
       "exec_mode": "fork",

@@ -9,7 +9,7 @@
   "scripts": {
     "test": "mocha || true"
   },
-  "author": "Aleksandr Kuzmenko <aleksandr.v.kuzmenko@gmail.com>",
+  "author": "Kyle Pierce <kyle@pickk.co>",
   "devDependencies": {
     "chai": "^3.0.0",
     "chai-as-promised": "^5.1.0",
