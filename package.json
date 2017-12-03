@@ -15,7 +15,7 @@
     "chai-as-promised": "^5.1.0",
     "chai-things": "^0.2.0",
     "coffee-script": "^1.9.3",
-    "mongo": "=2.2.31",
+    "mongodb": "=2.2.31",
     "mocha": "=2.1.0",
     "sinon": "^1.15.4",
     "sinon-chai": "^2.8.0",
@@ -23,6 +23,8 @@
     "mongodb-core": "^2.1.15"
   },
   "dependencies": {
+    "mongodb": "=2.2.31",
+    "mongodb-core": "^2.1.15",
     "bluebird": "^2.9.33",
     "chance": "^1.0.4",
     "cheerio": "^0.20.0",
