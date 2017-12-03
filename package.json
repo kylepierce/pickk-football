@@ -23,6 +23,8 @@
     "mongodb-core": "^2.1.15"
   },
   "dependencies": {
+    "mongo": "=2.2.31",
+    "mongodb-core": "^2.1.15",
     "bluebird": "^2.9.33",
     "chance": "^1.0.4",
     "cheerio": "^0.20.0",
